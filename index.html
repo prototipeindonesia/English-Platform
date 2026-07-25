@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENGLISH ADVENTURE - Ekosistem Kolaboratif UBT & Guru SD</title>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-green: #1b5e20;
+            --primary-green-light: #4caf50;
+            --accent-teal: #00897b;
+            --bg-sky: #f4f9f5;
+            --stage-bg: #ffffff;
+            --stage-border: #c8e6c9;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --accent-orange: #f57c00;
+            --accent-yellow: #fbc02d;
+            --soft-red: #ef5350;
+            --shadow-soft: 0 10px 25px rgba(0,0,0,0.05);
+            --shadow-card: 0 4px 12px rgba(0,0,0,0.05);
+            --font-head: 'Fredoka', cursive, sans-serif;
+            --font-body: 'Nunito', sans-serif;
+            --radius-main: 20px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-sky);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* AUTH SCREEN */
+        #auth-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #2e7d32 0%, #004d40 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 36px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .auth-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .auth-icon { font-size: 2.8rem; color: var(--primary-green); }
+
+        .auth-card h2 {
+            font-family: var(--font-head);
+            color: var(--primary-green);
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+        }
+
+        .auth-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .auth-tab-btn {
+            flex: 1; padding: 10px; border: none; background: transparent;
+            font-family: var(--font-head); font-size: 0.9rem; color: var(--text-muted);
+            cursor: pointer; border-radius: 8px; transition: all 0.2s;
+        }
+
+        .auth-tab-btn.active {
+            background: #ffffff; color: var(--primary-green);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .input-group { margin-bottom: 16px; text-align: left; }
+        .input-group label { display: block; font-family: var(--font-head); font-size: 0.85rem; color: var(--text-dark); margin-bottom: 6px; }
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%; padding: 12px 16px; border: 2px solid #cbd5e1; border-radius: 12px;
+            font-family: var(--font-body); font-size: 0.95rem; font-weight: 600; outline: none;
+            transition: border-color 0.2s;
+        }
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--primary-green); }
+
+        .btn-primary {
+            background: var(--primary-green); color: white; font-family: var(--font-head); font-size: 1rem;
+            padding: 12px 24px; border-radius: 14px; border: none; cursor: pointer; width: 100%;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-primary:hover { background: #145214; }
+
+        /* HEADER */
+        header {
+            background: #ffffff; padding: 12px 28px; display: flex; justify-content: space-between;
+            align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.04); position: sticky; top: 0; z-index: 100;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .brand-avatar {
+            width: 42px; height: 42px; background: #e8f5e9; border: 2px solid var(--primary-green-light);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--primary-green);
+        }
+        .brand-title { font-family: var(--font-head); font-size: 1.2rem; color: var(--primary-green); line-height: 1.1; }
+        .brand-title span { display: block; font-size: 0.72rem; color: var(--accent-teal); font-family: var(--font-body); font-weight: 700; }
+
+        .nav-pills { display: flex; background: #f1f5f9; padding: 4px; border-radius: 30px; gap: 4px; }
+        .nav-btn {
+            border: none; background: transparent; padding: 8px 14px; font-family: var(--font-head);
+            font-size: 0.85rem; color: var(--text-muted); border-radius: 20px; cursor: pointer; transition: all 0.2s ease;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .nav-btn.active { background: var(--primary-green); color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+        .header-actions { display: flex; align-items: center; gap: 12px; }
+
+        .user-profile-badge {
+            display: flex; align-items: center; gap: 10px; background: #f8fafc; padding: 6px 12px;
+            border-radius: 20px; border: 1px solid #e2e8f0; cursor: pointer; transition: background 0.2s;
+        }
+        .user-profile-badge:hover { background: #f1f5f9; }
+
+        .btn-logout {
+            background: #fee2e2; color: var(--soft-red); border: 1px solid #fca5a5; padding: 8px 14px;
+            border-radius: 20px; font-family: var(--font-head); font-size: 0.8rem; cursor: pointer;
+            display: flex; align-items: center; gap: 6px; transition: background 0.2s;
+        }
+        .btn-logout:hover { background: #fecaca; }
+
+        /* LAYOUT */
+        .container {
+            max-width: 1280px; margin: 24px auto; padding: 0 20px; width: 100%; flex: 1;
+            display: grid; grid-template-columns: 1fr 300px; gap: 24px;
+        }
+
+        @media (max-width: 1024px) { .container { grid-template-columns: 1fr; } }
+
+        .main-stage {
+            background: var(--stage-bg); border: 2px solid #e2e8f0;
+            border-radius: var(--radius-main); padding: 28px; box-shadow: var(--shadow-soft);
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 16px; padding: 24px; display: flex; align-items: center;
+            justify-content: space-between; margin-bottom: 24px; border: 1px solid var(--stage-border);
+        }
+        .hero-text h1 { font-family: var(--font-head); font-size: 1.5rem; color: var(--primary-green); }
+        .hero-text p { font-size: 0.9rem; color: #2e7d32; margin-top: 4px; font-weight: 600; }
+
+        .section-header {
+            font-family: var(--font-head); font-size: 1.2rem; color: var(--primary-green);
+            margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+
+        .resource-card, .forum-card, .helpdesk-card {
+            background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 18px;
+            box-shadow: var(--shadow-card); transition: transform 0.2s; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .resource-card:hover, .forum-card:hover, .helpdesk-card:hover { transform: translateY(-3px); }
+
+        .tag {
+            display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem;
+            font-weight: 700; font-family: var(--font-head); margin-bottom: 10px; width: fit-content;
+        }
+        .tag-ubt { background: #e0f2fe; color: #0369a1; }
+        .tag-guru { background: #fef3c7; color: #b45309; }
+        .tag-help { background: #fce7f3; color: #be185d; }
+
+        .btn-action-sm {
+            background: var(--accent-teal); color: white; border: none; padding: 8px 14px;
+            border-radius: 10px; font-family: var(--font-head); font-size: 0.82rem; cursor: pointer;
+            transition: background 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn-action-sm:hover { background: #00695c; }
+
+        /* MATERI GRID */
+        .materi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; }
+        .materi-card {
+            background: #ffffff; border-radius: 16px; padding: 20px 16px; text-align: center;
+            border: 2px solid #e2e8f0; box-shadow: var(--shadow-card); display: flex; flex-direction: column;
+            justify-content: space-between; cursor: pointer; transition: transform 0.2s;
+        }
+        .materi-card:hover { transform: translateY(-4px); border-color: var(--primary-green-light); }
+        .card-icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .card-title { font-family: var(--font-head); font-size: 1rem; color: var(--text-dark); margin-bottom: 4px; }
+        .card-desc { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.3; }
+
+        .grid-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 20px; }
+        .selector-btn {
+            background: #ffffff; border: 2px solid #e2e8f0; border-radius: 14px; padding: 12px;
+            font-family: var(--font-head); font-size: 0.88rem; color: var(--text-dark); cursor: pointer; text-align: center;
+            transition: all 0.2s;
+        }
+        .selector-btn:hover, .selector-btn.active { border-color: var(--primary-green); background: #f0fdf4; color: var(--primary-green); }
+
+        .quiz-stage { background: #ffffff; border-radius: 16px; padding: 20px; border: 2px solid #e2e8f0; }
+        .quiz-card-q { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; padding: 16px; font-size: 1rem; font-weight: 700; margin-bottom: 14px; }
+        .quiz-options-grid { display: flex; flex-direction: column; gap: 8px; }
+        .quiz-opt-btn {
+            width: 100%; padding: 12px 16px; border: 2px solid #cbd5e1; background: white; border-radius: 10px;
+            font-family: var(--font-body); font-weight: 700; font-size: 0.95rem; cursor: pointer; text-align: left;
+            transition: all 0.2s;
+        }
+        .quiz-opt-btn:hover { border-color: var(--primary-green); background: #f1f5f9; }
+
+        /* SIDEBAR */
+        .sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .widget-box { background: #ffffff; border-radius: 18px; padding: 20px; border: 1px solid #e2e8f0; box-shadow: var(--shadow-card); }
+        .widget-title { font-family: var(--font-head); font-size: 1rem; color: var(--text-dark); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .stat-item { display: flex; justify-content: space-between; font-size: 0.88rem; padding: 8px 0; border-bottom: 1px dashed #e2e8f0; }
+
+        /* MODALS */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: #ffffff; border-radius: 20px; max-width: 700px; width: 100%; max-height: 85vh; overflow-y: auto; }
+        .modal-header { padding: 16px 20px; background: var(--primary-green); color: white; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-head); }
+        .modal-body { padding: 20px; }
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+        .vocab-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .vocab-item:hover { border-color: var(--primary-green); background: #f0fdf4; }
+
+        footer { background: #ffffff; border-top: 1px solid #e2e8f0; padding: 16px 32px; text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 24px; }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+       1. AUTHENTICATION SCREEN (LOGIN / REGISTER)
+       ========================================== -->
+    <div id="auth-screen">
+        <div class="auth-card">
+            <div class="auth-brand">
+                <i class="fa-solid fa-graduation-cap auth-icon"></i>
+            </div>
+            <h2>ENGLISH ADVENTURE</h2>
+            <p>Platform Kolaboratif UBT & Guru SD Kaltara</p>
+
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" onclick="switchAuthTab('login')">Masuk Akun</button>
+                <button class="auth-tab-btn" onclick="switchAuthTab('register')">Pendaftaran</button>
+            </div>
+
+            <!-- Form Login -->
+            <form id="form-login" onsubmit="handleAuthSubmit(event, 'login')">
+                <div class="input-group">
+                    <label><i class="fa-solid fa-user-gear"></i> Masuk Sebagai Role</label>
+                    <select id="login-role" required>
+                        <option value="Guru SD">Guru SD (Sekolah Dasar)</option>
+                        <option value="Dosen UBT">Dosen Mitra UBT</option>
+                        <option value="Mahasiswa UBT">Mahasiswa Mitra UBT</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-envelope"></i> Email / NIP / NIDN</label>
+                    <input type="text" id="login-id" placeholder="Masukkan ID pengguna" required>
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-lock"></i> Kata Sandi</label>
+                    <input type="password" id="login-pass" value="123456" required>
+                </div>
+                <button type="submit" class="btn-primary">Masuk ke Ekosistem <i class="fa-solid fa-right-to-bracket"></i></button>
+            </form>
+
+            <!-- Form Register -->
+            <form id="form-register" style="display: none;" onsubmit="handleAuthSubmit(event, 'register')">
+                <div class="input-group">
+                    <label><i class="fa-solid fa-user"></i> Nama Lengkap & Gelar</label>
+                    <input type="text" id="reg-name" placeholder="Contoh: Rahmawati, S.Pd." required>
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-id-badge"></i> Peran Ekosistem</label>
+                    <select id="reg-role" required>
+                        <option value="Guru SD">Guru SD (Sekolah Dasar)</option>
+                        <option value="Dosen UBT">Dosen Universitas Borneo Tarakan</option>
+                        <option value="Mahasiswa UBT">Mahasiswa Bahasa Inggris UBT</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-school"></i> Instansi / Sekolah Origin</label>
+                    <input type="text" id="reg-school" placeholder="Contoh: SDN 001 Tarakan / FKIP UBT" required>
+                </div>
+                <button type="submit" class="btn-primary">Daftar Akun <i class="fa-solid fa-user-plus"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================
+       2. HEADER NAVIGATION
+       ========================================== -->
+    <header>
+        <a href="#" class="brand">
+            <div class="brand-avatar"><i class="fa-solid fa-university"></i></div>
+            <div class="brand-title">
+                ENGLISH ADVENTURE
+                <span>Ekosistem Kolaborasi UBT & SD Kaltara</span>
+            </div>
+        </a>
+
+        <!-- NAV PIPELINE UTAMA -->
+        <nav class="nav-pills">
+            <button class="nav-btn active" onclick="switchTab('dashboard', this)"><i class="fa-solid fa-chart-pie"></i> Dashboard</button>
+            <button class="nav-btn" onclick="switchTab('hub', this)"><i class="fa-solid fa-folder-open"></i> Bank Materi</button>
+            <button class="nav-btn" onclick="switchTab('forum', this)"><i class="fa-solid fa-comments"></i> Forum Mentoring</button>
+            <button class="nav-btn" onclick="switchTab('helpdesk', this)"><i class="fa-solid fa-user-doctor"></i> Klinik Bahasa</button>
+            <button class="nav-btn" onclick="switchTab('materi-sd', this)"><i class="fa-solid fa-book"></i> Modul Kelas 3</button>
+            <button class="nav-btn" onclick="switchTab('kuis-evaluasi', this)"><i class="fa-solid fa-list-check"></i> Mini Kuis</button>
+        </nav>
+
+        <div class="header-actions">
+            <div class="user-profile-badge" onclick="openModal('profile-modal')">
+                <i class="fa-solid fa-circle-user" style="font-size:1.4rem; color:var(--primary-green);"></i>
+                <div style="text-align: left; line-height: 1.1;">
+                    <div id="user-display-name" style="font-weight: 700; font-size: 0.82rem;">User</div>
+                    <div id="user-display-role" style="font-size: 0.7rem; color: var(--text-muted);">Role</div>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="handleLogout()" title="Keluar ke Login"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+        </div>
+    </header>
+
+    <!-- ==========================================
+       3. MAIN CONTAINER
+       ========================================== -->
+    <div class="container">
+        <main class="main-stage">
+
+            <!-- Hero Banner Dynamic -->
+            <div class="hero-banner">
+                <div class="hero-text">
+                    <h1>Selamat Datang, <span id="hero-user-name">Pengajar</span>! 👋</h1>
+                    <p id="hero-user-desc">Wadah kolaborasi aktif Akademisi Universitas Borneo Tarakan dan Guru SD se-Kaltara.</p>
+                </div>
+                <div style="font-size:2.2rem; color:var(--primary-green);"><i class="fa-solid fa-handshake-angle"></i></div>
+            </div>
+
+            <!-- TAB 1: DASHBOARD DINAMIS -->
+            <div id="tab-dashboard" class="tab-pane active">
+                <!-- VIEW DASHBOARD GURU SD -->
+                <div id="view-dashboard-guru">
+                    <div class="section-header">
+                        <span><i class="fa-solid fa-chalkboard-user"></i> Workspace Utama Guru SD</span>
+                    </div>
+                    <div class="grid-3" style="margin-bottom:20px;">
+                        <div class="resource-card" style="border-left:4px solid var(--primary-green);">
+                            <h4 style="font-family:var(--font-head);">📘 Modul Siap Ajar</h4>
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin:8px 0;">Akses 5 Unit Modul Kurikulum Merdeka (20 Kosakata per Modul) + Kearifan Lokal Kaltara.</p>
+                            <button class="btn-action-sm" onclick="switchTab('materi-sd', null)">Buka Modul Kelas 3</button>
+                        </div>
+                        <div class="resource-card" style="border-left:4px solid var(--accent-orange);">
+                            <h4 style="font-family:var(--font-head);">🩺 Klinik Bahasa Inggris</h4>
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin:8px 0;">Konsultasi RPP & Pronunciation langsung ke Pakar UBT.</p>
+                            <button class="btn-action-sm" onclick="openModal('helpdesk-modal')">Tanya Pakar UBT</button>
+                        </div>
+                        <div class="resource-card" style="border-left:4px solid var(--accent-teal);">
+                            <h4 style="font-family:var(--font-head);">📝 Mini Kuis Evaluasi</h4>
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin:8px 0;">Gunakan 5 Paket Mini Kuis (Masing-masing 20 Soal) untuk siswa di kelas.</p>
+                            <button class="btn-action-sm" onclick="switchTab('kuis-evaluasi', null)">Buka Mini Kuis</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW DASHBOARD PTN -->
+                <div id="view-dashboard-ptn" style="display:none;">
+                    <div class="section-header">
+                        <span><i class="fa-solid fa-building-columns"></i> Panel Mitra Akademik Universitas Borneo Tarakan</span>
+                        <button class="btn-action-sm" onclick="openModal('upload-modal')"><i class="fa-solid fa-cloud-arrow-up"></i> Terbitkan Riset / Modul</button>
+                    </div>
+                    <div class="grid-3" style="margin-bottom:20px;">
+                        <div class="resource-card" style="border-left:4px solid #0284c7;">
+                            <h4 style="font-family:var(--font-head);">📑 Permintaan Review RPP</h4>
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin:8px 0;">3 RPP dari Guru SD Malinau & Tarakan membutuhkan validasi linguistik.</p>
+                            <button class="btn-action-sm" onclick="switchTab('helpdesk', null)">Buka Antrean Klinik</button>
+                        </div>
+                        <div class="resource-card" style="border-left:4px solid #7c3aed;">
+                            <h4 style="font-family:var(--font-head);">💬 Forum Pedagogy</h4>
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin:8px 0;">Berikan mentoring pengajaran pada diskusi guru SD Kaltara.</p>
+                            <button class="btn-action-sm" onclick="switchTab('forum', null)">Tanggapi Forum</button>
+                        </div>
+                        <div class="resource-card" style="border-left:4px solid #059669;">
+                            <h4 style="font-family:var(--font-head);">📦 Produksi Media Ajar</h4>
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin:8px 0;">Unggah media worksheet atau audio hasil penelitian ke Hub.</p>
+                            <button class="btn-action-sm" onclick="openModal('upload-modal')">Unggah Media</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: BANK MATERI HUB -->
+            <div id="tab-hub" class="tab-pane" style="display:none;">
+                <div class="section-header">
+                    <span><i class="fa-solid fa-cloud-arrow-up"></i> Bank Materi Akses Terbuka (Crowdsourced Hub)</span>
+                    <button class="btn-action-sm" onclick="openModal('upload-modal')"><i class="fa-solid fa-plus"></i> Unggah Modul/Media</button>
+                </div>
+                <div class="grid-3" id="resource-cards-container">
+                    <div class="resource-card">
+                        <div>
+                            <span class="tag tag-ubt">Dosen FKIP UBT</span>
+                            <h4 style="font-family:var(--font-head); font-size:0.98rem; margin-bottom:6px;">Modul Visio-Loco: Foods & Drinks Kaltara</h4>
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">Panduan mengajar kosakata buah lokal (Tarap & Lai) terintegrasi gambar kontekstual.</p>
+                        </div>
+                        <button class="btn-action-sm" onclick="downloadResource('Modul Visio-Loco')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF</button>
+                    </div>
+                    <div class="resource-card">
+                        <div>
+                            <span class="tag tag-guru">Guru SD (SDN 001 Tarakan)</span>
+                            <h4 style="font-family:var(--font-head); font-size:0.98rem; margin-bottom:6px;">Worksheet Bergambar: Mealtimes</h4>
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">Lembar kerja siswa mewarnai dan mencocokkan kata jadwal makan harian.</p>
+                        </div>
+                        <button class="btn-action-sm" onclick="downloadResource('Worksheet Bergambar')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: FORUM MENTORING -->
+            <div id="tab-forum" class="tab-pane" style="display:none;">
+                <div class="section-header">
+                    <span><i class="fa-solid fa-comments"></i> Forum Mentoring Peer-to-Peer</span>
+                    <button class="btn-action-sm" onclick="openModal('forum-modal')"><i class="fa-solid fa-pen-to-square"></i> Buat Diskusi Baru</button>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:12px;" id="forum-posts-container">
+                    <div class="forum-card">
+                        <span class="tag tag-guru">Ibu Siti Nurhaliza, S.Pd. (Guru SD)</span>
+                        <h4 style="font-family:var(--font-head); font-size:0.95rem; margin-bottom:6px;">Bagaimana mengatasi siswa yang malu melafalkan ucapan Bahasa Inggris?</h4>
+                        <p style="font-size:0.82rem; color:var(--text-dark); margin-bottom:10px;">"Siswa kelas 3 sering takut salah saat mengucapkan kata 'Breakfast'. Adakah trik dari UBT?"</p>
+                        <div style="background:#f8fafc; padding:10px; border-radius:10px; border-left:3px solid var(--primary-green); font-size:0.8rem;">
+                            <strong>Tanggapan Dosen UBT (Dr. Hendra):</strong> "Gunakan metode Choral Repetition melalui bernyanyi bersama sebelum menunjuk individu."
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: KLINIK BAHASA INGGRIS -->
+            <div id="tab-helpdesk" class="tab-pane" style="display:none;">
+                <div class="section-header">
+                    <span><i class="fa-solid fa-user-doctor"></i> Klinik Bahasa Inggris (Language Helpdesk)</span>
+                    <button class="btn-action-sm" onclick="openModal('helpdesk-modal')"><i class="fa-solid fa-paper-plane"></i> Ajukan Pertanyaan / RPP</button>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:12px;" id="helpdesk-tickets-container">
+                    <div class="helpdesk-card">
+                        <span class="tag tag-help">Pronunciation & RPP</span>
+                        <h4 style="font-family:var(--font-head); font-size:0.95rem; margin-bottom:4px;">Pelafalan tepat untuk istilah lokal "Tarap" dalam kalimat?</h4>
+                        <div style="background:#f0fdf4; padding:10px; border-radius:10px; border:1px solid #bbf7d0; font-size:0.8rem; margin-top:8px;">
+                            <strong>Jawaban Pakar UBT:</strong> Tetap gunakan pelafalan asli (/ta-rap/) sebagai <em>Proper Noun</em> dengan konteks <em>"Tarap fruit from Kaltara"</em>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: MODUL MATERI KELAS 3 SD (20 VOCABULARY PER MODUL) -->
+            <div id="tab-materi-sd" class="tab-pane" style="display:none;">
+                <div class="section-header"><span><i class="fa-solid fa-book"></i> Modul Pembelajaran Kelas 3 SD Semester 1 (20 Kosakata per Modul)</span></div>
+                <div class="materi-grid">
+                    <div class="materi-card" onclick="openModule(1)">
+                        <div class="card-icon">🍛</div>
+                        <div class="card-title">Unit 1: Foods & Drinks</div>
+                        <div class="card-desc">Makanan, minuman & buah lokal Kaltara (Tarap & Lai).</div>
+                        <button class="btn-action-sm" style="width:100%;">Pelajari Modul (20 Kata)</button>
+                    </div>
+                    <div class="materi-card" onclick="openModule(2)">
+                        <div class="card-icon">😋</div>
+                        <div class="card-title">Unit 2: Likes & Dislikes</div>
+                        <div class="card-desc">Pola "I like...", "He doesn't like", dan ungkapan rasa.</div>
+                        <button class="btn-action-sm" style="width:100%;">Pelajari Modul (20 Ungkapan)</button>
+                    </div>
+                    <div class="materi-card" onclick="openModule(3)">
+                        <div class="card-icon">🍳</div>
+                        <div class="card-title">Unit 3: Mealtimes</div>
+                        <div class="card-desc">Breakfast, Lunch, Dinner, & aktivitas waktu makan.</div>
+                        <button class="btn-action-sm" style="width:100%;">Pelajari Modul (20 Kata)</button>
+                    </div>
+                    <div class="materi-card" onclick="openModule(4)">
+                        <div class="card-icon">🚴‍♂️</div>
+                        <div class="card-title">Unit 4: Hobbies</div>
+                        <div class="card-desc">Macam hobi & pertanyaan "Do you like swimming?".</div>
+                        <button class="btn-action-sm" style="width:100%;">Pelajari Modul (20 Hobi)</button>
+                    </div>
+                    <div class="materi-card" onclick="openModule(5)">
+                        <div class="card-icon">📅</div>
+                        <div class="card-title">Unit 5: Days of Week</div>
+                        <div class="card-desc">Nama hari, penggunaan Before & After.</div>
+                        <button class="btn-action-sm" style="width:100%;">Pelajari Modul (20 Kata)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: MINI KUIS EVALUASI (5 PAKET @ 20 SOAL) -->
+            <div id="tab-kuis-evaluasi" class="tab-pane" style="display:none;">
+                <div class="section-header"><span><i class="fa-solid fa-list-check"></i> Mini Kuis Evaluasi (5 Paket @ 20 Soal)</span></div>
+                
+                <div class="grid-selector">
+                    <button class="selector-btn active" onclick="selectQuiz(0, this)">Kuis 1: Foods & Drinks</button>
+                    <button class="selector-btn" onclick="selectQuiz(1, this)">Kuis 2: Likes & Dislikes</button>
+                    <button class="selector-btn" onclick="selectQuiz(2, this)">Kuis 3: Mealtimes</button>
+                    <button class="selector-btn" onclick="selectQuiz(3, this)">Kuis 4: Hobbies</button>
+                    <button class="selector-btn" onclick="selectQuiz(4, this)">Kuis 5: Days of Week</button>
+                </div>
+
+                <div class="quiz-stage">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-family:var(--font-head); color:var(--primary-green);">
+                        <span id="quiz-title-text" style="font-size:1.1rem;">Kuis 1: Foods & Drinks Kaltara</span>
+                        <span id="quiz-progress-text" style="background:#e8f5e9; padding:4px 12px; border-radius:12px;">Soal 1 dari 20</span>
+                    </div>
+                    <div class="quiz-card-q" id="quiz-question-box">Loading soal...</div>
+                    <div class="quiz-options-grid" id="quiz-options-box"></div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="widget-box">
+                <div class="widget-title"><i class="fa-solid fa-chart-line" style="color:var(--primary-green);"></i> Statistik Ekosistem</div>
+                <div class="stat-item"><span>Guru Terhubung</span> <strong>36 Guru</strong></div>
+                <div class="stat-item"><span>Pakar UBT</span> <strong>12 Dosen/Mhs</strong></div>
+                <div class="stat-item"><span>Modul Terbagikan</span> <strong>28 Berkas</strong></div>
+            </div>
+            <div class="widget-box" style="text-align:center;">
+                <i class="fa-solid fa-building-columns" style="font-size:2.2rem; color:var(--primary-green); margin-bottom:8px;"></i>
+                <h4 style="font-family:var(--font-head); font-size:0.95rem; color:var(--primary-green);">FKIP UBT Tarakan</h4>
+                <p style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Program Pengabdian Kolaborasi Pendidikan Bahasa Inggris Kaltara.</p>
+            </div>
+        </aside>
+    </div>
+
+    <!-- MODAL PROFIL PENGGUNA -->
+    <div class="modal-overlay" id="profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Profil Pengguna Ekosistem</h3>
+                <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('profile-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="handleSaveProfile(event)">
+                    <div class="input-group">
+                        <label>Nama Lengkap & Gelar</label>
+                        <input type="text" id="prof-name" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Peran dalam Ekosistem</label>
+                        <input type="text" id="prof-role" readonly style="background:#f1f5f9;">
+                    </div>
+                    <div class="input-group">
+                        <label>Instansi / Sekolah Origin</label>
+                        <input type="text" id="prof-school" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Simpan Perubahan <i class="fa-solid fa-floppy-disk"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL POPUP MODUL SD -->
+    <div class="modal-overlay" id="module-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Unit Title</h3>
+                <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('module-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">🔊 Klik kartu kosakata untuk mendengarkan audio pelafalan Bahasa Inggris:</p>
+                <div class="vocab-grid" id="vocab-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL UNGGAH BERKAS -->
+    <div class="modal-overlay" id="upload-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Unggah Berkas Baru</h3>
+                <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('upload-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="handleUploadResource(event)">
+                    <div class="input-group">
+                        <label>Judul Modul / Berkas</label>
+                        <input type="text" id="up-title" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Deskripsi Singkat</label>
+                        <textarea id="up-desc" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Unggah ke Hub <i class="fa-solid fa-cloud-arrow-up"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FORUM -->
+    <div class="modal-overlay" id="forum-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Buat Topik Diskusi Baru</h3>
+                <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('forum-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="handleCreateForum(event)">
+                    <div class="input-group">
+                        <label>Judul Diskusi</label>
+                        <input type="text" id="forum-title" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Detail Pertanyaan / Kendala</label>
+                        <textarea id="forum-body" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Kirimkan Topik <i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL HELPDESK -->
+    <div class="modal-overlay" id="helpdesk-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Konsultasi Klinik Bahasa UBT</h3>
+                <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('helpdesk-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="handleCreateHelpdesk(event)">
+                    <div class="input-group">
+                        <label>Pertanyaan / Detail Berkas RPP</label>
+                        <textarea id="help-body" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Kirim ke Pakar <i class="fa-solid fa-user-check"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        ENGLISH ADVENTURE KELAS 3 &copy; 2026 • Platform Kolaborasi Ekosistem Pendidikan Universitas Borneo Tarakan & Guru SD Kalimantan Utara
+    </footer>
+
+    <script>
+        /* ==========================================
+           1. USER STATE & AUTHENTICATION
+           ========================================== */
+        let currentUser = {
+            name: "Ibu Nurhayati, S.Pd.",
+            role: "Guru SD",
+            school: "SDN 001 Tarakan"
+        };
+
+        function switchAuthTab(type) {
+            document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
+            if(type === 'login') {
+                document.querySelectorAll('.auth-tab-btn')[0].classList.add('active');
+                document.getElementById('form-login').style.display = 'block';
+                document.getElementById('form-register').style.display = 'none';
+            } else {
+                document.querySelectorAll('.auth-tab-btn')[1].classList.add('active');
+                document.getElementById('form-login').style.display = 'none';
+                document.getElementById('form-register').style.display = 'block';
+            }
+        }
+
+        function handleAuthSubmit(event, type) {
+            event.preventDefault();
+            if (type === 'login') {
+                currentUser.role = document.getElementById('login-role').value;
+                const idVal = document.getElementById('login-id').value.trim() || "Pengguna";
+                currentUser.name = idVal.includes('@') ? idVal.split('@')[0] : idVal;
+                currentUser.school = (currentUser.role === 'Guru SD') ? "SDN 001 Tarakan" : "FKIP Universitas Borneo Tarakan";
+            } else {
+                currentUser.name = document.getElementById('reg-name').value.trim();
+                currentUser.role = document.getElementById('reg-role').value;
+                currentUser.school = document.getElementById('reg-school').value.trim();
+            }
+
+            updateUserUI();
+            document.getElementById('auth-screen').style.display = 'none';
+        }
+
+        function handleLogout() {
+            document.getElementById('auth-screen').style.display = 'flex';
+            switchTab('dashboard', document.querySelectorAll('.nav-btn')[0]);
+        }
+
+        function updateUserUI() {
+            document.getElementById('user-display-name').innerText = currentUser.name;
+            document.getElementById('user-display-role').innerText = `${currentUser.role} • ${currentUser.school}`;
+            document.getElementById('hero-user-name').innerText = currentUser.name;
+
+            document.getElementById('prof-name').value = currentUser.name;
+            document.getElementById('prof-role').value = currentUser.role;
+            document.getElementById('prof-school').value = currentUser.school;
+
+            if (currentUser.role === 'Guru SD') {
+                document.getElementById('view-dashboard-guru').style.display = 'block';
+                document.getElementById('view-dashboard-ptn').style.display = 'none';
+                document.getElementById('hero-user-desc').innerText = "Ruang Kerja Utama Guru SD: Akses Modul, Media Ajar Kaltara, dan Klinik Bahasa.";
+            } else {
+                document.getElementById('view-dashboard-guru').style.display = 'none';
+                document.getElementById('view-dashboard-ptn').style.display = 'block';
+                document.getElementById('hero-user-desc').innerText = "Panel Mitra Akademik UBT: Review RPP Guru SD, Validasi Linguistik, & Publikasi Riset.";
+            }
+        }
+
+        function handleSaveProfile(e) {
+            e.preventDefault();
+            currentUser.name = document.getElementById('prof-name').value.trim();
+            currentUser.school = document.getElementById('prof-school').value.trim();
+            updateUserUI();
+            closeModal('profile-modal');
+            alert('Profil pengguna berhasil diperbarui!');
+        }
+
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+            document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+            document.getElementById(`tab-${tabId}`).style.display = 'block';
+
+            if (tabId === 'kuis-evaluasi') {
+                selectQuiz(0, document.querySelectorAll('#tab-kuis-evaluasi .selector-btn')[0]);
+            }
+        }
+
+        /* ==========================================
+           2. COMMUNITY HUB & ACTIONS
+           ========================================== */
+        function downloadResource(title) { alert(`[Ekosistem UBT] Unduhan berkas dimulai: "${title}.pdf"`); }
+
+        function handleUploadResource(e) {
+            e.preventDefault();
+            const title = document.getElementById('up-title').value;
+            const desc = document.getElementById('up-desc').value;
+
+            const container = document.getElementById('resource-cards-container');
+            const card = document.createElement('div');
+            card.className = 'resource-card';
+            card.innerHTML = `
+                <div>
+                    <span class="tag ${currentUser.role.includes('UBT') ? 'tag-ubt' : 'tag-guru'}">${currentUser.role} (${currentUser.school})</span>
+                    <h4 style="font-family:var(--font-head); font-size:0.98rem; margin-bottom:6px;">${title}</h4>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">${desc}</p>
+                </div>
+                <button class="btn-action-sm" onclick="downloadResource('${title}')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF</button>
+            `;
+            container.prepend(card);
+            closeModal('upload-modal');
+            alert('Berkas berhasil diterbitkan!');
+        }
+
+        function handleCreateForum(e) {
+            e.preventDefault();
+            const title = document.getElementById('forum-title').value;
+            const body = document.getElementById('forum-body').value;
+
+            const container = document.getElementById('forum-posts-container');
+            const card = document.createElement('div');
+            card.className = 'forum-card';
+            card.innerHTML = `
+                <span class="tag tag-guru">${currentUser.name} (${currentUser.role})</span>
+                <h4 style="font-family:var(--font-head); font-size:0.95rem; margin-bottom:6px;">${title}</h4>
+                <p style="font-size:0.82rem; color:var(--text-dark); margin-bottom:10px;">"${body}"</p>
+            `;
+            container.prepend(card);
+            closeModal('forum-modal');
+            alert('Topik diskusi berhasil dikirim!');
+        }
+
+        function handleCreateHelpdesk(e) {
+            e.preventDefault();
+            const body = document.getElementById('help-body').value;
+
+            const container = document.getElementById('helpdesk-tickets-container');
+            const card = document.createElement('div');
+            card.className = 'helpdesk-card';
+            card.innerHTML = `
+                <span class="tag tag-help">Konsultasi Baru</span>
+                <h4 style="font-family:var(--font-head); font-size:0.95rem; margin-bottom:4px;">${body}</h4>
+                <p style="font-size:0.78rem; color:var(--text-muted);">Diajukan oleh: ${currentUser.name} (${currentUser.school})</p>
+            `;
+            container.prepend(card);
+            closeModal('helpdesk-modal');
+            alert('Pertanyaan telah dikirim ke Klinik Bahasa UBT!');
+        }
+
+        /* ==========================================
+           3. DATA MODUL MATERI SD (20 VOCABULARY PER MODUL)
+           ========================================== */
+        const moduleData = {
+            1: {
+                title: "Unit 1: Foods & Drinks (20 Kosakata Kaltara)",
+                vocab: [
+                    { en: "Fried Chicken", id: "Ayam Goreng", icon: "🍗" },
+                    { en: "Fried Rice", id: "Nasi Goreng", icon: "🍛" },
+                    { en: "Noodle", id: "Mi", icon: "🍜" },
+                    { en: "Meatball", id: "Bakso", icon: "🥣" },
+                    { en: "Rice", id: "Nasi", icon: "🍚" },
+                    { en: "Bread", id: "Roti", icon: "🍞" },
+                    { en: "Fried Egg", id: "Telur Mata Sapi", icon: "🍳" },
+                    { en: "Soup", id: "Sup", icon: "🍲" },
+                    { en: "Tarap Fruit", id: "Buah Tarap (Kaltara)", icon: "🍈" },
+                    { en: "Lai Fruit", id: "Buah Lai (Kaltara)", icon: "🥭" },
+                    { en: "Milk", id: "Susu", icon: "🥛" },
+                    { en: "Tea", id: "Teh", icon: "🫖" },
+                    { en: "Coffee", id: "Kopi", icon: "☕" },
+                    { en: "Mineral Water", id: "Air Putih", icon: "💧" },
+                    { en: "Orange Juice", id: "Jus Jeruk", icon: "🍊" },
+                    { en: "Ice Cream", id: "Es Krim", icon: "🍦" },
+                    { en: "Banana", id: "Pisang", icon: "🍌" },
+                    { en: "Watermelon", id: "Semangka", icon: "🍉" },
+                    { en: "Crackers", id: "Kerupuk", icon: "🍘" },
+                    { en: "Cake", id: "Kue", icon: "🍰" }
+                ]
+            },
+            2: {
+                title: "Unit 2: Likes & Dislikes (20 Ungkapan Rasa)",
+                vocab: [
+                    { en: "I like Tarap fruit", id: "Saya suka buah Tarap", icon: "🍈" },
+                    { en: "I don't like coffee", id: "Saya tidak suka kopi", icon: "☕" },
+                    { en: "He likes fried chicken", id: "Dia suka ayam goreng", icon: "🍗" },
+                    { en: "She doesn't like tea", id: "Dia tidak suka teh", icon: "🫖" },
+                    { en: "They like ice cream", id: "Mereka suka es krim", icon: "🍦" },
+                    { en: "We like Lai fruit", id: "Kami suka buah Lai", icon: "🥭" },
+                    { en: "Do you like noodle?", id: "Apakah kamu suka mi?", icon: "❓" },
+                    { en: "Yes, I do", id: "Ya, saya suka", icon: "👍" },
+                    { en: "No, I don't", id: "Tidak, saya tidak suka", icon: "👎" },
+                    { en: "Sweet", id: "Manis", icon: "🍬" },
+                    { en: "Salty", id: "Asin", icon: "🧂" },
+                    { en: "Sour", id: "Masam", icon: "🍋" },
+                    { en: "Bitter", id: "Pahit", icon: "☕" },
+                    { en: "Delicious", id: "Lezat / Enak", icon: "😋" },
+                    { en: "Hot", id: "Panas", icon: "🔥" },
+                    { en: "Cold", id: "Dingin", icon: "🧊" },
+                    { en: "Favorite food", id: "Makanan favorit", icon: "❤️" },
+                    { en: "Favorite drink", id: "Minuman favorit", icon: "🥤" },
+                    { en: "Hungry", id: "Lapar", icon: "🤤" },
+                    { en: "Thirsty", id: "Haus", icon: "🥤" }
+                ]
+            },
+            3: {
+                title: "Unit 3: Mealtimes & Schedule (20 Kosakata)",
+                vocab: [
+                    { en: "Breakfast", id: "Sarapan / Makan Pagi", icon: "🍳" },
+                    { en: "Lunch", id: "Makan Siang", icon: "🥗" },
+                    { en: "Dinner", id: "Makan Malam", icon: "🍲" },
+                    { en: "In the morning", id: "Di pagi hari", icon: "🌅" },
+                    { en: "In the afternoon", id: "Di siang hari", icon: "☀️" },
+                    { en: "In the evening", id: "Di malam hari", icon: "🌙" },
+                    { en: "Eat", id: "Makan", icon: "🍽️" },
+                    { en: "Drink", id: "Minum", icon: "🥤" },
+                    { en: "Dining room", id: "Ruang Makan", icon: "🏠" },
+                    { en: "School canteen", id: "Kantin Sekolah", icon: "🏫" },
+                    { en: "Cook", id: "Memasak", icon: "👩‍🍳" },
+                    { en: "Kitchen", id: "Dapur", icon: "🔪" },
+                    { en: "Plate", id: "Piring", icon: "🍽️" },
+                    { en: "Spoon", id: "Sendok", icon: "🥄" },
+                    { en: "Fork", id: "Garpu", icon: "🍴" },
+                    { en: "Glass", id: "Gelas", icon: "🥛" },
+                    { en: "Wash hands", id: "Mencuci tangan", icon: "🧼" },
+                    { en: "Healthy food", id: "Makanan sehat", icon: "🥦" },
+                    { en: "Every day", id: "Setiap hari", icon: "📅" },
+                    { en: "Time to eat", id: "Waktunya makan", icon: "⏰" }
+                ]
+            },
+            4: {
+                title: "Unit 4: Hobbies & Activities (20 Kosakata)",
+                vocab: [
+                    { en: "Swimming", id: "Berenang", icon: "🏊‍♂️" },
+                    { en: "Reading a book", id: "Membaca buku", icon: "📚" },
+                    { en: "Riding a bike", id: "Bersepeda", icon: "🚴‍♂️" },
+                    { en: "Singing", id: "Bernyanyi", icon: "🎤" },
+                    { en: "Dancing", id: "Menari", icon: "💃" },
+                    { en: "Playing football", id: "Bermain bola", icon: "⚽" },
+                    { en: "Playing badminton", id: "Bermain bulu tangkis", icon: "🏸" },
+                    { en: "Fishing", id: "Memancing", icon: "🎣" },
+                    { en: "Cooking", id: "Memasak", icon: "🍳" },
+                    { en: "Drawing", id: "Menggambar", icon: "🎨" },
+                    { en: "Painting", id: "Melukis", icon: "🖼️" },
+                    { en: "Playing doll", id: "Bermain boneka", icon: "🧸" },
+                    { en: "Flying a kite", id: "Main layang-layang", icon: "🪁" },
+                    { en: "Watching TV", id: "Menonton TV", icon: "📺" },
+                    { en: "Studying", id: "Belajar", icon: "✏️" },
+                    { en: "Running", id: "Berlari", icon: "🏃‍♂️" },
+                    { en: "Gardening", id: "Berkebun", icon: "🪴" },
+                    { en: "Listening to music", id: "Mendengar musik", icon: "🎧" },
+                    { en: "My hobby is...", id: "Hobi saya adalah...", icon: "✨" },
+                    { en: "What is your hobby?", id: "Apa hobimu?", icon: "❓" }
+                ]
+            },
+            5: {
+                title: "Unit 5: Days of the Week & Time (20 Kosakata)",
+                vocab: [
+                    { en: "Sunday", id: "Minggu", icon: "☀️" },
+                    { en: "Monday", id: "Senin", icon: "📅" },
+                    { en: "Tuesday", id: "Selasa", icon: "🗓️" },
+                    { en: "Wednesday", id: "Rabu", icon: "📝" },
+                    { en: "Thursday", id: "Kamis", icon: "📖" },
+                    { en: "Friday", id: "Jumat", icon: "🕌" },
+                    { en: "Saturday", id: "Sabtu", icon: "🎈" },
+                    { en: "Today", id: "Hari ini", icon: "📌" },
+                    { en: "Tomorrow", id: "Besok", icon: "➡️" },
+                    { en: "Yesterday", id: "Kemarin", icon: "⬅️" },
+                    { en: "Before", id: "Sebelum", icon: "⏮️" },
+                    { en: "After", id: "Sesudah / Setelah", icon: "⏭️" },
+                    { en: "Week", id: "Minggu / Pekan", icon: "🗓️" },
+                    { en: "Weekend", id: "Akhir pekan", icon: "🏖️" },
+                    { en: "Day", id: "Hari", icon: "🌅" },
+                    { en: "Daily activity", id: "Kegiatan harian", icon: "📋" },
+                    { en: "School day", id: "Hari sekolah", icon: "🏫" },
+                    { en: "Holiday", id: "Hari libur", icon: "🎉" },
+                    { en: "What day is today?", id: "Hari apa hari ini?", icon: "❓" },
+                    { en: "Today is Monday", id: "Hari ini hari Senin", icon: "✨" }
+                ]
+            }
+        };
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.rate = 0.85;
+                window.speechSynthesis.speak(u);
+            }
+        }
+
+        function openModule(id) {
+            const data = moduleData[id];
+            document.getElementById('modal-title').innerText = data.title;
+            const c = document.getElementById('vocab-container'); c.innerHTML = '';
+            data.vocab.forEach(v => {
+                const card = document.createElement('div'); card.className = 'vocab-item';
+                card.onclick = () => speak(v.en);
+                card.innerHTML = `<div style="font-size:1.6rem; margin-bottom:4px;">${v.icon}</div><div style="font-family:var(--font-head); color:var(--primary-green); font-size:0.85rem;">${v.en}</div><div style="font-size:0.72rem; color:var(--text-muted);">${v.id}</div>`;
+                c.appendChild(card);
+            });
+            openModal('module-modal');
+        }
+
+        /* ==========================================
+           4. DATA 5 PAKET KUIS (Masing-Masing 20 Soal)
+           ========================================== */
+        const allQuizzes = [
+            // Kuis 1: Foods & Drinks (20 Soal)
+            [
+                { q: "1. Apa Bahasa Inggris dari 'Ayam Goreng'?", options: ["Fried Chicken", "Fried Rice", "Noodle"], answer: 0 },
+                { q: "2. Buah lokal khas Kaltara yang beraroma harum adalah...", options: ["Tarap Fruit", "Apple", "Banana"], answer: 0 },
+                { q: "3. 'Meatball' dalam Bahasa Indonesia berarti...", options: ["Bakso", "Roti", "Susu"], answer: 0 },
+                { q: "4. Bahasa Inggris dari 'Nasi Goreng' adalah...", options: ["Fried Rice", "Fried Egg", "Soup"], answer: 0 },
+                { q: "5. 'Lai Fruit' adalah buah lokal Kaltara yang mirip...", options: ["Durian", "Pisang", "Semangka"], answer: 0 },
+                { q: "6. Bahasa Inggris dari 'Susu' adalah...", options: ["Milk", "Tea", "Coffee"], answer: 0 },
+                { q: "7. 'Orange Juice' berarti...", options: ["Jus Jeruk", "Jus Apel", "Teh Manis"], answer: 0 },
+                { q: "8. Apa Bahasa Inggris dari 'Roti'?", options: ["Bread", "Cake", "Noodle"], answer: 0 },
+                { q: "9. 'Mineral Water' adalah istilah Bahasa Inggris untuk...", options: ["Air Putih", "Susu", "Kopi"], answer: 0 },
+                { q: "10. Makanan berkuah dengan isi sayur dan daging disebut...", options: ["Soup", "Fried Rice", "Bread"], answer: 0 },
+                { q: "11. Bahasa Inggris dari 'Teh' adalah...", options: ["Tea", "Coffee", "Milk"], answer: 0 },
+                { q: "12. 'Ice Cream' rasanya dingin dan...", options: ["Manis (Sweet)", "Pahit (Bitter)", "Asin (Salty)"], answer: 0 },
+                { q: "13. 'Banana' adalah buah berwarna kuning yaitu...", options: ["Pisang", "Semangka", "Jeruk"], answer: 0 },
+                { q: "14. Bahasa Inggris dari 'Telur Mata Sapi' adalah...", options: ["Fried Egg", "Fried Chicken", "Boiled Rice"], answer: 0 },
+                { q: "15. 'Watermelon' berarti buah...", options: ["Semangka", "Melon", "Apel"], answer: 0 },
+                { q: "16. 'Crackers' atau 'Krupuk' rasanya...", options: ["Renyah & Asin", "Manis", "Pahit"], answer: 0 },
+                { q: "17. Bahasa Inggris dari 'Kopi' adalah...", options: ["Coffee", "Tea", "Juice"], answer: 0 },
+                { q: "18. 'Mi' dalam Bahasa Inggris adalah...", options: ["Noodle", "Rice", "Meatball"], answer: 0 },
+                { q: "19. Minuman hangat hitam beraroma khas adalah...", options: ["Coffee", "Milk", "Mineral Water"], answer: 0 },
+                { q: "20. 'Cake' dalam Bahasa Indonesia berarti...", options: ["Kue", "Roti", "Bakso"], answer: 0 }
+            ],
+            // Kuis 2: Likes & Dislikes (20 Soal)
+            [
+                { q: "1. 'I _____ Tarap fruit.' (Saya suka buah Tarap)", options: ["like", "likes", "don't"], answer: 0 },
+                { q: "2. 'He _____ coffee.' (Dia tidak suka kopi)", options: ["doesn't like", "don't like", "not like"], answer: 0 },
+                { q: "3. 'She _____ ice cream.' Karena subjeknya She, gunakan...", options: ["likes", "like", "don't like"], answer: 0 },
+                { q: "4. 'I don't like tea' artinya...", options: ["Saya tidak suka teh", "Saya suka teh", "Dia suka teh"], answer: 0 },
+                { q: "5. 'Do you like noodle?' - 'Yes, I _____.'", options: ["do", "don't", "does"], answer: 0 },
+                { q: "6. 'They _____ Lai fruit.' (Mereka suka buah Lai)", options: ["like", "likes", "doesn't like"], answer: 0 },
+                { q: "7. Rasa gula adalah 'Sweet' yang artinya...", options: ["Manis", "Asin", "Pahit"], answer: 0 },
+                { q: "8. Rasa garam adalah 'Salty' yang artinya...", options: ["Asin", "Manis", "Masam"], answer: 0 },
+                { q: "9. 'Lemon is sour' artinya lemon rasanya...", options: ["Masam", "Manis", "Pahit"], answer: 0 },
+                { q: "10. 'Delicious' artinya...", options: ["Lezat / Enak", "Pahit", "Biasa saja"], answer: 0 },
+                { q: "11. 'I am hungry' artinya...", options: ["Saya lapar", "Saya haus", "Saya kenyang"], answer: 0 },
+                { q: "12. 'I am thirsty' artinya...", options: ["Saya haus", "Saya lapar", "Saya mengantuk"], answer: 0 },
+                { q: "13. Bentuk negatif dari 'They like milk' adalah...", options: ["They don't like milk", "They doesn't like milk", "They not like milk"], answer: 0 },
+                { q: "14. 'Does Made like fried rice?' - 'Yes, he _____.'", options: ["does", "do", "likes"], answer: 0 },
+                { q: "15. 'Cold drink' artinya...", options: ["Minuman dingin", "Minuman panas", "Makanan dingin"], answer: 0 },
+                { q: "16. 'Hot tea' artinya...", options: ["Teh panas", "Teh dingin", "Es teh"], answer: 0 },
+                { q: "17. 'Cici likes fried chicken' berarti Cici menyukai...", options: ["Ayam goreng", "Nasi goreng", "Mi goreng"], answer: 0 },
+                { q: "18. Lawan kata 'Like' adalah...", options: ["Dislike / Don't like", "Love", "Prefer"], answer: 0 },
+                { q: "19. 'Bitter coffee' artinya kopi yang...", options: ["Pahit", "Manis", "Asin"], answer: 0 },
+                { q: "20. 'Favorite food' artinya...", options: ["Makanan favorit / kesukaan", "Makanan mahal", "Makanan sisa"], answer: 0 }
+            ],
+            // Kuis 3: Mealtimes & Schedule (20 Soal)
+            [
+                { q: "1. Makan pagi dalam Bahasa Inggris disebut...", options: ["Breakfast", "Lunch", "Dinner"], answer: 0 },
+                { q: "2. 'Lunch' dilakukan pada saat...", options: ["Siang hari (In the afternoon)", "Pagi hari", "Malam hari"], answer: 0 },
+                { q: "3. 'Dinner' artinya adalah...", options: ["Makan malam", "Makan siang", "Sarapan"], answer: 0 },
+                { q: "4. 'In the morning' berarti...", options: ["Di pagi hari", "Di malam hari", "Di sore hari"], answer: 0 },
+                { q: "5. 'In the evening' berarti...", options: ["Di malam hari", "Di siang hari", "Di pagi hari"], answer: 0 },
+                { q: "6. 'I eat bread for breakfast' artinya...", options: ["Saya makan roti untuk sarapan", "Saya makan roti saat malam", "Saya suka roti"], answer: 0 },
+                { q: "7. Tempat membeli makanan di sekolah adalah...", options: ["School canteen", "Library", "Classroom"], answer: 0 },
+                { q: "8. 'Dining room' adalah...", options: ["Ruang makan", "Ruang tamu", "Kamar tidur"], answer: 0 },
+                { q: "9. 'Wash hands before eating' artinya...", options: ["Cuci tangan sebelum makan", "Sikat gigi sebelum makan", "Mandi sebelum makan"], answer: 0 },
+                { q: "10. Kata kerja 'Eat' artinya...", options: ["Makan", "Minum", "Memasak"], answer: 0 },
+                { q: "11. Kata kerja 'Drink' artinya...", options: ["Minum", "Makan", "Membeli"], answer: 0 },
+                { q: "12. 'Kitchen' adalah tempat memasak yaitu...", options: ["Dapur", "Kantin", "Ruang makan"], answer: 0 },
+                { q: "13. Alat untuk mengambil sup adalah 'Spoon' yang berarti...", options: ["Sendok", "Garpu", "Piring"], answer: 0 },
+                { q: "14. Alat pasangan sendok adalah 'Fork' yang berarti...", options: ["Garpu", "Piring", "Gelas"], answer: 0 },
+                { q: "15. Wadah untuk nasi adalah 'Plate' yang berarti...", options: ["Piring", "Gelas", "Mangkuk"], answer: 0 },
+                { q: "16. 'Healthy food' artinya...", options: ["Makanan sehat", "Makanan lezat", "Makanan cepat saji"], answer: 0 },
+                { q: "17. Joshua has breakfast at 6 'In the morning'...", options: ["Di pagi hari", "Di siang hari", "Di malam hari"], answer: 0 },
+                { q: "18. 'Time to eat' artinya...", options: ["Waktunya makan", "Waktunya belajar", "Waktunya tidur"], answer: 0 },
+                { q: "19. 'Cook' dalam Bahasa Indonesia berarti...", options: ["Memasak", "Mencuci", "Membeli"], answer: 0 },
+                { q: "20. 'Every day' artinya...", options: ["Setiap hari", "Setiap minggu", "Kemarin"], answer: 0 }
+            ],
+            // Kuis 4: Hobbies & Activities (20 Soal)
+            [
+                { q: "1. Bahasa Inggris dari 'Berenang' adalah...", options: ["Swimming", "Reading", "Dancing"], answer: 0 },
+                { q: "2. 'Riding a bike' berarti...", options: ["Bersepeda", "Membaca buku", "Bermain bola"], answer: 0 },
+                { q: "3. Kegiatan menggunakan suara merdu (🎤) disebut...", options: ["Singing", "Cooking", "Fishing"], answer: 0 },
+                { q: "4. 'Playing football' adalah hobi bermain...", options: ["Sepak bola", "Bulu tangkis", "Basket"], answer: 0 },
+                { q: "5. 'Reading a book' artinya...", options: ["Membaca buku", "Menulis buku", "Membeli buku"], answer: 0 },
+                { q: "6. Bahasa Inggris dari 'Menari' adalah...", options: ["Dancing", "Singing", "Drawing"], answer: 0 },
+                { q: "7. Hobi 'Fishing' dilakukan di sungai/laut yaitu...", options: ["Memancing", "Berenang", "Berkebun"], answer: 0 },
+                { q: "8. 'Cooking' adalah hobi...", options: ["Memasak", "Makan", "Mencuci"], answer: 0 },
+                { q: "9. 'Drawing' artinya...", options: ["Menggambar", "Melukis", "Membaca"], answer: 0 },
+                { q: "10. 'Playing badminton' adalah bermain...", options: ["Bulu tangkis", "Tenis meja", "Bola voli"], answer: 0 },
+                { q: "11. 'Flying a kite' adalah bermain...", options: ["Layang-layang", "Boneka", "Kelereng"], answer: 0 },
+                { q: "12. 'Playing doll' artinya...", options: ["Bermain boneka", "Bermain bola", "Bermain musik"], answer: 0 },
+                { q: "13. 'Watching TV' artinya...", options: ["Menonton TV", "Mendengar radio", "Main HP"], answer: 0 },
+                { q: "14. 'Studying' artinya...", options: ["Belajar", "Bermain", "Tidur"], answer: 0 },
+                { q: "15. 'Gardening' adalah hobi...", options: ["Berkebun", "Memasak", "Melukis"], answer: 0 },
+                { q: "16. 'Running' artinya...", options: ["Berlari", "Berjalan", "Melompat"], answer: 0 },
+                { q: "17. 'My hobby is swimming' artinya...", options: ["Hobi saya berenang", "Saya tidak suka renang", "Hobi saya bersepeda"], answer: 0 },
+                { q: "18. 'What is your hobby?' artinya...", options: ["Apa hobimu?", "Siapa namamu?", "Di mana rumahmu?"], answer: 0 },
+                { q: "19. 'Listening to music' artinya...", options: ["Mendengarkan musik", "Bernyanyi lagu", "Bermain gitar"], answer: 0 },
+                { q: "20. 'Painting' artinya...", options: ["Melukis", "Menggambar", "Menulis"], answer: 0 }
+            ],
+            // Kuis 5: Days of the Week & Time (20 Soal)
+            [
+                { q: "1. Bahasa Inggris dari hari 'Minggu' adalah...", options: ["Sunday", "Monday", "Friday"], answer: 0 },
+                { q: "2. 'Monday' adalah hari...", options: ["Senin", "Selasa", "Rabu"], answer: 0 },
+                { q: "3. Hari setelah Minggu (After Sunday) adalah...", options: ["Monday", "Tuesday", "Saturday"], answer: 0 },
+                { q: "4. Hari sebelum Sabtu (Before Saturday) adalah...", options: ["Friday", "Sunday", "Thursday"], answer: 0 },
+                { q: "5. 'Tuesday' adalah hari...", options: ["Selasa", "Rabu", "Kamis"], answer: 0 },
+                { q: "6. Bahasa Inggris dari hari 'Rabu' adalah...", options: ["Wednesday", "Thursday", "Friday"], answer: 0 },
+                { q: "7. Hari 'Kamis' dalam Bahasa Inggris adalah...", options: ["Thursday", "Tuesday", "Wednesday"], answer: 0 },
+                { q: "8. 'Friday' adalah hari...", options: ["Jumat", "Sabtu", "Minggu"], answer: 0 },
+                { q: "9. Bahasa Inggris dari hari 'Sabtu' adalah...", options: ["Saturday", "Sunday", "Friday"], answer: 0 },
+                { q: "10. 'Today' artinya...", options: ["Hari ini", "Besok", "Kemarin"], answer: 0 },
+                { q: "11. 'Tomorrow' artinya...", options: ["Besok", "Hari ini", "Kemarin"], answer: 0 },
+                { q: "12. 'Yesterday' artinya...", options: ["Kemarin", "Besok", "Hari ini"], answer: 0 },
+                { q: "13. 'Before' artinya...", options: ["Sebelum", "Sesudah", "Sekarang"], answer: 0 },
+                { q: "14. 'After' artinya...", options: ["Sesudah / Setelah", "Sebelum", "Kemarin"], answer: 0 },
+                { q: "15. 'Weekend' artinya...", options: ["Akhir pekan (Sabtu & Minggu)", "Hari kerja", "Hari libur nasional"], answer: 0 },
+                { q: "16. 'What day is today?' artinya...", options: ["Hari apa hari ini?", "Jam berapa sekarang?", "Hari apa besok?"], answer: 0 },
+                { q: "17. 'Today is Monday' artinya...", options: ["Hari ini hari Senin", "Hari ini hari Selasa", "Besok hari Senin"], answer: 0 },
+                { q: "18. Jumlah hari dalam satu minggu adalah...", options: ["Seven days (7)", "Five days (5)", "Six days (6)"], answer: 0 },
+                { q: "19. 'School day' artinya...", options: ["Hari sekolah", "Hari libur", "Akhir pekan"], answer: 0 },
+                { q: "20. 'Holiday' artinya...", options: ["Hari libur", "Hari sekolah", "Hari Minggu"], answer: 0 }
+            ]
+        ];
+
+        let currentQuizIdx = 0;
+        let currentQuestionIdx = 0;
+        let quizScore = 0;
+
+        function selectQuiz(qIdx, btn) {
+            if(btn) {
+                btn.parentElement.querySelectorAll('.selector-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            currentQuizIdx = qIdx;
+            currentQuestionIdx = 0;
+            quizScore = 0;
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const quizList = allQuizzes[currentQuizIdx];
+            const quizNames = ["Kuis 1: Foods & Drinks Kaltara", "Kuis 2: Likes & Dislikes", "Kuis 3: Mealtimes & Schedule", "Kuis 4: Hobbies & Activities", "Kuis 5: Days of the Week & Time"];
+            
+            document.getElementById('quiz-title-text').innerText = quizNames[currentQuizIdx];
+
+            if(currentQuestionIdx >= quizList.length) {
+                document.getElementById('quiz-progress-text').innerText = "Selesai!";
+                document.getElementById('quiz-question-box').innerHTML = `
+                    <div style="text-align:center; padding:10px;">
+                        🎉 <strong>Selamat, ${currentUser.name}!</strong><br>
+                        Kamu menyelesaikan ${quizNames[currentQuizIdx]} dengan skor: <strong>${quizScore} / 20</strong>!
+                    </div>
+                `;
+                document.getElementById('quiz-options-box').innerHTML = `<button class="btn-action-sm" onclick="selectQuiz(${currentQuizIdx}, null)">Ulangi Kuis Ini</button>`;
+                return;
+            }
+
+            const q = quizList[currentQuestionIdx];
+            document.getElementById('quiz-progress-text').innerText = `Soal ${currentQuestionIdx + 1} dari 20`;
+            document.getElementById('quiz-question-box').innerText = q.q;
+
+            const optsBox = document.getElementById('quiz-options-box');
+            optsBox.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt-btn';
+                btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
+                btn.onclick = () => handleQuizAnswer(idx, q.answer, btn);
+                optsBox.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(selected, correct, btnElem) {
+            const allBtns = document.querySelectorAll('.quiz-opt-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (selected === correct) {
+                btnElem.style.background = '#dcfce7'; btnElem.style.borderColor = '#22c55e';
+                quizScore++;
+            } else {
+                btnElem.style.background = '#fee2e2'; btnElem.style.borderColor = '#ef4444';
+            }
+
+            setTimeout(() => {
+                currentQuestionIdx++;
+                renderQuizQuestion();
+            }, 800);
+        }
+    </script>
+</body>
+</html>
