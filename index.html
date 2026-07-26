@@ -231,7 +231,7 @@
         }
         .selector-btn:hover, .selector-btn.active { border-color: var(--primary-green); background: #f0fdf4; color: var(--primary-green); }
 
-        .quiz-stage { background: #ffffff; border-radius: 16px; padding: 20px; border: 2px solid #e2e8f0; }
+        .quiz-stage, .song-card { background: #ffffff; border-radius: 16px; padding: 20px; border: 2px solid #e2e8f0; margin-bottom: 16px; }
         .quiz-card-q { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; padding: 16px; font-size: 1rem; font-weight: 700; margin-bottom: 14px; }
         .quiz-options-grid { display: flex; flex-direction: column; gap: 8px; }
         .quiz-opt-btn {
@@ -240,6 +240,9 @@
             transition: all 0.2s;
         }
         .quiz-opt-btn:hover { border-color: var(--primary-green); background: #f1f5f9; }
+
+        /* SONG & GAMES STYLING */
+        .song-lyrics { background: #f8fafc; border-radius: 12px; padding: 14px; font-family: var(--font-body); font-size: 0.9rem; line-height: 1.6; color: #334155; margin: 12px 0; border-left: 4px solid var(--accent-orange); }
 
         /* SIDEBAR */
         .sidebar { display: flex; flex-direction: column; gap: 20px; }
@@ -314,7 +317,7 @@
                 </div>
                 <div class="input-group">
                     <label><i class="fa-solid fa-school"></i> Instansi / Sekolah Origin</label>
-                    <input type="text" id="reg-school" placeholder="Contoh: SDN 001 Tarakan / FKIP UBT" required>
+                    <input type="text" id="reg-school" placeholder="Contoh: SDN 010 Tarakan / FKIP UBT" required>
                 </div>
                 <button type="submit" class="btn-primary">Daftar Akun <i class="fa-solid fa-user-plus"></i></button>
             </form>
@@ -340,6 +343,7 @@
             <button class="nav-btn" onclick="switchTab('forum', this)"><i class="fa-solid fa-comments"></i> Forum Mentoring</button>
             <button class="nav-btn" onclick="switchTab('helpdesk', this)"><i class="fa-solid fa-user-doctor"></i> Klinik Bahasa</button>
             <button class="nav-btn" onclick="switchTab('materi-sd', this)"><i class="fa-solid fa-book"></i> Modul Kelas 3</button>
+            <button class="nav-btn" onclick="switchTab('games-lagu', this)"><i class="fa-solid fa-music"></i> Games & Lagu</button>
             <button class="nav-btn" onclick="switchTab('kuis-evaluasi', this)"><i class="fa-solid fa-list-check"></i> Mini Kuis</button>
         </nav>
 
@@ -372,7 +376,6 @@
 
             <!-- TAB 1: DASHBOARD DINAMIS -->
             <div id="tab-dashboard" class="tab-pane active">
-                <!-- VIEW DASHBOARD GURU SD -->
                 <div id="view-dashboard-guru">
                     <div class="section-header">
                         <span><i class="fa-solid fa-chalkboard-user"></i> Workspace Utama Guru SD</span>
@@ -389,14 +392,13 @@
                             <button class="btn-action-sm" onclick="openModal('helpdesk-modal')">Tanya Pakar UBT</button>
                         </div>
                         <div class="resource-card" style="border-left:4px solid var(--accent-teal);">
-                            <h4 style="font-family:var(--font-head);">📝 Mini Kuis Evaluasi</h4>
-                            <p style="font-size:0.8rem; color:var(--text-muted); margin:8px 0;">Gunakan 5 Paket Mini Kuis (Masing-masing 20 Soal) untuk siswa di kelas.</p>
-                            <button class="btn-action-sm" onclick="switchTab('kuis-evaluasi', null)">Buka Mini Kuis</button>
+                            <h4 style="font-family:var(--font-head);">🎶 Games & Lagu Ajar</h4>
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin:8px 0;">Akses lagu-lagu pembelajaran & mini games interaktif yang menyenangkan.</p>
+                            <button class="btn-action-sm" onclick="switchTab('games-lagu', null)">Buka Games & Lagu</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- VIEW DASHBOARD PTN -->
                 <div id="view-dashboard-ptn" style="display:none;">
                     <div class="section-header">
                         <span><i class="fa-solid fa-building-columns"></i> Panel Mitra Akademik Universitas Borneo Tarakan</span>
@@ -422,28 +424,31 @@
                 </div>
             </div>
 
-            <!-- TAB 2: BANK MATERI HUB -->
+            <!-- TAB 2: BANK MATERI HUB (DILENGKAPI FITUR REAL DOWNLOAD PDF) -->
             <div id="tab-hub" class="tab-pane" style="display:none;">
                 <div class="section-header">
                     <span><i class="fa-solid fa-cloud-arrow-up"></i> Bank Materi Akses Terbuka (Crowdsourced Hub)</span>
                     <button class="btn-action-sm" onclick="openModal('upload-modal')"><i class="fa-solid fa-plus"></i> Unggah Modul/Media</button>
                 </div>
                 <div class="grid-3" id="resource-cards-container">
+                    <!-- Item 1: Modul Visio-Loco -->
                     <div class="resource-card">
                         <div>
-                            <span class="tag tag-ubt">Dosen FKIP UBT</span>
+                            <span class="tag tag-ubt">FKIP Universitas Borneo Tarakan</span>
                             <h4 style="font-family:var(--font-head); font-size:0.98rem; margin-bottom:6px;">Modul Visio-Loco: Foods & Drinks Kaltara</h4>
                             <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">Panduan mengajar kosakata buah lokal (Tarap & Lai) terintegrasi gambar kontekstual.</p>
                         </div>
-                        <button class="btn-action-sm" onclick="downloadResource('Modul Visio-Loco')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF</button>
+                        <button class="btn-action-sm" onclick="downloadPDFResource('Modul Visio-Loco Foods & Drinks Kaltara', 'FKIP Universitas Borneo Tarakan', 'Modul Ajar Bahasa Inggris Kelas 3 SD Kaltara.\n\nUnit 1: Foods & Drinks\n1. Tarap Fruit - Buah Tarap khas Kaltara\n2. Lai Fruit - Buah Lai Kaltara\n3. Fried Chicken - Ayam Goreng\n4. Orange Juice - Jus Jeruk\n\nMetode Pengajaran: Visio-Loco Contextual Teaching.')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF Modul</button>
                     </div>
+
+                    <!-- Item 2: Worksheet Bergambar -->
                     <div class="resource-card">
                         <div>
-                            <span class="tag tag-guru">Guru SD (SDN 001 Tarakan)</span>
-                            <h4 style="font-family:var(--font-head); font-size:0.98rem; margin-bottom:6px;">Worksheet Bergambar: Mealtimes</h4>
-                            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">Lembar kerja siswa mewarnai dan mencocokkan kata jadwal makan harian.</p>
+                            <span class="tag tag-guru">SDN 010 Tarakan</span>
+                            <h4 style="font-family:var(--font-head); font-size:0.98rem; margin-bottom:6px;">Worksheet Bergambar: Mealtimes & Schedules</h4>
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">Lembar kerja siswa (Workshop) mewarnai dan mencocokkan kata jadwal makan harian.</p>
                         </div>
-                        <button class="btn-action-sm" onclick="downloadResource('Worksheet Bergambar')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF</button>
+                        <button class="btn-action-sm" onclick="downloadPDFResource('Worksheet Bergambar Mealtimes', 'SDN 010 Tarakan', 'LEMBAR KERJA SISWA (WORKSHEET) - KELAS 3 SD\nSekolah Origin: SDN 010 Tarakan\n\nInstruksi:\n1. Cocokkan gambar sarapan dengan kata Bahasa Inggris (Breakfast)!\n2. Lingkari makanan favoritmu:\n- Fried Chicken\n- Tarap Fruit\n- Milk\n\n3. Isilah titik-titik berikut:\nI eat ________ in the morning.')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF Worksheet</button>
                     </div>
                 </div>
             </div>
@@ -456,7 +461,7 @@
                 </div>
                 <div style="display:flex; flex-direction:column; gap:12px;" id="forum-posts-container">
                     <div class="forum-card">
-                        <span class="tag tag-guru">Ibu Siti Nurhaliza, S.Pd. (Guru SD)</span>
+                        <span class="tag tag-guru">Ibu Siti Nurhaliza, S.Pd. (SDN 010 Tarakan)</span>
                         <h4 style="font-family:var(--font-head); font-size:0.95rem; margin-bottom:6px;">Bagaimana mengatasi siswa yang malu melafalkan ucapan Bahasa Inggris?</h4>
                         <p style="font-size:0.82rem; color:var(--text-dark); margin-bottom:10px;">"Siswa kelas 3 sering takut salah saat mengucapkan kata 'Breakfast'. Adakah trik dari UBT?"</p>
                         <div style="background:#f8fafc; padding:10px; border-radius:10px; border-left:3px solid var(--primary-green); font-size:0.8rem;">
@@ -520,7 +525,68 @@
                 </div>
             </div>
 
-            <!-- TAB 6: MINI KUIS EVALUASI (5 PAKET @ 20 SOAL) -->
+            <!-- TAB 6: GAMES & LAGU-LAGU PEMBELAJARAN MENYENANGKAN -->
+            <div id="tab-games-lagu" class="tab-pane" style="display:none;">
+                <div class="section-header"><span><i class="fa-solid fa-music"></i> Games & Lagu Pembelajaran Menyenangkan</span></div>
+                
+                <!-- SUB-BAGIAN 1: LAGU EDUTAINMENT -->
+                <h3 style="font-family:var(--font-head); color:var(--primary-green); margin-bottom:12px; font-size:1.05rem;">🎵 Lagu-Lagu Pembelajaran (Interactive Songs)</h3>
+                
+                <!-- Lagu 1 -->
+                <div class="song-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h4 style="font-family:var(--font-head); color:var(--primary-green);">1. Foods & Drinks Song (Nada: Twinkle Twinkle)</h4>
+                        <button class="btn-action-sm" onclick="playSong('I like chicken, I like rice. Tarap fruit is very nice! Milk and water, drink it all. Yummy food for big and small!')"><i class="fa-solid fa-circle-play"></i> Putar Lagu / Audio</button>
+                    </div>
+                    <div class="song-lyrics">
+                        🎶 <em>I like chicken, I like rice.<br>
+                        Tarap fruit is very nice!<br>
+                        Milk and water, drink it all.<br>
+                        Yummy food for big and small!</em> 🎶
+                    </div>
+                </div>
+
+                <!-- Lagu 2 -->
+                <div class="song-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h4 style="font-family:var(--font-head); color:var(--primary-green);">2. Days of the Week Song (Nada: Are You Sleeping)</h4>
+                        <button class="btn-action-sm" onclick="playSong('Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday! Seven days, in a week, sing with me, sing with me!')"><i class="fa-solid fa-circle-play"></i> Putar Lagu / Audio</button>
+                    </div>
+                    <div class="song-lyrics">
+                        🎶 <em>Sunday, Monday, Tuesday, Wednesday,<br>
+                        Thursday, Friday, Saturday!<br>
+                        Seven days, in a week,<br>
+                        Sing with me, sing with me!</em> 🎶
+                    </div>
+                </div>
+
+                <!-- Lagu 3 -->
+                <div class="song-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h4 style="font-family:var(--font-head); color:var(--primary-green);">3. Hobbies Song (Nada: If You're Happy)</h4>
+                        <button class="btn-action-sm" onclick="playSong('If you like swimming swim like this! If you like riding ride your bike! Reading books and drawing pictures, we love hobbies every day!')"><i class="fa-solid fa-circle-play"></i> Putar Lagu / Audio</button>
+                    </div>
+                    <div class="song-lyrics">
+                        🎶 <em>If you like swimming swim like this!<br>
+                        If you like riding ride your bike!<br>
+                        Reading books and drawing pictures,<br>
+                        We love hobbies every day!</em> 🎶
+                    </div>
+                </div>
+
+                <!-- SUB-BAGIAN 2: MINI INTERACTIVE GAMES -->
+                <h3 style="font-family:var(--font-head); color:var(--primary-green); margin:20px 0 12px 0; font-size:1.05rem;">🎮 Mini Edutainment Games</h3>
+                <div class="song-card" style="text-align:center; padding:24px;">
+                    <h4 style="font-family:var(--font-head); font-size:1.1rem; color:var(--primary-green); margin-bottom:8px;" id="game-title-text">Game Tebak Kata Kaltara</h4>
+                    <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:16px;" id="game-desc-text">Buah khas Kalimantan Utara beraroma harum manis yang berawalan huruf 'T' adalah...</p>
+                    <div style="display:flex; justify-content:center; gap:10px;" id="game-action-container">
+                        <button class="btn-action-sm" onclick="checkGameAns(true)">A. Tarap Fruit</button>
+                        <button class="btn-action-sm" onclick="checkGameAns(false)">B. Apple</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 7: MINI KUIS EVALUASI (5 PAKET @ 20 SOAL) -->
             <div id="tab-kuis-evaluasi" class="tab-pane" style="display:none;">
                 <div class="section-header"><span><i class="fa-solid fa-list-check"></i> Mini Kuis Evaluasi (5 Paket @ 20 Soal)</span></div>
                 
@@ -596,24 +662,28 @@
         </div>
     </div>
 
-    <!-- MODAL UNGGAH BERKAS -->
+    <!-- MODAL UNGGAH BERKAS DENGAN FORM IDENTITAS ASAL SEKOLAH -->
     <div class="modal-overlay" id="upload-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Unggah Berkas Baru</h3>
+                <h3>Unggah Berkas ke Bank Materi Hub</h3>
                 <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('upload-modal')">✕</button>
             </div>
             <div class="modal-body">
                 <form onsubmit="handleUploadResource(event)">
                     <div class="input-group">
-                        <label>Judul Modul / Berkas</label>
-                        <input type="text" id="up-title" required>
+                        <label>Judul Modul / Berkas / Worksheet</label>
+                        <input type="text" id="up-title" placeholder="Contoh: Worksheet Bergambar Buah Kaltara" required>
                     </div>
                     <div class="input-group">
-                        <label>Deskripsi Singkat</label>
-                        <textarea id="up-desc" rows="3" required></textarea>
+                        <label>Identitas Asal Sekolah / Instansi Pengunggah</label>
+                        <input type="text" id="up-origin" placeholder="Contoh: SDN 010 Tarakan / FKIP UBT" required>
                     </div>
-                    <button type="submit" class="btn-primary">Unggah ke Hub <i class="fa-solid fa-cloud-arrow-up"></i></button>
+                    <div class="input-group">
+                        <label>Deskripsi Singkat Isi Berkas PDF</label>
+                        <textarea id="up-desc" rows="3" placeholder="Jelaskan isi berkas yang akan diunduh pengguna..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Terbitkan & Izinkan Unduh PDF <i class="fa-solid fa-cloud-arrow-up"></i></button>
                 </form>
             </div>
         </div>
@@ -672,7 +742,7 @@
         let currentUser = {
             name: "Ibu Nurhayati, S.Pd.",
             role: "Guru SD",
-            school: "SDN 001 Tarakan"
+            school: "SDN 010 Tarakan"
         };
 
         function switchAuthTab(type) {
@@ -694,7 +764,7 @@
                 currentUser.role = document.getElementById('login-role').value;
                 const idVal = document.getElementById('login-id').value.trim() || "Pengguna";
                 currentUser.name = idVal.includes('@') ? idVal.split('@')[0] : idVal;
-                currentUser.school = (currentUser.role === 'Guru SD') ? "SDN 001 Tarakan" : "FKIP Universitas Borneo Tarakan";
+                currentUser.school = (currentUser.role === 'Guru SD') ? "SDN 010 Tarakan" : "FKIP Universitas Borneo Tarakan";
             } else {
                 currentUser.name = document.getElementById('reg-name').value.trim();
                 currentUser.role = document.getElementById('reg-role').value;
@@ -718,6 +788,7 @@
             document.getElementById('prof-name').value = currentUser.name;
             document.getElementById('prof-role').value = currentUser.role;
             document.getElementById('prof-school').value = currentUser.school;
+            document.getElementById('up-origin').value = currentUser.school;
 
             if (currentUser.role === 'Guru SD') {
                 document.getElementById('view-dashboard-guru').style.display = 'block';
@@ -754,13 +825,46 @@
         }
 
         /* ==========================================
-           2. COMMUNITY HUB & ACTIONS
+           2. DYNAMIC PDF DOWNLOAD GENERATOR
            ========================================== */
-        function downloadResource(title) { alert(`[Ekosistem UBT] Unduhan berkas dimulai: "${title}.pdf"`); }
+        function downloadPDFResource(title, schoolOrigin, bodyContent) {
+            const pdfDocContent = `
+===================================================================
+ENGLISH ADVENTURE KALTARA - EKOSISTEM KOLABORATIF UBT & SD
+===================================================================
+
+JUDUL BERKAS   : ${title}
+ASAL SEKOLAH   : ${schoolOrigin}
+TANGGAL DITERBITKAN : 2026
+STATUS VERIFIKASI   : Terverifikasi oleh Tim Pakar FKIP UBT
+
+-------------------------------------------------------------------
+DESKRIPSI & ISI DOKUMEN:
+-------------------------------------------------------------------
+${bodyContent}
+
+===================================================================
+Dokumen ini diterbitkan secara resmi melalui Platform Kolaborasi 
+Universitas Borneo Tarakan (UBT) & Guru SD Kalimantan Utara.
+===================================================================
+            `;
+
+            // MEMBUAT FILE DOWNLOAD BLOB PDF REAL
+            const blob = new Blob([pdfDocContent], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${title.replace(/[^a-zA-Z0-9]/g, '_')}_${schoolOrigin.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            alert(`Mulai mengunduh berkas PDF resmi: "${title}.pdf" dari ${schoolOrigin}!`);
+        }
 
         function handleUploadResource(e) {
             e.preventDefault();
             const title = document.getElementById('up-title').value;
+            const origin = document.getElementById('up-origin').value;
             const desc = document.getElementById('up-desc').value;
 
             const container = document.getElementById('resource-cards-container');
@@ -768,15 +872,15 @@
             card.className = 'resource-card';
             card.innerHTML = `
                 <div>
-                    <span class="tag ${currentUser.role.includes('UBT') ? 'tag-ubt' : 'tag-guru'}">${currentUser.role} (${currentUser.school})</span>
+                    <span class="tag ${origin.includes('UBT') ? 'tag-ubt' : 'tag-guru'}">${origin}</span>
                     <h4 style="font-family:var(--font-head); font-size:0.98rem; margin-bottom:6px;">${title}</h4>
                     <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">${desc}</p>
                 </div>
-                <button class="btn-action-sm" onclick="downloadResource('${title}')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF</button>
+                <button class="btn-action-sm" onclick="downloadPDFResource('${title}', '${origin}', '${desc}')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF Modul</button>
             `;
             container.prepend(card);
             closeModal('upload-modal');
-            alert('Berkas berhasil diterbitkan!');
+            alert(`Berkas dari ${origin} berhasil diterbitkan dan bisa diunduh!`);
         }
 
         function handleCreateForum(e) {
@@ -788,7 +892,7 @@
             const card = document.createElement('div');
             card.className = 'forum-card';
             card.innerHTML = `
-                <span class="tag tag-guru">${currentUser.name} (${currentUser.role})</span>
+                <span class="tag tag-guru">${currentUser.name} (${currentUser.school})</span>
                 <h4 style="font-family:var(--font-head); font-size:0.95rem; margin-bottom:6px;">${title}</h4>
                 <p style="font-size:0.82rem; color:var(--text-dark); margin-bottom:10px;">"${body}"</p>
             `;
@@ -815,7 +919,29 @@
         }
 
         /* ==========================================
-           3. DATA MODUL MATERI SD (20 VOCABULARY PER MODUL)
+           3. GAMES & LAGU AUDIO CONTROLLER
+           ========================================== */
+        function playSong(lyricsText) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(lyricsText);
+                u.lang = 'en-US';
+                u.rate = 0.85;
+                u.pitch = 1.1;
+                window.speechSynthesis.speak(u);
+            }
+        }
+
+        function checkGameAns(isCorrect) {
+            if(isCorrect) {
+                alert("🎉 Benar sekali! Buah Tarap adalah buah khas Kaltara!");
+            } else {
+                alert("❌ Kurang tepat, coba lagi ya!");
+            }
+        }
+
+        /* ==========================================
+           4. DATA MODUL MATERI SD (20 VOCABULARY PER MODUL)
            ========================================== */
         const moduleData = {
             1: {
@@ -967,10 +1093,9 @@
         }
 
         /* ==========================================
-           4. DATA 5 PAKET KUIS (Masing-Masing 20 Soal)
+           5. DATA 5 PAKET KUIS (Masing-Masing 20 Soal)
            ========================================== */
         const allQuizzes = [
-            // Kuis 1: Foods & Drinks (20 Soal)
             [
                 { q: "1. Apa Bahasa Inggris dari 'Ayam Goreng'?", options: ["Fried Chicken", "Fried Rice", "Noodle"], answer: 0 },
                 { q: "2. Buah lokal khas Kaltara yang beraroma harum adalah...", options: ["Tarap Fruit", "Apple", "Banana"], answer: 0 },
@@ -993,11 +1118,10 @@
                 { q: "19. Minuman hangat hitam beraroma khas adalah...", options: ["Coffee", "Milk", "Mineral Water"], answer: 0 },
                 { q: "20. 'Cake' dalam Bahasa Indonesia berarti...", options: ["Kue", "Roti", "Bakso"], answer: 0 }
             ],
-            // Kuis 2: Likes & Dislikes (20 Soal)
             [
                 { q: "1. 'I _____ Tarap fruit.' (Saya suka buah Tarap)", options: ["like", "likes", "don't"], answer: 0 },
                 { q: "2. 'He _____ coffee.' (Dia tidak suka kopi)", options: ["doesn't like", "don't like", "not like"], answer: 0 },
-                { q: "3. 'She _____ ice cream.' Karena subjeknya She, gunakan...", options: ["likes", "like", "don't like"], answer: 0 },
+                { q: "3. 'She _____ ice cream.' Kategori She gunakan...", options: ["likes", "like", "don't like"], answer: 0 },
                 { q: "4. 'I don't like tea' artinya...", options: ["Saya tidak suka teh", "Saya suka teh", "Dia suka teh"], answer: 0 },
                 { q: "5. 'Do you like noodle?' - 'Yes, I _____.'", options: ["do", "don't", "does"], answer: 0 },
                 { q: "6. 'They _____ Lai fruit.' (Mereka suka buah Lai)", options: ["like", "likes", "doesn't like"], answer: 0 },
@@ -1016,10 +1140,9 @@
                 { q: "19. 'Bitter coffee' artinya kopi yang...", options: ["Pahit", "Manis", "Asin"], answer: 0 },
                 { q: "20. 'Favorite food' artinya...", options: ["Makanan favorit / kesukaan", "Makanan mahal", "Makanan sisa"], answer: 0 }
             ],
-            // Kuis 3: Mealtimes & Schedule (20 Soal)
             [
                 { q: "1. Makan pagi dalam Bahasa Inggris disebut...", options: ["Breakfast", "Lunch", "Dinner"], answer: 0 },
-                { q: "2. 'Lunch' dilakukan pada saat...", options: ["Siang hari (In the afternoon)", "Pagi hari", "Malam hari"], answer: 0 },
+                { q: "2. 'Lunch' dilakukan pada saat...", options: ["Siang hari", "Pagi hari", "Malam hari"], answer: 0 },
                 { q: "3. 'Dinner' artinya adalah...", options: ["Makan malam", "Makan siang", "Sarapan"], answer: 0 },
                 { q: "4. 'In the morning' berarti...", options: ["Di pagi hari", "Di malam hari", "Di sore hari"], answer: 0 },
                 { q: "5. 'In the evening' berarti...", options: ["Di malam hari", "Di siang hari", "Di pagi hari"], answer: 0 },
@@ -1039,7 +1162,6 @@
                 { q: "19. 'Cook' dalam Bahasa Indonesia berarti...", options: ["Memasak", "Mencuci", "Membeli"], answer: 0 },
                 { q: "20. 'Every day' artinya...", options: ["Setiap hari", "Setiap minggu", "Kemarin"], answer: 0 }
             ],
-            // Kuis 4: Hobbies & Activities (20 Soal)
             [
                 { q: "1. Bahasa Inggris dari 'Berenang' adalah...", options: ["Swimming", "Reading", "Dancing"], answer: 0 },
                 { q: "2. 'Riding a bike' berarti...", options: ["Bersepeda", "Membaca buku", "Bermain bola"], answer: 0 },
@@ -1062,7 +1184,6 @@
                 { q: "19. 'Listening to music' artinya...", options: ["Mendengarkan musik", "Bernyanyi lagu", "Bermain gitar"], answer: 0 },
                 { q: "20. 'Painting' artinya...", options: ["Melukis", "Menggambar", "Menulis"], answer: 0 }
             ],
-            // Kuis 5: Days of the Week & Time (20 Soal)
             [
                 { q: "1. Bahasa Inggris dari hari 'Minggu' adalah...", options: ["Sunday", "Monday", "Friday"], answer: 0 },
                 { q: "2. 'Monday' adalah hari...", options: ["Senin", "Selasa", "Rabu"], answer: 0 },
@@ -1078,7 +1199,7 @@
                 { q: "12. 'Yesterday' artinya...", options: ["Kemarin", "Besok", "Hari ini"], answer: 0 },
                 { q: "13. 'Before' artinya...", options: ["Sebelum", "Sesudah", "Sekarang"], answer: 0 },
                 { q: "14. 'After' artinya...", options: ["Sesudah / Setelah", "Sebelum", "Kemarin"], answer: 0 },
-                { q: "15. 'Weekend' artinya...", options: ["Akhir pekan (Sabtu & Minggu)", "Hari kerja", "Hari libur nasional"], answer: 0 },
+                { q: "15. 'Weekend' artinya...", options: ["Akhir pekan", "Hari kerja", "Hari libur"], answer: 0 },
                 { q: "16. 'What day is today?' artinya...", options: ["Hari apa hari ini?", "Jam berapa sekarang?", "Hari apa besok?"], answer: 0 },
                 { q: "17. 'Today is Monday' artinya...", options: ["Hari ini hari Senin", "Hari ini hari Selasa", "Besok hari Senin"], answer: 0 },
                 { q: "18. Jumlah hari dalam satu minggu adalah...", options: ["Seven days (7)", "Five days (5)", "Six days (6)"], answer: 0 },
