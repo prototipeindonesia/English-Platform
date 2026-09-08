@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENGLISH ADVENTURE KELAS 3 - Kolaborasi Guru SD Sekaltara</title>
+    <title>ENGLISH ADVENTURE - Ekosistem Kolaboratif Guru SD Sekaltara</title>
 
     <!-- Google Fonts & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,18 +13,19 @@
 
     <style>
         :root {
-            --primary-blue: #0284c7;
-            --primary-blue-light: #38bdf8;
-            --accent-orange: #ff782c;
-            --accent-yellow: #facc15;
-            --accent-green: #22c55e;
-            --bg-sky: #f0f9ff;
+            --primary-green: #2e7d32;
+            --primary-green-light: #4caf50;
+            --accent-teal: #00897b;
+            --bg-sky: #f0fdf4;
             --stage-bg: #ffffff;
-            --text-dark: #0f172a;
+            --stage-border: #bbf7d0;
+            --text-dark: #1e293b;
             --text-muted: #64748b;
-            --soft-red: #ef4444;
-            --shadow-soft: 0 10px 25px rgba(2, 132, 199, 0.08);
-            --shadow-card: 0 6px 16px rgba(0, 0, 0, 0.06);
+            --accent-orange: #f57c00;
+            --accent-yellow: #fbc02d;
+            --soft-red: #ef5350;
+            --shadow-soft: 0 10px 25px rgba(0,0,0,0.05);
+            --shadow-card: 0 6px 16px rgba(0,0,0,0.06);
             --font-head: 'Fredoka', cursive, sans-serif;
             --font-body: 'Nunito', sans-serif;
             --radius-main: 24px;
@@ -46,7 +47,7 @@
         #auth-screen {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            background: linear-gradient(135deg, #1b5e20 0%, #004d40 100%);
             z-index: 9999;
             display: flex;
             align-items: center;
@@ -58,11 +59,10 @@
             background: #ffffff;
             border-radius: 28px;
             padding: 36px;
-            max-width: 480px;
+            max-width: 500px;
             width: 100%;
             box-shadow: 0 25px 50px rgba(0,0,0,0.2);
             text-align: center;
-            border: 4px solid var(--accent-yellow);
         }
 
         .auth-brand {
@@ -73,11 +73,11 @@
             margin-bottom: 16px;
         }
 
-        .auth-icon { font-size: 3rem; color: var(--accent-orange); }
+        .auth-icon { font-size: 2.8rem; color: var(--primary-green); }
 
         .auth-card h2 {
             font-family: var(--font-head);
-            color: var(--primary-blue);
+            color: var(--primary-green);
             font-size: 1.8rem;
             margin-bottom: 4px;
         }
@@ -89,287 +89,333 @@
             font-weight: 700;
         }
 
+        .auth-tabs {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .auth-tab-btn {
+            flex: 1; padding: 10px; border: none; background: transparent;
+            font-family: var(--font-head); font-size: 0.95rem; color: var(--text-muted);
+            cursor: pointer; border-radius: 8px; transition: all 0.2s;
+        }
+
+        .auth-tab-btn.active {
+            background: #ffffff; color: var(--primary-green);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
         .input-group { margin-bottom: 16px; text-align: left; }
         .input-group label { display: block; font-family: var(--font-head); font-size: 0.9rem; color: var(--text-dark); margin-bottom: 6px; }
         .input-group input, .input-group select, .input-group textarea {
-            width: 100%; padding: 12px 16px; border: 3px solid #e2e8f0; border-radius: 16px;
-            font-family: var(--font-body); font-size: 0.95rem; font-weight: 700; outline: none;
+            width: 100%; padding: 12px 16px; border: 2px solid #cbd5e1; border-radius: 12px;
+            font-family: var(--font-body); font-size: 0.95rem; font-weight: 600; outline: none;
             transition: border-color 0.2s;
         }
-        .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--primary-blue); }
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--primary-green); }
 
         .btn-primary {
-            background: var(--accent-orange); color: white; font-family: var(--font-head); font-size: 1.1rem;
-            padding: 14px 24px; border-radius: 18px; border: none; cursor: pointer; width: 100%;
-            box-shadow: 0 4px 0 #c7530c; transition: all 0.1s;
+            background: var(--primary-green); color: white; font-family: var(--font-head); font-size: 1rem;
+            padding: 12px 24px; border-radius: 14px; border: none; cursor: pointer; width: 100%;
+            transition: background 0.2s, transform 0.1s;
         }
-        .btn-primary:active { transform: translateY(3px); box-shadow: none; }
+        .btn-primary:hover { background: #1b5e20; }
 
         /* HEADER */
         header {
             background: #ffffff; padding: 14px 28px; display: flex; justify-content: space-between;
-            align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100;
-            border-bottom: 4px solid var(--accent-yellow);
+            align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100;
+            border-bottom: 3px solid #bbf7d0;
         }
 
         .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
         .brand-avatar {
-            width: 48px; height: 48px; background: #e0f2fe; border: 3px solid var(--primary-blue-light);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--primary-blue);
+            width: 46px; height: 46px; background: #e8f5e9; border: 2px solid var(--primary-green-light);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--primary-green);
         }
-        .brand-title { font-family: var(--font-head); font-size: 1.3rem; color: var(--primary-blue); line-height: 1.1; }
-        .brand-title span { display: block; font-size: 0.75rem; color: var(--accent-orange); font-family: var(--font-body); font-weight: 800; }
+        .brand-title { font-family: var(--font-head); font-size: 1.3rem; color: var(--primary-green); line-height: 1.1; }
+        .brand-title span { display: block; font-size: 0.75rem; color: var(--accent-teal); font-family: var(--font-body); font-weight: 700; }
 
-        .nav-pills { display: flex; background: #e0f2fe; padding: 6px; border-radius: 30px; gap: 6px; }
+        .nav-pills { display: flex; background: #f1f5f9; padding: 5px; border-radius: 30px; gap: 4px; }
         .nav-btn {
-            border: none; background: transparent; padding: 10px 18px; font-family: var(--font-head);
-            font-size: 0.9rem; color: var(--primary-blue); border-radius: 20px; cursor: pointer; transition: all 0.2s ease;
-            display: flex; align-items: center; gap: 8px;
+            border: none; background: transparent; padding: 9px 16px; font-family: var(--font-head);
+            font-size: 0.9rem; color: var(--text-muted); border-radius: 20px; cursor: pointer; transition: all 0.2s ease;
+            display: flex; align-items: center; gap: 6px;
         }
-        .nav-btn.active { background: var(--primary-blue); color: #ffffff; box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3); }
+        .nav-btn.active { background: var(--primary-green); color: #ffffff; box-shadow: 0 3px 10px rgba(46,125,50,0.3); }
 
         .header-actions { display: flex; align-items: center; gap: 12px; }
 
         .user-profile-badge {
             display: flex; align-items: center; gap: 10px; background: #f8fafc; padding: 6px 14px;
-            border-radius: 20px; border: 2px solid #e2e8f0; cursor: pointer;
+            border-radius: 20px; border: 1px solid #e2e8f0; cursor: pointer; transition: background 0.2s;
         }
+        .user-profile-badge:hover { background: #f1f5f9; }
 
         .btn-logout {
-            background: #fee2e2; color: var(--soft-red); border: 2px solid #fca5a5; padding: 8px 14px;
+            background: #fee2e2; color: var(--soft-red); border: 1px solid #fca5a5; padding: 8px 14px;
             border-radius: 20px; font-family: var(--font-head); font-size: 0.85rem; cursor: pointer;
-            display: flex; align-items: center; gap: 6px;
+            display: flex; align-items: center; gap: 6px; transition: background 0.2s;
         }
+        .btn-logout:hover { background: #fecaca; }
 
         /* LAYOUT */
         .container {
             max-width: 1280px; margin: 24px auto; padding: 0 20px; width: 100%; flex: 1;
-            display: grid; grid-template-columns: 1fr 280px; gap: 24px;
+            display: grid; grid-template-columns: 1fr 300px; gap: 24px;
         }
 
         @media (max-width: 1024px) { .container { grid-template-columns: 1fr; } }
 
         .main-stage {
-            background: var(--stage-bg); border: 3px solid #e0f2fe;
+            background: var(--stage-bg); border: 2px solid var(--stage-border);
             border-radius: var(--radius-main); padding: 28px; box-shadow: var(--shadow-soft);
         }
 
         .hero-banner {
-            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-            border-radius: 20px; padding: 24px; display: flex; align-items: center;
-            justify-content: space-between; margin-bottom: 24px; border: 3px dashed var(--primary-blue-light);
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border-radius: 20px; padding: 24px 30px; display: flex; align-items: center;
+            justify-content: space-between; margin-bottom: 24px; border: 2px solid #86efac;
         }
-        .hero-text h1 { font-family: var(--font-head); font-size: 1.8rem; color: var(--primary-blue); }
-        .hero-text p { font-size: 1rem; color: #0369a1; margin-top: 4px; font-weight: 700; }
+        .hero-text h1 { font-family: var(--font-head); font-size: 1.6rem; color: var(--primary-green); }
+        .hero-text p { font-size: 0.95rem; color: #166534; margin-top: 4px; font-weight: 700; }
 
         .section-header {
-            font-family: var(--font-head); font-size: 1.3rem; color: var(--primary-blue);
+            font-family: var(--font-head); font-size: 1.3rem; color: var(--primary-green);
             margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between;
         }
 
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
 
         .resource-card, .forum-card {
-            background: #ffffff; border: 3px solid #f1f5f9; border-radius: 20px; padding: 20px;
-            box-shadow: var(--shadow-card); transition: transform 0.2s; display: flex; flex-direction: column; justify-content: space-between;
+            background: #ffffff; border: 2px solid #e2e8f0; border-radius: 18px; padding: 20px;
+            box-shadow: var(--shadow-card); transition: transform 0.2s, border-color 0.2s; display: flex; flex-direction: column; justify-content: space-between;
         }
-        .resource-card:hover, .forum-card:hover { transform: translateY(-4px); border-color: var(--primary-blue-light); }
+        .resource-card:hover, .forum-card:hover { transform: translateY(-4px); border-color: var(--primary-green-light); }
 
         .tag {
-            display: inline-block; padding: 6px 12px; border-radius: 14px; font-size: 0.8rem;
-            font-weight: 800; font-family: var(--font-head); margin-bottom: 10px; width: fit-content;
+            display: inline-block; padding: 5px 12px; border-radius: 12px; font-size: 0.78rem;
+            font-weight: 700; font-family: var(--font-head); margin-bottom: 10px; width: fit-content;
         }
-        .tag-guru { background: #fef3c7; color: #d97706; }
+        .tag-guru { background: #fef3c7; color: #b45309; }
 
         .btn-action-sm {
-            background: var(--primary-blue); color: white; border: none; padding: 10px 16px;
-            border-radius: 12px; font-family: var(--font-head); font-size: 0.9rem; cursor: pointer;
-            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-            box-shadow: 0 3px 0 #026496;
+            background: var(--accent-teal); color: white; border: none; padding: 9px 16px;
+            border-radius: 12px; font-family: var(--font-head); font-size: 0.88rem; cursor: pointer;
+            transition: background 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
         }
-        .btn-action-sm:active { transform: translateY(2px); box-shadow: none; }
+        .btn-action-sm:hover { background: #00695c; }
 
         /* MATERI GRID */
         .materi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; }
         .materi-card {
-            background: #ffffff; border-radius: 20px; padding: 16px; text-align: center;
-            border: 3px solid #e2e8f0; box-shadow: var(--shadow-card); display: flex; flex-direction: column;
-            justify-content: space-between; cursor: pointer; transition: transform 0.2s;
+            background: #ffffff; border-radius: 20px; padding: 20px 16px; text-align: center;
+            border: 2px solid #e2e8f0; box-shadow: var(--shadow-card); display: flex; flex-direction: column;
+            justify-content: space-between; cursor: pointer; transition: transform 0.2s, border-color 0.2s;
         }
-        .materi-card:hover { transform: translateY(-5px); border-color: var(--accent-orange); }
-        .card-img-preview { width: 100%; height: 110px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; }
-        .card-title { font-family: var(--font-head); font-size: 1.1rem; color: var(--text-dark); margin-bottom: 4px; }
-        .card-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px; font-weight: 600; }
+        .materi-card:hover { transform: translateY(-5px); border-color: var(--primary-green-light); }
+        .card-icon { font-size: 2.8rem; margin-bottom: 10px; }
+        .card-title { font-family: var(--font-head); font-size: 1.1rem; color: var(--text-dark); margin-bottom: 6px; }
+        .card-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.4; }
 
-        .grid-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 20px; }
+        .grid-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 20px; }
         .selector-btn {
-            background: #ffffff; border: 3px solid #e2e8f0; border-radius: 16px; padding: 12px;
+            background: #ffffff; border: 2px solid #e2e8f0; border-radius: 14px; padding: 12px;
             font-family: var(--font-head); font-size: 0.9rem; color: var(--text-dark); cursor: pointer; text-align: center;
+            transition: all 0.2s;
         }
-        .selector-btn.active { border-color: var(--primary-blue); background: #e0f2fe; color: var(--primary-blue); }
+        .selector-btn:hover, .selector-btn.active { border-color: var(--primary-green); background: #f0fdf4; color: var(--primary-green); }
 
         /* QUIZ STYLING */
-        .quiz-stage { background: #ffffff; border-radius: 20px; padding: 24px; border: 3px solid #e2e8f0; margin-bottom: 16px; }
-        .quiz-card-q {
-            background: #f8fafc; border: 3px solid #e2e8f0; border-radius: 16px; padding: 20px;
-            font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; text-align: center;
-        }
-        .quiz-img-container { text-align: center; margin-bottom: 16px; }
-        .quiz-img { max-width: 220px; width: 100%; height: 140px; object-fit: cover; border-radius: 16px; border: 3px solid var(--accent-yellow); }
-        .quiz-options-grid { display: flex; flex-direction: column; gap: 10px; }
+        .quiz-stage { background: #ffffff; border-radius: 20px; padding: 24px; border: 2px solid #e2e8f0; margin-bottom: 16px; box-shadow: var(--shadow-card); }
+        .quiz-card-q { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 16px; padding: 20px; font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+        .quiz-img { max-width: 180px; max-height: 140px; border-radius: 12px; object-fit: cover; border: 2px solid #cbd5e1; }
+        .quiz-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 600px) { .quiz-options-grid { grid-template-columns: 1fr; } }
         .quiz-opt-btn {
-            width: 100%; padding: 14px 18px; border: 3px solid #cbd5e1; background: white; border-radius: 14px;
-            font-family: var(--font-head); font-size: 1rem; cursor: pointer; text-align: left; transition: all 0.2s;
+            width: 100%; padding: 14px 18px; border: 2px solid #cbd5e1; background: white; border-radius: 14px;
+            font-family: var(--font-head); font-weight: 600; font-size: 1rem; cursor: pointer; text-align: left;
+            transition: all 0.2s; display: flex; align-items: center; gap: 10px;
         }
-        .quiz-opt-btn:hover { border-color: var(--primary-blue); background: #f0f9ff; }
+        .quiz-opt-btn:hover { border-color: var(--primary-green); background: #f0fdf4; }
 
-        /* SONG CARDS & AUDIO */
-        .song-card { background: #ffffff; border-radius: 20px; padding: 20px; border: 3px solid #e2e8f0; margin-bottom: 18px; }
-        .song-lyrics {
-            background: #fffbebfb; border-radius: 14px; padding: 16px; font-family: var(--font-body);
-            font-size: 1rem; font-weight: 700; line-height: 1.6; color: #78350f; margin: 14px 0; border-left: 6px solid var(--accent-yellow);
-        }
-        audio { width: 100%; margin-top: 10px; border-radius: 10px; }
+        /* SONG & MUSIC PLAYER STYLING */
+        .song-card { background: #ffffff; border-radius: 20px; padding: 22px; border: 2px solid #e2e8f0; margin-bottom: 18px; box-shadow: var(--shadow-card); }
+        .song-lyrics { background: #f8fafc; border-radius: 14px; padding: 16px; font-family: var(--font-body); font-size: 0.95rem; line-height: 1.7; color: #334155; margin: 14px 0; border-left: 5px solid var(--accent-orange); font-weight: 600; }
+        .audio-player-box { background: #f1f5f9; padding: 10px 16px; border-radius: 30px; display: flex; align-items: center; gap: 12px; width: fit-content; margin-top: 10px; }
 
         /* SIDEBAR */
         .sidebar { display: flex; flex-direction: column; gap: 20px; }
-        .widget-box { background: #ffffff; border-radius: 20px; padding: 20px; border: 3px solid #e2e8f0; box-shadow: var(--shadow-card); }
+        .widget-box { background: #ffffff; border-radius: 20px; padding: 22px; border: 2px solid #e2e8f0; box-shadow: var(--shadow-card); }
         .widget-title { font-family: var(--font-head); font-size: 1.1rem; color: var(--text-dark); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-        .stat-item { display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; padding: 8px 0; border-bottom: 2px dashed #e2e8f0; }
+        .stat-item { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 10px 0; border-bottom: 1px dashed #e2e8f0; font-weight: 700; }
 
         /* MODALS */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
-        .modal-content { background: #ffffff; border-radius: 24px; max-width: 700px; width: 100%; max-height: 85vh; overflow-y: auto; border: 4px solid var(--primary-blue); }
-        .modal-header { padding: 18px 24px; background: var(--primary-blue); color: white; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-head); }
+        .modal-content { background: #ffffff; border-radius: 24px; max-width: 750px; width: 100%; max-height: 88vh; overflow-y: auto; }
+        .modal-header { padding: 18px 24px; background: var(--primary-green); color: white; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-head); border-top-left-radius: 24px; border-top-right-radius: 24px; }
         .modal-body { padding: 24px; }
-        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
-        .vocab-item { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 16px; padding: 12px; text-align: center; }
-        .vocab-img { width: 100%; height: 80px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+        .vocab-item { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 16px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .vocab-item:hover { border-color: var(--primary-green); background: #f0fdf4; transform: translateY(-2px); }
+        .vocab-img { width: 100%; height: 90px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
 
-        footer { background: #ffffff; border-top: 3px solid #e2e8f0; padding: 20px; text-align: center; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-top: 30px; }
+        footer { background: #ffffff; border-top: 2px solid #e2e8f0; padding: 18px 32px; text-align: center; font-size: 0.9rem; color: var(--text-muted); margin-top: 28px; font-weight: 700; }
     </style>
 </head>
 <body>
 
-    <!-- ==========================================
-       1. AUTHENTICATION SCREEN
-       ========================================== -->
+    <!-- AUTHENTICATION SCREEN -->
     <div id="auth-screen">
         <div class="auth-card">
             <div class="auth-brand">
-                <i class="fa-solid fa-shapes auth-icon"></i>
+                <i class="fa-solid fa-graduation-cap auth-icon"></i>
             </div>
-            <h2>ENGLISH ADVENTURE 3</h2>
-            <p>Platform Kolaborasi Guru SD Sekaltara</p>
+            <h2>ENGLISH ADVENTURE</h2>
+            <p>Ekosistem Kolaboratif Guru SD Sekaltara</p>
 
-            <form id="form-login" onsubmit="handleAuthSubmit(event)">
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" onclick="switchAuthTab('login')">Masuk Akun</button>
+                <button class="auth-tab-btn" onclick="switchAuthTab('register')">Pendaftaran</button>
+            </div>
+
+            <!-- Form Login -->
+            <form id="form-login" onsubmit="handleAuthSubmit(event, 'login')">
                 <div class="input-group">
-                    <label><i class="fa-solid fa-user-pen"></i> Nama Lengkap / Guru</label>
-                    <input type="text" id="login-id" placeholder="Contoh: Ibu Rahmawati, S.Pd." required>
+                    <label><i class="fa-solid fa-user"></i> Masuk Sebagai Role</label>
+                    <select id="login-role" required>
+                        <option value="Guru SD">Guru SD (Sekolah Dasar)</option>
+                    </select>
                 </div>
                 <div class="input-group">
-                    <label><i class="fa-solid fa-school"></i> Asal Sekolah (SD Sekaltara)</label>
-                    <input type="text" id="login-school" placeholder="Contoh: SDN 001 Tarakan" required>
+                    <label><i class="fa-solid fa-envelope"></i> Email / NIP</label>
+                    <input type="text" id="login-id" placeholder="Masukkan ID pengguna" required>
                 </div>
-                <button type="submit" class="btn-primary">Masuk ke Ruang Ajar <i class="fa-solid fa-arrow-right"></i></button>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-lock"></i> Kata Sandi</label>
+                    <input type="password" id="login-pass" value="123456" required>
+                </div>
+                <button type="submit" class="btn-primary">Masuk ke Ekosistem <i class="fa-solid fa-right-to-bracket"></i></button>
+            </form>
+
+            <!-- Form Register -->
+            <form id="form-register" style="display: none;" onsubmit="handleAuthSubmit(event, 'register')">
+                <div class="input-group">
+                    <label><i class="fa-solid fa-user"></i> Nama Lengkap & Gelar</label>
+                    <input type="text" id="reg-name" placeholder="Contoh: Rahmawati, S.Pd." required>
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-id-badge"></i> Peran Ekosistem</label>
+                    <select id="reg-role" required>
+                        <option value="Guru SD">Guru SD (Sekolah Dasar)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-school"></i> Sekolah Asal (Sekaltara)</label>
+                    <input type="text" id="reg-school" placeholder="Contoh: SDN 010 Tarakan" required>
+                </div>
+                <button type="submit" class="btn-primary">Daftar Akun <i class="fa-solid fa-user-plus"></i></button>
             </form>
         </div>
     </div>
 
-    <!-- ==========================================
-       2. HEADER NAVIGATION
-       ========================================== -->
+    <!-- HEADER NAVIGATION -->
     <header>
         <a href="#" class="brand">
-            <div class="brand-avatar"><i class="fa-solid fa-child-reaching"></i></div>
+            <div class="brand-avatar"><i class="fa-solid fa-chalkboard-user"></i></div>
             <div class="brand-title">
                 ENGLISH ADVENTURE
                 <span>Kolaborasi Guru SD Sekaltara</span>
             </div>
         </a>
 
-        <!-- NAV PIPELINE UTAMA -->
         <nav class="nav-pills">
-            <button class="nav-btn active" onclick="switchTab('dashboard', this)"><i class="fa-solid fa-house"></i> Beranda</button>
-            <button class="nav-btn" onclick="switchTab('hub', this)"><i class="fa-solid fa-folder-open"></i> Modul Ajar</button>
+            <button class="nav-btn active" onclick="switchTab('dashboard', this)"><i class="fa-solid fa-chart-pie"></i> Dashboard</button>
+            <button class="nav-btn" onclick="switchTab('hub', this)"><i class="fa-solid fa-folder-open"></i> Bank Materi</button>
             <button class="nav-btn" onclick="switchTab('forum', this)"><i class="fa-solid fa-comments"></i> Forum Diskusi</button>
-            <button class="nav-btn" onclick="switchTab('materi-sd', this)"><i class="fa-solid fa-book-open"></i> Materi Kelas 3</button>
-            <button class="nav-btn" onclick="switchTab('games-lagu', this)"><i class="fa-solid fa-music"></i> Musik & Lagu</button>
-            <button class="nav-btn" onclick="switchTab('kuis-evaluasi', this)"><i class="fa-solid fa-gamepad"></i> Kuis Gambar</button>
+            <button class="nav-btn" onclick="switchTab('materi-sd', this)"><i class="fa-solid fa-book"></i> Modul Kelas 3</button>
+            <button class="nav-btn" onclick="switchTab('games-lagu', this)"><i class="fa-solid fa-music"></i> Games & Lagu</button>
+            <button class="nav-btn" onclick="switchTab('kuis-evaluasi', this)"><i class="fa-solid fa-list-check"></i> Mini Kuis</button>
         </nav>
 
         <div class="header-actions">
             <div class="user-profile-badge" onclick="openModal('profile-modal')">
-                <i class="fa-solid fa-circle-user" style="font-size:1.5rem; color:var(--primary-blue);"></i>
+                <i class="fa-solid fa-circle-user" style="font-size:1.5rem; color:var(--primary-green);"></i>
                 <div style="text-align: left; line-height: 1.1;">
-                    <div id="user-display-name" style="font-weight: 800; font-size: 0.85rem;">Guru</div>
-                    <div id="user-display-role" style="font-size: 0.72rem; color: var(--text-muted);">Sekolah</div>
+                    <div id="user-display-name" style="font-weight: 700; font-size: 0.85rem;">User</div>
+                    <div id="user-display-role" style="font-size: 0.72rem; color: var(--text-muted);">Role</div>
                 </div>
             </div>
-            <button class="btn-logout" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
+            <button class="btn-logout" onclick="handleLogout()" title="Keluar ke Login"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
         </div>
     </header>
 
-    <!-- ==========================================
-       3. MAIN CONTAINER
-       ========================================== -->
+    <!-- MAIN CONTAINER -->
     <div class="container">
         <main class="main-stage">
 
             <!-- Hero Banner Dynamic -->
             <div class="hero-banner">
                 <div class="hero-text">
-                    <h1>Selamat Datang, <span id="hero-user-name">Guru SD</span>! 👋</h1>
-                    <p id="hero-user-desc">Ruang Berbagi Modul & Media Pembelajaran Bahasa Inggris Kelas 3 SD Sekaltara.</p>
+                    <h1>Selamat Datang, <span id="hero-user-name">Pengajar</span>! 👋</h1>
+                    <p id="hero-user-desc">Wadah kolaborasi aktif antar Guru Sekolah Dasar se-Kalimantan Utara (Sekaltara).</p>
                 </div>
-                <div style="font-size:3rem; color:var(--primary-blue);"><i class="fa-solid fa-face-smile-wink"></i></div>
+                <div style="font-size:2.5rem; color:var(--primary-green);"><i class="fa-solid fa-people-group"></i></div>
             </div>
 
-            <!-- TAB 1: BERANDA -->
+            <!-- TAB 1: DASHBOARD DINAMIS -->
             <div id="tab-dashboard" class="tab-pane active">
-                <div class="section-header">
-                    <span><i class="fa-solid fa-star" style="color:var(--accent-yellow);"></i> Menu Utama Pembelajaran</span>
-                </div>
-                <div class="grid-3">
-                    <div class="resource-card" style="border-top:6px solid var(--primary-blue);">
-                        <div>
-                            <h3 style="font-family:var(--font-head); color:var(--primary-blue);">📘 Materi & Visual</h3>
-                            <p style="font-size:0.85rem; color:var(--text-muted); margin:8px 0; font-weight:600;">Modul bergambar nyata lengkap untuk siswa kelas 3 SD.</p>
-                        </div>
-                        <button class="btn-action-sm" onclick="switchTab('materi-sd', null)">Lihat Materi</button>
+                <div id="view-dashboard-guru">
+                    <div class="section-header">
+                        <span><i class="fa-solid fa-chalkboard-user"></i> Workspace Utama Guru SD</span>
                     </div>
-                    <div class="resource-card" style="border-top:6px solid var(--accent-yellow);">
-                        <div>
-                            <h3 style="font-family:var(--font-head); color:var(--accent-orange);">🎶 Musik & Lagu</h3>
-                            <p style="font-size:0.85rem; color:var(--text-muted); margin:8px 0; font-weight:600;">Dengarkan instrumen musik asli dan lirik lagu Bahasa Inggris.</p>
+                    <div class="grid-3" style="margin-bottom:20px;">
+                        <div class="resource-card" style="border-left:5px solid var(--primary-green);">
+                            <h4 style="font-family:var(--font-head); font-size:1.1rem;">📘 Modul Siap Ajar</h4>
+                            <p style="font-size:0.85rem; color:var(--text-muted); margin:10px 0;">Akses 5 Unit Modul Kurikulum Merdeka Kelas 3 SD Kaltara lengkap dengan gambar visual nyata.</p>
+                            <button class="btn-action-sm" onclick="switchTab('materi-sd', null)">Buka Modul Kelas 3</button>
                         </div>
-                        <button class="btn-action-sm" style="background:var(--accent-orange);" onclick="switchTab('games-lagu', null)">Dengar Lagu</button>
-                    </div>
-                    <div class="resource-card" style="border-top:6px solid var(--accent-green);">
-                        <div>
-                            <h3 style="font-family:var(--font-head); color:var(--accent-green);">🎯 Kuis Interaktif</h3>
-                            <p style="font-size:0.85rem; color:var(--text-muted); margin:8px 0; font-weight:600;">Latihan soal Bahasa Inggris sederhana menggunakan gambar nyata.</p>
+                        <div class="resource-card" style="border-left:5px solid var(--accent-orange);">
+                            <h4 style="font-family:var(--font-head); font-size:1.1rem;">💬 Forum Diskusi</h4>
+                            <p style="font-size:0.85rem; color:var(--text-muted); margin:10px 0;">Diskusi dan berbagi ide pengajaran interaktif sesama Guru SD Sekaltara.</p>
+                            <button class="btn-action-sm" onclick="switchTab('forum', null)">Buka Forum Diskusi</button>
                         </div>
-                        <button class="btn-action-sm" style="background:var(--accent-green);" onclick="switchTab('kuis-evaluasi', null)">Mulai Kuis</button>
+                        <div class="resource-card" style="border-left:5px solid var(--accent-teal);">
+                            <h4 style="font-family:var(--font-head); font-size:1.1rem;">🎶 Games & Lagu Ajar</h4>
+                            <p style="font-size:0.85rem; color:var(--text-muted); margin:10px 0;">Akses lagu-lagu pembelajaran berformat instrumen/musik & games interaktif.</p>
+                            <button class="btn-action-sm" onclick="switchTab('games-lagu', null)">Buka Games & Lagu</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 2: MODUL AJAR (BANK MATERI) -->
+            <!-- TAB 2: BANK MATERI HUB -->
             <div id="tab-hub" class="tab-pane" style="display:none;">
                 <div class="section-header">
-                    <span><i class="fa-solid fa-folder-open"></i> Bank Modul Ajar Guru SD Sekaltara</span>
-                    <button class="btn-action-sm" onclick="openModal('upload-modal')"><i class="fa-solid fa-plus"></i> Unggah Modul</button>
+                    <span><i class="fa-solid fa-cloud-arrow-up"></i> Bank Materi Akses Terbuka (Crowdsourced Hub)</span>
+                    <button class="btn-action-sm" onclick="openModal('upload-modal')"><i class="fa-solid fa-plus"></i> Unggah Modul/Media</button>
                 </div>
                 <div class="grid-3" id="resource-cards-container">
                     <div class="resource-card">
                         <div>
-                            <span class="tag tag-guru">SDN 001 Tarakan</span>
-                            <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">Modul Visual: Food & Drinks</h4>
-                            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px; font-weight:600;">Lembar kerja bergambar makanan dan minuman nyata untuk Kelas 3 SD.</p>
+                            <span class="tag tag-guru">SDN 001 Malinau</span>
+                            <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">Modul Visio-Loco: Foods & Drinks Kaltara</h4>
+                            <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">Panduan mengajar kosakata buah lokal (Tarap & Lai) terintegrasi gambar kontekstual.</p>
                         </div>
-                        <button class="btn-action-sm" onclick="downloadPDFResource('Modul Visual Foods Drinks', 'SDN 001 Tarakan')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF Modul</button>
+                        <button class="btn-action-sm" onclick="downloadPDFResource('Modul Visio-Loco Foods & Drinks Kaltara', 'SDN 001 Malinau', 'Modul Ajar Bahasa Inggris Kelas 3 SD Kaltara.\n\nUnit 1: Foods & Drinks\n1. Tarap Fruit - Buah Tarap khas Kaltara\n2. Lai Fruit - Buah Lai Kaltara\n3. Fried Chicken - Ayam Goreng\n4. Orange Juice - Jus Jeruk\n\nMetode Pengajaran: Visio-Loco Contextual Teaching.')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF Modul</button>
+                    </div>
+
+                    <div class="resource-card">
+                        <div>
+                            <span class="tag tag-guru">SDN 010 Tarakan</span>
+                            <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">Worksheet Bergambar: Mealtimes & Schedules</h4>
+                            <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">Lembar kerja siswa (Worksheet) mewarnai dan mencocokkan kata jadwal makan harian.</p>
+                        </div>
+                        <button class="btn-action-sm" onclick="downloadPDFResource('Worksheet Bergambar Mealtimes', 'SDN 010 Tarakan', 'LEMBAR KERJA SISWA (WORKSHEET) - KELAS 3 SD\nSekolah Origin: SDN 010 Tarakan\n\nInstruksi:\n1. Cocokkan gambar sarapan dengan kata Bahasa Inggris (Breakfast)!\n2. Lingkari makanan favoritmu:\n- Fried Chicken\n- Tarap Fruit\n- Milk\n\n3. Isilah titik-titik berikut:\nI eat ________ in the morning.')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF Worksheet</button>
                     </div>
                 </div>
             </div>
@@ -382,80 +428,146 @@
                 </div>
                 <div style="display:flex; flex-direction:column; gap:14px;" id="forum-posts-container">
                     <div class="forum-card">
-                        <span class="tag tag-guru">Ibu Siti (SDN 005 Nunukan)</span>
-                        <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">Metode seru mengajarkan nama-nama hari?</h4>
-                        <p style="font-size:0.88rem; color:var(--text-dark); font-weight:600;">"Rekan guru, ada ide permainan lagu yang menarik untuk kelas 3 materi Days of the Week?"</p>
+                        <span class="tag tag-guru">Ibu Siti Nurhaliza, S.Pd. (SDN 010 Tarakan)</span>
+                        <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">Bagaimana mengatasi siswa yang malu melafalkan ucapan Bahasa Inggris?</h4>
+                        <p style="font-size:0.85rem; color:var(--text-dark); margin-bottom:10px;">"Siswa kelas 3 sering takut salah saat mengucapkan kata 'Breakfast'. Adakah trik dari bapak/ibu guru lain?"</p>
+                        <div style="background:#f8fafc; padding:12px; border-radius:12px; border-left:4px solid var(--primary-green); font-size:0.85rem;">
+                            <strong>Tanggapan Guru (Bpk. Ahmad - SDN 005 Nunukan):</strong> "Gunakan metode bernyanyi lagu bersama sebelum menunjuk siswa secara individu agar mereka lebih percaya diri."
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 4: MODUL MATERI KELAS 3 SD (GAMBAR NYATA .PNG) -->
+            <!-- TAB 4: MODUL MATERI KELAS 3 SD -->
             <div id="tab-materi-sd" class="tab-pane" style="display:none;">
-                <div class="section-header"><span><i class="fa-solid fa-book-open"></i> Modul Belajar Visual Kelas 3 SD</span></div>
+                <div class="section-header"><span><i class="fa-solid fa-book"></i> Modul Pembelajaran Kelas 3 SD (20 Kosakata per Modul)</span></div>
                 <div class="materi-grid">
                     <div class="materi-card" onclick="openModule(1)">
-                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&auto=format&fit=crop&q=80" class="card-img-preview" alt="Food.png">
+                        <div class="card-icon">🍛</div>
                         <div class="card-title">Unit 1: Foods & Drinks</div>
-                        <div class="card-desc">Makanan dan minuman bergambar nyata.</div>
-                        <button class="btn-action-sm" style="width:100%;">Buka Modul</button>
+                        <div class="card-desc">Makanan, minuman & buah lokal Kaltara (Tarap & Lai).</div>
+                        <button class="btn-action-sm" style="width:100%;">Pelajari Modul (20 Kata)</button>
                     </div>
                     <div class="materi-card" onclick="openModule(2)">
-                        <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=400&auto=format&fit=crop&q=80" class="card-img-preview" alt="Hobbies.png">
-                        <div class="card-title">Unit 2: Hobbies</div>
-                        <div class="card-desc">Kegiatan hobi yang menyenangkan.</div>
-                        <button class="btn-action-sm" style="width:100%;">Buka Modul</button>
+                        <div class="card-icon">😋</div>
+                        <div class="card-title">Unit 2: Likes & Dislikes</div>
+                        <div class="card-desc">Pola "I like...", "He doesn't like", dan ungkapan rasa.</div>
+                        <button class="btn-action-sm" style="width:100%;">Pelajari Modul (20 Ungkapan)</button>
+                    </div>
+                    <div class="materi-card" onclick="openModule(3)">
+                        <div class="card-icon">🍳</div>
+                        <div class="card-title">Unit 3: Mealtimes</div>
+                        <div class="card-desc">Breakfast, Lunch, Dinner, & aktivitas waktu makan.</div>
+                        <button class="btn-action-sm" style="width:100%;">Pelajari Modul (20 Kata)</button>
+                    </div>
+                    <div class="materi-card" onclick="openModule(4)">
+                        <div class="card-icon">🚴‍♂️</div>
+                        <div class="card-title">Unit 4: Hobbies</div>
+                        <div class="card-desc">Macam hobi & pertanyaan "Do you like swimming?".</div>
+                        <button class="btn-action-sm" style="width:100%;">Pelajari Modul (20 Hobi)</button>
+                    </div>
+                    <div class="materi-card" onclick="openModule(5)">
+                        <div class="card-icon">📅</div>
+                        <div class="card-title">Unit 5: Days of Week</div>
+                        <div class="card-desc">Nama hari, penggunaan Before & After.</div>
+                        <button class="btn-action-sm" style="width:100%;">Pelajari Modul (20 Kata)</button>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 5: MUSIK & LAGU PEMBELAJARAN (.MP3) -->
+            <!-- TAB 5: GAMES & LAGU-LAGU PEMBELAJARAN -->
             <div id="tab-games-lagu" class="tab-pane" style="display:none;">
-                <div class="section-header"><span><i class="fa-solid fa-music"></i> Musik & Lagu Ajar Kelas 3 SD</span></div>
+                <div class="section-header"><span><i class="fa-solid fa-music"></i> Games & Lagu Pembelajaran Menyenangkan</span></div>
                 
-                <!-- Lagu 1 -->
+                <h3 style="font-family:var(--font-head); color:var(--primary-green); margin-bottom:14px; font-size:1.15rem;">🎵 Lagu & Musik Instrumen Pembelajaran (.mp3)</h3>
+                
                 <div class="song-card">
-                    <h3 style="font-family:var(--font-head); color:var(--primary-blue);">1. Foods and Drinks Song 🎵</h3>
-                    <div class="song-lyrics">
-                        🎶 I like chicken, I like rice,<br>
-                        Milk and water, very nice!<br>
-                        Yummy food for you and me! 🎶
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <h4 style="font-family:var(--font-head); color:var(--primary-green); font-size:1.05rem;">1. Foods & Drinks Song (Nada: Twinkle Twinkle)</h4>
+                        <div class="audio-player-box">
+                            <i class="fa-solid fa-music" style="color:var(--primary-green);"></i>
+                            <audio controls style="height:36px;">
+                                <source src="assets/audio/foods_and_drinks_song.mp3" type="audio/mpeg">
+                                Browser Anda tidak mendukung pemutar audio.
+                            </audio>
+                        </div>
                     </div>
-                    <audio controls>
-                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
-                        Browser Anda tidak mendukung elemen audio.
-                    </audio>
+                    <div class="song-lyrics">
+                        🎶 <em>I like chicken, I like rice.<br>
+                        Tarap fruit is very nice!<br>
+                        Milk and water, drink it all.<br>
+                        Yummy food for big and small!</em> 🎶
+                    </div>
                 </div>
 
-                <!-- Lagu 2 -->
                 <div class="song-card">
-                    <h3 style="font-family:var(--font-head); color:var(--accent-orange);">2. Days of the Week Song 🎵</h3>
-                    <div class="song-lyrics">
-                        🎶 Sunday, Monday, Tuesday, Wednesday,<br>
-                        Thursday, Friday, Saturday!<br>
-                        Seven days are in a week! 🎶
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <h4 style="font-family:var(--font-head); color:var(--primary-green); font-size:1.05rem;">2. Days of the Week Song (Nada: Are You Sleeping)</h4>
+                        <div class="audio-player-box">
+                            <i class="fa-solid fa-music" style="color:var(--primary-green);"></i>
+                            <audio controls style="height:36px;">
+                                <source src="assets/audio/days_of_week_song.mp3" type="audio/mpeg">
+                                Browser Anda tidak mendukung pemutar audio.
+                            </audio>
+                        </div>
                     </div>
-                    <audio controls>
-                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mp3">
-                        Browser Anda tidak mendukung elemen audio.
-                    </audio>
+                    <div class="song-lyrics">
+                        🎶 <em>Sunday, Monday, Tuesday, Wednesday,<br>
+                        Thursday, Friday, Saturday!<br>
+                        Seven days, in a week,<br>
+                        Sing with me, sing with me!</em> 🎶
+                    </div>
+                </div>
+
+                <div class="song-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <h4 style="font-family:var(--font-head); color:var(--primary-green); font-size:1.05rem;">3. Hobbies Song (Nada: If You're Happy)</h4>
+                        <div class="audio-player-box">
+                            <i class="fa-solid fa-music" style="color:var(--primary-green);"></i>
+                            <audio controls style="height:36px;">
+                                <source src="assets/audio/hobbies_song.mp3" type="audio/mpeg">
+                                Browser Anda tidak mendukung pemutar audio.
+                            </audio>
+                        </div>
+                    </div>
+                    <div class="song-lyrics">
+                        🎶 <em>If you like swimming swim like this!<br>
+                        If you like riding ride your bike!<br>
+                        Reading books and drawing pictures,<br>
+                        We love hobbies every day!</em> 🎶
+                    </div>
+                </div>
+
+                <h3 style="font-family:var(--font-head); color:var(--primary-green); margin:24px 0 14px 0; font-size:1.15rem;">🎮 Mini Edutainment Games</h3>
+                <div class="song-card" style="text-align:center; padding:28px;">
+                    <img src="assets/images/tarap_fruit.png" alt="Tarap Fruit" style="width:140px; height:100px; object-fit:cover; border-radius:14px; margin-bottom:12px; border:2px solid #cbd5e1;">
+                    <h4 style="font-family:var(--font-head); font-size:1.2rem; color:var(--primary-green); margin-bottom:8px;" id="game-title-text">Guess the Fruit!</h4>
+                    <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:18px;" id="game-desc-text">What fruit is this?</p>
+                    <div style="display:flex; justify-content:center; gap:12px;" id="game-action-container">
+                        <button class="btn-action-sm" onclick="checkGameAns(true)" style="padding:10px 20px; font-size:1rem;">A. Tarap Fruit</button>
+                        <button class="btn-action-sm" onclick="checkGameAns(false)" style="padding:10px 20px; font-size:1rem;">B. Apple</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- TAB 6: MINI KUIS GAMBAR & BAHASA INGGRIS SEDERHANA -->
+            <!-- TAB 6: MINI KUIS EVALUASI -->
             <div id="tab-kuis-evaluasi" class="tab-pane" style="display:none;">
-                <div class="section-header"><span><i class="fa-solid fa-gamepad"></i> Kuis Bahasa Inggris Sederhana</span></div>
+                <div class="section-header"><span><i class="fa-solid fa-list-check"></i> Mini Kuis Evaluasi (5 Paket @ 20 Soal Visual & Sederhana)</span></div>
+                
+                <div class="grid-selector">
+                    <button class="selector-btn active" onclick="selectQuiz(0, this)">Kuis 1: Foods & Drinks</button>
+                    <button class="selector-btn" onclick="selectQuiz(1, this)">Kuis 2: Likes & Dislikes</button>
+                    <button class="selector-btn" onclick="selectQuiz(2, this)">Kuis 3: Mealtimes</button>
+                    <button class="selector-btn" onclick="selectQuiz(3, this)">Kuis 4: Hobbies</button>
+                    <button class="selector-btn" onclick="selectQuiz(4, this)">Kuis 5: Days of Week</button>
+                </div>
 
                 <div class="quiz-stage">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; font-family:var(--font-head); color:var(--primary-blue);">
-                        <span id="quiz-title-text" style="font-size:1.2rem;">Soal Bergambar</span>
-                        <span id="quiz-progress-text" style="background:#e0f2fe; padding:6px 14px; border-radius:14px;">Soal 1 dari 3</span>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; font-family:var(--font-head); color:var(--primary-green);">
+                        <span id="quiz-title-text" style="font-size:1.15rem;">Kuis 1: Foods & Drinks</span>
+                        <span id="quiz-progress-text" style="background:#e8f5e9; padding:6px 14px; border-radius:14px; font-weight:700;">Question 1 of 20</span>
                     </div>
-
-                    <div class="quiz-img-container">
-                        <img id="quiz-question-img" src="" class="quiz-img" alt="Quiz.png">
-                    </div>
-
-                    <div class="quiz-card-q" id="quiz-question-box">Loading soal...</div>
+                    <div class="quiz-card-q" id="quiz-question-box">Loading question...</div>
                     <div class="quiz-options-grid" id="quiz-options-box"></div>
                 </div>
             </div>
@@ -465,10 +577,10 @@
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="widget-box">
-                <div class="widget-title"><i class="fa-solid fa-users" style="color:var(--primary-blue);"></i> Komunitas SD</div>
-                <div class="stat-item"><span>Guru Terhubung</span> <strong>48 Guru</strong></div>
-                <div class="stat-item"><span>Sekolah Terdaftar</span> <strong>22 SD</strong></div>
-                <div class="stat-item"><span>Modul Berbagi</span> <strong>35 Berkas</strong></div>
+                <div class="widget-title"><i class="fa-solid fa-chart-line" style="color:var(--primary-green);"></i> Statistik Ekosistem</div>
+                <div class="stat-item"><span>Guru SD Terhubung</span> <strong>48 Guru</strong></div>
+                <div class="stat-item"><span>Sekolah Terlibat</span> <strong>18 SD</strong></div>
+                <div class="stat-item"><span>Modul Terbagikan</span> <strong>32 Berkas</strong></div>
             </div>
         </aside>
     </div>
@@ -477,26 +589,30 @@
     <div class="modal-overlay" id="profile-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Profil Guru SD</h3>
+                <h3>Profil Pengguna Ekosistem</h3>
                 <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('profile-modal')">✕</button>
             </div>
             <div class="modal-body">
                 <form onsubmit="handleSaveProfile(event)">
                     <div class="input-group">
-                        <label>Nama Lengkap</label>
+                        <label>Nama Lengkap & Gelar</label>
                         <input type="text" id="prof-name" required>
                     </div>
                     <div class="input-group">
-                        <label>Asal Sekolah SD</label>
+                        <label>Peran dalam Ekosistem</label>
+                        <input type="text" id="prof-role" readonly style="background:#f1f5f9;">
+                    </div>
+                    <div class="input-group">
+                        <label>Sekolah Asal (Sekaltara)</label>
                         <input type="text" id="prof-school" required>
                     </div>
-                    <button type="submit" class="btn-primary">Simpan Profil <i class="fa-solid fa-floppy-disk"></i></button>
+                    <button type="submit" class="btn-primary">Simpan Perubahan <i class="fa-solid fa-floppy-disk"></i></button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- MODAL MODUL MATERI GAMBAR -->
+    <!-- MODAL POPUP MODUL SD -->
     <div class="modal-overlay" id="module-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -504,35 +620,40 @@
                 <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('module-modal')">✕</button>
             </div>
             <div class="modal-body">
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 14px; font-weight:700;">🔊 Klik kartu kosakata untuk mendengarkan audio pelafalan Bahasa Inggris:</p>
                 <div class="vocab-grid" id="vocab-container"></div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL UNGGAH MODUL -->
+    <!-- MODAL UNGGAH BERKAS -->
     <div class="modal-overlay" id="upload-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Unggah Modul Ajar</h3>
+                <h3>Unggah Berkas ke Bank Materi Hub</h3>
                 <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('upload-modal')">✕</button>
             </div>
             <div class="modal-body">
                 <form onsubmit="handleUploadResource(event)">
                     <div class="input-group">
-                        <label>Judul Modul / Berkas</label>
-                        <input type="text" id="up-title" placeholder="Contoh: Modul Bergambar Foods" required>
+                        <label>Judul Modul / Berkas / Worksheet</label>
+                        <input type="text" id="up-title" placeholder="Contoh: Worksheet Bergambar Buah Kaltara" required>
                     </div>
                     <div class="input-group">
-                        <label>Asal Sekolah</label>
-                        <input type="text" id="up-origin" placeholder="Contoh: SDN 001 Tarakan" required>
+                        <label>Asal Sekolah Pengunggah</label>
+                        <input type="text" id="up-origin" placeholder="Contoh: SDN 010 Tarakan" required>
                     </div>
-                    <button type="submit" class="btn-primary">Unggah Berkas <i class="fa-solid fa-cloud-arrow-up"></i></button>
+                    <div class="input-group">
+                        <label>Deskripsi Singkat Isi Berkas PDF</label>
+                        <textarea id="up-desc" rows="3" placeholder="Jelaskan isi berkas yang akan diunduh pengguna..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Terbitkan & Izinkan Unduh PDF <i class="fa-solid fa-cloud-arrow-up"></i></button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- MODAL FORUM DISKUSI -->
+    <!-- MODAL FORUM -->
     <div class="modal-overlay" id="forum-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -546,7 +667,7 @@
                         <input type="text" id="forum-title" required>
                     </div>
                     <div class="input-group">
-                        <label>Isi Pertanyaan / Topik</label>
+                        <label>Detail Pertanyaan / Kendala</label>
                         <textarea id="forum-body" rows="4" required></textarea>
                     </div>
                     <button type="submit" class="btn-primary">Kirimkan Topik <i class="fa-solid fa-paper-plane"></i></button>
@@ -556,20 +677,42 @@
     </div>
 
     <footer>
-        ENGLISH ADVENTURE KELAS 3 &copy; 2026 • Platform Kolaborasi Guru SD se-Kalimantan Utara
+        ENGLISH ADVENTURE KELAS 3 &copy; 2026 • Ekosistem Kolaborasi Guru SD Sekolah Dasar se-Kalimantan Utara (Sekaltara)
     </footer>
 
     <script>
-        /* USER STATE */
+        /* USER STATE & AUTHENTICATION */
         let currentUser = {
-            name: "Ibu Rahma, S.Pd.",
-            school: "SDN 001 Tarakan"
+            name: "Ibu Nurhayati, S.Pd.",
+            role: "Guru SD",
+            school: "SDN 010 Tarakan"
         };
 
-        function handleAuthSubmit(event) {
+        function switchAuthTab(type) {
+            document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
+            if(type === 'login') {
+                document.querySelectorAll('.auth-tab-btn')[0].classList.add('active');
+                document.getElementById('form-login').style.display = 'block';
+                document.getElementById('form-register').style.display = 'none';
+            } else {
+                document.querySelectorAll('.auth-tab-btn')[1].classList.add('active');
+                document.getElementById('form-login').style.display = 'none';
+                document.getElementById('form-register').style.display = 'block';
+            }
+        }
+
+        function handleAuthSubmit(event, type) {
             event.preventDefault();
-            currentUser.name = document.getElementById('login-id').value.trim();
-            currentUser.school = document.getElementById('login-school').value.trim();
+            if (type === 'login') {
+                currentUser.role = document.getElementById('login-role').value;
+                const idVal = document.getElementById('login-id').value.trim() || "Pengguna";
+                currentUser.name = idVal.includes('@') ? idVal.split('@')[0] : idVal;
+                currentUser.school = "SDN 010 Tarakan";
+            } else {
+                currentUser.name = document.getElementById('reg-name').value.trim();
+                currentUser.role = document.getElementById('reg-role').value;
+                currentUser.school = document.getElementById('reg-school').value.trim();
+            }
 
             updateUserUI();
             document.getElementById('auth-screen').style.display = 'none';
@@ -577,15 +720,18 @@
 
         function handleLogout() {
             document.getElementById('auth-screen').style.display = 'flex';
+            switchTab('dashboard', document.querySelectorAll('.nav-btn')[0]);
         }
 
         function updateUserUI() {
             document.getElementById('user-display-name').innerText = currentUser.name;
-            document.getElementById('user-display-role').innerText = currentUser.school;
+            document.getElementById('user-display-role').innerText = `${currentUser.role} • ${currentUser.school}`;
             document.getElementById('hero-user-name').innerText = currentUser.name;
 
             document.getElementById('prof-name').value = currentUser.name;
+            document.getElementById('prof-role').value = currentUser.role;
             document.getElementById('prof-school').value = currentUser.school;
+            document.getElementById('up-origin').value = currentUser.school;
         }
 
         function handleSaveProfile(e) {
@@ -594,6 +740,7 @@
             currentUser.school = document.getElementById('prof-school').value.trim();
             updateUserUI();
             closeModal('profile-modal');
+            alert('Profil pengguna berhasil diperbarui!');
         }
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
@@ -606,18 +753,48 @@
             document.getElementById(`tab-${tabId}`).style.display = 'block';
 
             if (tabId === 'kuis-evaluasi') {
-                renderQuizQuestion();
+                selectQuiz(0, document.querySelectorAll('#tab-kuis-evaluasi .selector-btn')[0]);
             }
         }
 
-        function downloadPDFResource(title, schoolOrigin) {
-            alert(`Mengunduh berkas modul: "${title}.pdf" dari ${schoolOrigin}!`);
+        /* DYNAMIC PDF DOWNLOAD GENERATOR */
+        function downloadPDFResource(title, schoolOrigin, bodyContent) {
+            const pdfDocContent = `
+===================================================================
+ENGLISH ADVENTURE KALTARA - KOLABORASI GURU SD SEKALTARA
+===================================================================
+
+JUDUL BERKAS   : ${title}
+SEKOLAH ASAL   : ${schoolOrigin}
+TANGGAL DITERBITKAN : 2026
+
+-------------------------------------------------------------------
+DESKRIPSI & ISI DOKUMEN:
+-------------------------------------------------------------------
+${bodyContent}
+
+===================================================================
+Dokumen ini diterbitkan secara resmi melalui Platform Kolaborasi 
+Guru Sekolah Dasar se-Kalimantan Utara (Sekaltara).
+===================================================================
+            `;
+
+            const blob = new Blob([pdfDocContent], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${title.replace(/[^a-zA-Z0-9]/g, '_')}_${schoolOrigin.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            alert(`Mulai mengunduh berkas PDF resmi: "${title}.pdf" dari ${schoolOrigin}!`);
         }
 
         function handleUploadResource(e) {
             e.preventDefault();
             const title = document.getElementById('up-title').value;
             const origin = document.getElementById('up-origin').value;
+            const desc = document.getElementById('up-desc').value;
 
             const container = document.getElementById('resource-cards-container');
             const card = document.createElement('div');
@@ -626,11 +803,13 @@
                 <div>
                     <span class="tag tag-guru">${origin}</span>
                     <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">${title}</h4>
+                    <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">${desc}</p>
                 </div>
-                <button class="btn-action-sm" onclick="downloadPDFResource('${title}', '${origin}')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF Modul</button>
+                <button class="btn-action-sm" onclick="downloadPDFResource('${title}', '${origin}', '${desc}')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF Modul</button>
             `;
             container.prepend(card);
             closeModal('upload-modal');
+            alert(`Berkas dari ${origin} berhasil diterbitkan!`);
         }
 
         function handleCreateForum(e) {
@@ -644,30 +823,158 @@
             card.innerHTML = `
                 <span class="tag tag-guru">${currentUser.name} (${currentUser.school})</span>
                 <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">${title}</h4>
-                <p style="font-size:0.88rem; color:var(--text-dark); font-weight:600;">"${body}"</p>
+                <p style="font-size:0.85rem; color:var(--text-dark); margin-bottom:10px;">"${body}"</p>
             `;
             container.prepend(card);
             closeModal('forum-modal');
+            alert('Topik diskusi berhasil dikirim!');
         }
 
-        /* DATA MODUL MATERI GAMBAR (.PNG) */
+        /* GAMES AUDIO CONTROLLER */
+        function checkGameAns(isCorrect) {
+            if(isCorrect) {
+                alert("🎉 Correct! This is a Tarap Fruit from Kaltara!");
+            } else {
+                alert("❌ Try again!");
+            }
+        }
+
+        /* DATA MODUL MATERI SD DENGAN GAMBAR NYATA (.png) */
         const moduleData = {
             1: {
-                title: "Unit 1: Foods & Drinks",
+                title: "Unit 1: Foods & Drinks (20 Vocabulary)",
                 vocab: [
-                    { en: "Fried Chicken", id: "Ayam Goreng", img: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=300&auto=format&fit=crop&q=80" },
-                    { en: "Orange Juice", id: "Jus Jeruk", img: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=300&auto=format&fit=crop&q=80" },
-                    { en: "Milk", id: "Susu", img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=300&auto=format&fit=crop&q=80" }
+                    { en: "Fried Chicken", id: "Ayam Goreng", img: "assets/images/fried_chicken.png" },
+                    { en: "Fried Rice", id: "Nasi Goreng", img: "assets/images/fried_rice.png" },
+                    { en: "Noodle", id: "Mi", img: "assets/images/noodle.png" },
+                    { en: "Meatball", id: "Bakso", img: "assets/images/meatball.png" },
+                    { en: "Rice", id: "Nasi", img: "assets/images/rice.png" },
+                    { en: "Bread", id: "Roti", img: "assets/images/bread.png" },
+                    { en: "Fried Egg", id: "Telur Mata Sapi", img: "assets/images/fried_egg.png" },
+                    { en: "Soup", id: "Sup", img: "assets/images/soup.png" },
+                    { en: "Tarap Fruit", id: "Buah Tarap", img: "assets/images/tarap_fruit.png" },
+                    { en: "Lai Fruit", id: "Buah Lai", img: "assets/images/lai_fruit.png" },
+                    { en: "Milk", id: "Susu", img: "assets/images/milk.png" },
+                    { en: "Tea", id: "Teh", img: "assets/images/tea.png" },
+                    { en: "Coffee", id: "Kopi", img: "assets/images/coffee.png" },
+                    { en: "Mineral Water", id: "Air Putih", img: "assets/images/water.png" },
+                    { en: "Orange Juice", id: "Jus Jeruk", img: "assets/images/orange_juice.png" },
+                    { en: "Ice Cream", id: "Es Krim", img: "assets/images/ice_cream.png" },
+                    { en: "Banana", id: "Pisang", img: "assets/images/banana.png" },
+                    { en: "Watermelon", id: "Semangka", img: "assets/images/watermelon.png" },
+                    { en: "Crackers", id: "Kerupuk", img: "assets/images/crackers.png" },
+                    { en: "Cake", id: "Kue", img: "assets/images/cake.png" }
                 ]
             },
             2: {
-                title: "Unit 2: Hobbies",
+                title: "Unit 2: Likes & Dislikes (20 Expressions)",
                 vocab: [
-                    { en: "Swimming", id: "Berenang", img: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=300&auto=format&fit=crop&q=80" },
-                    { en: "Reading", id: "Membaca", img: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&auto=format&fit=crop&q=80" }
+                    { en: "I like Tarap fruit", id: "Saya suka buah Tarap", img: "assets/images/tarap_fruit.png" },
+                    { en: "I don't like coffee", id: "Saya tidak suka kopi", img: "assets/images/coffee.png" },
+                    { en: "He likes fried chicken", id: "Dia suka ayam goreng", img: "assets/images/fried_chicken.png" },
+                    { en: "She doesn't like tea", id: "Dia tidak suka teh", img: "assets/images/tea.png" },
+                    { en: "They like ice cream", id: "Mereka suka es krim", img: "assets/images/ice_cream.png" },
+                    { en: "We like Lai fruit", id: "Kami suka buah Lai", img: "assets/images/lai_fruit.png" },
+                    { en: "Do you like noodle?", id: "Apakah kamu suka mi?", img: "assets/images/noodle.png" },
+                    { en: "Yes, I do", id: "Ya, saya suka", img: "assets/images/like.png" },
+                    { en: "No, I don't", id: "Tidak, saya tidak suka", img: "assets/images/dislike.png" },
+                    { en: "Sweet", id: "Manis", img: "assets/images/candy.png" },
+                    { en: "Salty", id: "Asin", img: "assets/images/salt.png" },
+                    { en: "Sour", id: "Masam", img: "assets/images/lemon.png" },
+                    { en: "Bitter", id: "Pahit", img: "assets/images/coffee.png" },
+                    { en: "Delicious", id: "Lezat / Enak", img: "assets/images/delicious.png" },
+                    { en: "Hot", id: "Panas", img: "assets/images/hot_tea.png" },
+                    { en: "Cold", id: "Dingin", img: "assets/images/ice_cream.png" },
+                    { en: "Favorite food", id: "Makanan favorit", img: "assets/images/fried_rice.png" },
+                    { en: "Favorite drink", id: "Minuman favorit", img: "assets/images/orange_juice.png" },
+                    { en: "Hungry", id: "Lapar", img: "assets/images/hungry.png" },
+                    { en: "Thirsty", id: "Haus", img: "assets/images/thirsty.png" }
+                ]
+            },
+            3: {
+                title: "Unit 3: Mealtimes & Schedule (20 Vocabulary)",
+                vocab: [
+                    { en: "Breakfast", id: "Sarapan", img: "assets/images/breakfast.png" },
+                    { en: "Lunch", id: "Makan Siang", img: "assets/images/lunch.png" },
+                    { en: "Dinner", id: "Makan Malam", img: "assets/images/dinner.png" },
+                    { en: "In the morning", id: "Di pagi hari", img: "assets/images/morning.png" },
+                    { en: "In the afternoon", id: "Di siang hari", img: "assets/images/afternoon.png" },
+                    { en: "In the evening", id: "Di malam hari", img: "assets/images/evening.png" },
+                    { en: "Eat", id: "Makan", img: "assets/images/eat.png" },
+                    { en: "Drink", id: "Minum", img: "assets/images/drink.png" },
+                    { en: "Dining room", id: "Ruang Makan", img: "assets/images/dining_room.png" },
+                    { en: "School canteen", id: "Kantin Sekolah", img: "assets/images/canteen.png" },
+                    { en: "Cook", id: "Memasak", img: "assets/images/cook.png" },
+                    { en: "Kitchen", id: "Dapur", img: "assets/images/kitchen.png" },
+                    { en: "Plate", id: "Piring", img: "assets/images/plate.png" },
+                    { en: "Spoon", id: "Sendok", img: "assets/images/spoon.png" },
+                    { en: "Fork", id: "Garpu", img: "assets/images/fork.png" },
+                    { en: "Glass", id: "Gelas", img: "assets/images/glass.png" },
+                    { en: "Wash hands", id: "Mencuci tangan", img: "assets/images/wash_hands.png" },
+                    { en: "Healthy food", id: "Makanan sehat", img: "assets/images/healthy_food.png" },
+                    { en: "Every day", id: "Setiap hari", img: "assets/images/calendar.png" },
+                    { en: "Time to eat", id: "Waktunya makan", img: "assets/images/clock.png" }
+                ]
+            },
+            4: {
+                title: "Unit 4: Hobbies & Activities (20 Vocabulary)",
+                vocab: [
+                    { en: "Swimming", id: "Berenang", img: "assets/images/swimming.png" },
+                    { en: "Reading a book", id: "Membaca buku", img: "assets/images/reading.png" },
+                    { en: "Riding a bike", id: "Bersepeda", img: "assets/images/cycling.png" },
+                    { en: "Singing", id: "Bernyanyi", img: "assets/images/singing.png" },
+                    { en: "Dancing", id: "Menari", img: "assets/images/dancing.png" },
+                    { en: "Playing football", id: "Bermain bola", img: "assets/images/football.png" },
+                    { en: "Playing badminton", id: "Bermain bulu tangkis", img: "assets/images/badminton.png" },
+                    { en: "Fishing", id: "Memancing", img: "assets/images/fishing.png" },
+                    { en: "Cooking", id: "Memasak", img: "assets/images/cook.png" },
+                    { en: "Drawing", id: "Menggambar", img: "assets/images/drawing.png" },
+                    { en: "Painting", id: "Melukis", img: "assets/images/painting.png" },
+                    { en: "Playing doll", id: "Bermain boneka", img: "assets/images/doll.png" },
+                    { en: "Flying a kite", id: "Main layang-layang", img: "assets/images/kite.png" },
+                    { en: "Watching TV", id: "Menonton TV", img: "assets/images/watching_tv.png" },
+                    { en: "Studying", id: "Belajar", img: "assets/images/studying.png" },
+                    { en: "Running", id: "Berlari", img: "assets/images/running.png" },
+                    { en: "Gardening", id: "Berkebun", img: "assets/images/gardening.png" },
+                    { en: "Listening to music", id: "Mendengar musik", img: "assets/images/listening_music.png" },
+                    { en: "My hobby is...", id: "Hobi saya adalah...", img: "assets/images/hobby.png" },
+                    { en: "What is your hobby?", id: "Apa hobimu?", img: "assets/images/question.png" }
+                ]
+            },
+            5: {
+                title: "Unit 5: Days of the Week & Time (20 Vocabulary)",
+                vocab: [
+                    { en: "Sunday", id: "Minggu", img: "assets/images/sunday.png" },
+                    { en: "Monday", id: "Senin", img: "assets/images/monday.png" },
+                    { en: "Tuesday", id: "Selasa", img: "assets/images/tuesday.png" },
+                    { en: "Wednesday", id: "Rabu", img: "assets/images/wednesday.png" },
+                    { en: "Thursday", id: "Kamis", img: "assets/images/thursday.png" },
+                    { en: "Friday", id: "Jumat", img: "assets/images/friday.png" },
+                    { en: "Saturday", id: "Sabtu", img: "assets/images/saturday.png" },
+                    { en: "Today", id: "Hari ini", img: "assets/images/today.png" },
+                    { en: "Tomorrow", id: "Besok", img: "assets/images/tomorrow.png" },
+                    { en: "Yesterday", id: "Kemarin", img: "assets/images/yesterday.png" },
+                    { en: "Before", id: "Sebelum", img: "assets/images/before.png" },
+                    { en: "After", id: "Sesudah / Setelah", img: "assets/images/after.png" },
+                    { en: "Week", id: "Minggu / Pekan", img: "assets/images/week.png" },
+                    { en: "Weekend", id: "Akhir pekan", img: "assets/images/weekend.png" },
+                    { en: "Day", id: "Hari", img: "assets/images/day.png" },
+                    { en: "Daily activity", id: "Kegiatan harian", img: "assets/images/daily.png" },
+                    { en: "School day", id: "Hari sekolah", img: "assets/images/school_day.png" },
+                    { en: "Holiday", id: "Hari libur", img: "assets/images/holiday.png" },
+                    { en: "What day is today?", id: "Hari apa hari ini?", img: "assets/images/question_day.png" },
+                    { en: "Today is Monday", id: "Hari ini hari Senin", img: "assets/images/monday.png" }
                 ]
             }
         };
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.rate = 0.85;
+                window.speechSynthesis.speak(u);
+            }
+        }
 
         function openModule(id) {
             const data = moduleData[id];
@@ -675,67 +982,188 @@
             const c = document.getElementById('vocab-container'); c.innerHTML = '';
             data.vocab.forEach(v => {
                 const card = document.createElement('div'); card.className = 'vocab-item';
-                card.innerHTML = `<img src="${v.img}" class="vocab-img" alt="${v.en}.png"><div style="font-family:var(--font-head); color:var(--primary-blue); font-size:0.95rem;">${v.en}</div><div style="font-size:0.8rem; color:var(--text-muted); font-weight:700;">${v.id}</div>`;
+                card.onclick = () => speak(v.en);
+                card.innerHTML = `<img src="${v.img}" alt="${v.en}" class="vocab-img" onerror="this.src='assets/images/placeholder.png'"><div style="font-family:var(--font-head); color:var(--primary-green); font-size:0.9rem;">${v.en}</div><div style="font-size:0.75rem; color:var(--text-muted);">${v.id}</div>`;
                 c.appendChild(card);
             });
             openModal('module-modal');
         }
 
-        /* DATA SOAL KUIS GAMBAR (.PNG) & BAHASA INGGRIS SEDERHANA */
-        const quizData = [
-            {
-                q: "What food is this?",
-                img: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400&auto=format&fit=crop&q=80",
-                options: ["Fried Chicken", "Ice Cream", "Apple"],
-                answer: 0
-            },
-            {
-                q: "What drink is this?",
-                img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&auto=format&fit=crop&q=80",
-                options: ["Tea", "Milk", "Coffee"],
-                answer: 1
-            },
-            {
-                q: "What hobby is this?",
-                img: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=400&auto=format&fit=crop&q=80",
-                options: ["Dancing", "Reading", "Swimming"],
-                answer: 2
-            }
+        /* DATA 5 PAKET KUIS (SEDERHANA BHS INGGRIS & GAMBAR) */
+        const allQuizzes = [
+            [
+                { q: "What is this?", img: "assets/images/fried_chicken.png", options: ["Fried Chicken", "Fried Rice", "Noodle"], answer: 0 },
+                { q: "What fruit is this?", img: "assets/images/tarap_fruit.png", options: ["Tarap Fruit", "Apple", "Banana"], answer: 0 },
+                { q: "What is this?", img: "assets/images/meatball.png", options: ["Meatball", "Bread", "Milk"], answer: 0 },
+                { q: "What is this?", img: "assets/images/fried_rice.png", options: ["Fried Rice", "Fried Egg", "Soup"], answer: 0 },
+                { q: "What fruit is this?", img: "assets/images/lai_fruit.png", options: ["Lai Fruit", "Banana", "Watermelon"], answer: 0 },
+                { q: "What drink is this?", img: "assets/images/milk.png", options: ["Milk", "Tea", "Coffee"], answer: 0 },
+                { q: "What drink is this?", img: "assets/images/orange_juice.png", options: ["Orange Juice", "Apple Juice", "Tea"], answer: 0 },
+                { q: "What is this?", img: "assets/images/bread.png", options: ["Bread", "Cake", "Noodle"], answer: 0 },
+                { q: "What drink is this?", img: "assets/images/water.png", options: ["Water", "Milk", "Coffee"], answer: 0 },
+                { q: "What food is this?", img: "assets/images/soup.png", options: ["Soup", "Fried Rice", "Bread"], answer: 0 },
+                { q: "What drink is this?", img: "assets/images/tea.png", options: ["Tea", "Coffee", "Milk"], answer: 0 },
+                { q: "What food is this?", img: "assets/images/ice_cream.png", options: ["Ice Cream", "Cake", "Bread"], answer: 0 },
+                { q: "What fruit is this?", img: "assets/images/banana.png", options: ["Banana", "Watermelon", "Apple"], answer: 0 },
+                { q: "What is this?", img: "assets/images/fried_egg.png", options: ["Fried Egg", "Fried Chicken", "Rice"], answer: 0 },
+                { q: "What fruit is this?", img: "assets/images/watermelon.png", options: ["Watermelon", "Melon", "Apple"], answer: 0 },
+                { q: "What snack is this?", img: "assets/images/crackers.png", options: ["Crackers", "Cake", "Bread"], answer: 0 },
+                { q: "What drink is this?", img: "assets/images/coffee.png", options: ["Coffee", "Tea", "Juice"], answer: 0 },
+                { q: "What food is this?", img: "assets/images/noodle.png", options: ["Noodle", "Rice", "Meatball"], answer: 0 },
+                { q: "What is this?", img: "assets/images/rice.png", options: ["Rice", "Bread", "Noodle"], answer: 0 },
+                { q: "What food is this?", img: "assets/images/cake.png", options: ["Cake", "Bread", "Meatball"], answer: 0 }
+            ],
+            [
+                { q: "I _____ Tarap fruit.", img: "assets/images/tarap_fruit.png", options: ["like", "likes", "don't"], answer: 0 },
+                { q: "He _____ coffee.", img: "assets/images/coffee.png", options: ["doesn't like", "don't like", "not like"], answer: 0 },
+                { q: "She _____ ice cream.", img: "assets/images/ice_cream.png", options: ["likes", "like", "don't like"], answer: 0 },
+                { q: "I don't like _____.", img: "assets/images/tea.png", options: ["tea", "milk", "water"], answer: 0 },
+                { q: "Do you like noodle? - Yes, I _____.", img: "assets/images/noodle.png", options: ["do", "don't", "does"], answer: 0 },
+                { q: "They _____ Lai fruit.", img: "assets/images/lai_fruit.png", options: ["like", "likes", "doesn't like"], answer: 0 },
+                { q: "Candy taste is...", img: "assets/images/candy.png", options: ["Sweet", "Salty", "Bitter"], answer: 0 },
+                { q: "Salt taste is...", img: "assets/images/salt.png", options: ["Salty", "Sweet", "Sour"], answer: 0 },
+                { q: "Lemon taste is...", img: "assets/images/lemon.png", options: ["Sour", "Sweet", "Bitter"], answer: 0 },
+                { q: "This cake is very...", img: "assets/images/cake.png", options: ["Delicious", "Bitter", "Salty"], answer: 0 },
+                { q: "I want to eat. I am...", img: "assets/images/hungry.png", options: ["Hungry", "Thirsty", "Sleepy"], answer: 0 },
+                { q: "I want to drink. I am...", img: "assets/images/thirsty.png", options: ["Thirsty", "Hungry", "Happy"], answer: 0 },
+                { q: "They _____ like milk.", img: "assets/images/milk.png", options: ["don't", "doesn't", "not"], answer: 0 },
+                { q: "Does he like fried rice? - Yes, he _____.", img: "assets/images/fried_rice.png", options: ["does", "do", "likes"], answer: 0 },
+                { q: "Ice cream is a _____ food.", img: "assets/images/ice_cream.png", options: ["Cold", "Hot", "Warm"], answer: 0 },
+                { q: "Tea in a hot cup is...", img: "assets/images/hot_tea.png", options: ["Hot", "Cold", "Ice"], answer: 0 },
+                { q: "Cici likes _____.", img: "assets/images/fried_chicken.png", options: ["Fried chicken", "Fried rice", "Noodle"], answer: 0 },
+                { q: "Opposite of 'Like' is...", img: "assets/images/dislike.png", options: ["Dislike", "Love", "Enjoy"], answer: 0 },
+                { q: "Coffee without sugar is...", img: "assets/images/coffee.png", options: ["Bitter", "Sweet", "Salty"], answer: 0 },
+                { q: "My favorite drink is _____.", img: "assets/images/orange_juice.png", options: ["Orange juice", "Coffee", "Tea"], answer: 0 }
+            ],
+            [
+                { q: "Eating in the morning is...", img: "assets/images/breakfast.png", options: ["Breakfast", "Lunch", "Dinner"], answer: 0 },
+                { q: "Eating at 12 PM is...", img: "assets/images/lunch.png", options: ["Lunch", "Breakfast", "Dinner"], answer: 0 },
+                { q: "Eating at night is...", img: "assets/images/dinner.png", options: ["Dinner", "Lunch", "Breakfast"], answer: 0 },
+                { q: "Morning time is...", img: "assets/images/morning.png", options: ["In the morning", "In the evening", "At night"], answer: 0 },
+                { q: "Night time is...", img: "assets/images/evening.png", options: ["In the evening", "In the morning", "In the afternoon"], answer: 0 },
+                { q: "I eat _____ for breakfast.", img: "assets/images/bread.png", options: ["Bread", "Rice", "Noodle"], answer: 0 },
+                { q: "We buy food at school...", img: "assets/images/canteen.png", options: ["School canteen", "Library", "Classroom"], answer: 0 },
+                { q: "We eat food in the...", img: "assets/images/dining_room.png", options: ["Dining room", "Bedroom", "Bathroom"], answer: 0 },
+                { q: "Before eating, we must...", img: "assets/images/wash_hands.png", options: ["Wash hands", "Sleep", "Run"], answer: 0 },
+                { q: "We use teeth to _____ food.", img: "assets/images/eat.png", options: ["Eat", "Drink", "Cook"], answer: 0 },
+                { q: "We _____ water when thirsty.", img: "assets/images/drink.png", options: ["Drink", "Eat", "Cook"], answer: 0 },
+                { q: "Mother cooks in the...", img: "assets/images/kitchen.png", options: ["Kitchen", "Garden", "Canteen"], answer: 0 },
+                { q: "We eat soup with a...", img: "assets/images/spoon.png", options: ["Spoon", "Fork", "Glass"], answer: 0 },
+                { q: "Pair of spoon is...", img: "assets/images/fork.png", options: ["Fork", "Plate", "Glass"], answer: 0 },
+                { q: "We put rice on a...", img: "assets/images/plate.png", options: ["Plate", "Glass", "Fork"], answer: 0 },
+                { q: "Vegetables and fruits are...", img: "assets/images/healthy_food.png", options: ["Healthy food", "Junk food", "Snack"], answer: 0 },
+                { q: "Sun rises in the...", img: "assets/images/morning.png", options: ["Morning", "Night", "Evening"], answer: 0 },
+                { q: "It is 12:00. It is...", img: "assets/images/clock.png", options: ["Time to eat", "Time to sleep", "Time to play"], answer: 0 },
+                { q: "She is a good...", img: "assets/images/cook.png", options: ["Cook", "Teacher", "Doctor"], answer: 0 },
+                { q: "We eat every...", img: "assets/images/calendar.png", options: ["Day", "Week", "Year"], answer: 0 }
+            ],
+            [
+                { q: "What hobby is this?", img: "assets/images/swimming.png", options: ["Swimming", "Reading", "Dancing"], answer: 0 },
+                { q: "What hobby is this?", img: "assets/images/cycling.png", options: ["Riding a bike", "Running", "Driving"], answer: 0 },
+                { q: "What hobby is this?", img: "assets/images/singing.png", options: ["Singing", "Cooking", "Fishing"], answer: 0 },
+                { q: "What game is this?", img: "assets/images/football.png", options: ["Playing football", "Badminton", "Basketball"], answer: 0 },
+                { q: "What activity is this?", img: "assets/images/reading.png", options: ["Reading a book", "Writing", "Drawing"], answer: 0 },
+                { q: "What hobby is this?", img: "assets/images/dancing.png", options: ["Dancing", "Singing", "Drawing"], answer: 0 },
+                { q: "What activity is this?", img: "assets/images/fishing.png", options: ["Fishing", "Swimming", "Gardening"], answer: 0 },
+                { q: "What activity is this?", img: "assets/images/cook.png", options: ["Cooking", "Eating", "Washing"], answer: 0 },
+                { q: "What activity is this?", img: "assets/images/drawing.png", options: ["Drawing", "Painting", "Reading"], answer: 0 },
+                { q: "What sport is this?", img: "assets/images/badminton.png", options: ["Playing badminton", "Football", "Tennis"], answer: 0 },
+                { q: "What game is this?", img: "assets/images/kite.png", options: ["Flying a kite", "Playing doll", "Running"], answer: 0 },
+                { q: "What game is this?", img: "assets/images/doll.png", options: ["Playing doll", "Playing ball", "Drawing"], answer: 0 },
+                { q: "What activity is this?", img: "assets/images/watching_tv.png", options: ["Watching TV", "Listening music", "Reading"], answer: 0 },
+                { q: "What activity is this?", img: "assets/images/studying.png", options: ["Studying", "Playing", "Sleeping"], answer: 0 },
+                { q: "What activity is this?", img: "assets/images/gardening.png", options: ["Gardening", "Cooking", "Painting"], answer: 0 },
+                { q: "What sport is this?", img: "assets/images/running.png", options: ["Running", "Walking", "Jumping"], answer: 0 },
+                { q: "My hobby is...", img: "assets/images/swimming.png", options: ["Swimming", "Cycling", "Singing"], answer: 0 },
+                { q: "What is your...?", img: "assets/images/question.png", options: ["Hobby", "Name", "Age"], answer: 0 },
+                { q: "What activity is this?", img: "assets/images/listening_music.png", options: ["Listening to music", "Singing", "Dancing"], answer: 0 },
+                { q: "What activity is this?", img: "assets/images/painting.png", options: ["Painting", "Drawing", "Writing"], answer: 0 }
+            ],
+            [
+                { q: "First day of the week...", img: "assets/images/sunday.png", options: ["Sunday", "Monday", "Friday"], answer: 0 },
+                { q: "Day after Sunday...", img: "assets/images/monday.png", options: ["Monday", "Tuesday", "Saturday"], answer: 0 },
+                { q: "Day after Monday...", img: "assets/images/tuesday.png", options: ["Tuesday", "Wednesday", "Thursday"], answer: 0 },
+                { q: "Day after Tuesday...", img: "assets/images/wednesday.png", options: ["Wednesday", "Thursday", "Friday"], answer: 0 },
+                { q: "Day after Wednesday...", img: "assets/images/thursday.png", options: ["Thursday", "Friday", "Saturday"], answer: 0 },
+                { q: "Day after Thursday...", img: "assets/images/friday.png", options: ["Friday", "Saturday", "Sunday"], answer: 0 },
+                { q: "Day before Sunday...", img: "assets/images/saturday.png", options: ["Saturday", "Friday", "Monday"], answer: 0 },
+                { q: "Present day is...", img: "assets/images/today.png", options: ["Today", "Tomorrow", "Yesterday"], answer: 0 },
+                { q: "Day after today...", img: "assets/images/tomorrow.png", options: ["Tomorrow", "Today", "Yesterday"], answer: 0 },
+                { q: "Day before today...", img: "assets/images/yesterday.png", options: ["Yesterday", "Tomorrow", "Today"], answer: 0 },
+                { q: "Sunday comes _____ Monday.", img: "assets/images/before.png", options: ["Before", "After", "Today"], answer: 0 },
+                { q: "Tuesday comes _____ Monday.", img: "assets/images/after.png", options: ["After", "Before", "Yesterday"], answer: 0 },
+                { q: "Seven days make one...", img: "assets/images/week.png", options: ["Week", "Month", "Year"], answer: 0 },
+                { q: "Saturday and Sunday are...", img: "assets/images/weekend.png", options: ["Weekend", "Weekday", "Holiday"], answer: 0 },
+                { q: "Today is a beautiful...", img: "assets/images/day.png", options: ["Day", "Night", "Week"], answer: 0 },
+                { q: "Everyday routines are...", img: "assets/images/daily.png", options: ["Daily activity", "Holiday", "Weekend"], answer: 0 },
+                { q: "We go to school on...", img: "assets/images/school_day.png", options: ["School day", "Sunday", "Holiday"], answer: 0 },
+                { q: "No school on...", img: "assets/images/holiday.png", options: ["Holiday", "Monday", "Tuesday"], answer: 0 },
+                { q: "What day is...?", img: "assets/images/question_day.png", options: ["Today", "Yesterday", "Tomorrow"], answer: 0 },
+                { q: "Today is...", img: "assets/images/monday.png", options: ["Monday", "Tuesday", "Sunday"], answer: 0 }
+            ]
         ];
 
+        let currentQuizIdx = 0;
         let currentQuestionIdx = 0;
+        let quizScore = 0;
+
+        function selectQuiz(qIdx, btn) {
+            if(btn) {
+                btn.parentElement.querySelectorAll('.selector-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            currentQuizIdx = qIdx;
+            currentQuestionIdx = 0;
+            quizScore = 0;
+            renderQuizQuestion();
+        }
 
         function renderQuizQuestion() {
-            if(currentQuestionIdx >= quizData.length) {
-                document.getElementById('quiz-progress-text').innerText = "Selesai!";
-                document.getElementById('quiz-question-box').innerHTML = "🎉 Excellent! Great job!";
-                document.getElementById('quiz-options-box').innerHTML = '<button class="btn-action-sm" onclick="currentQuestionIdx=0;renderQuizQuestion();">Ulangi Kuis</button>';
+            const quizList = allQuizzes[currentQuizIdx];
+            const quizNames = ["Kuis 1: Foods & Drinks", "Kuis 2: Likes & Dislikes", "Kuis 3: Mealtimes & Schedule", "Kuis 4: Hobbies & Activities", "Kuis 5: Days of the Week & Time"];
+            
+            document.getElementById('quiz-title-text').innerText = quizNames[currentQuizIdx];
+
+            if(currentQuestionIdx >= quizList.length) {
+                document.getElementById('quiz-progress-text').innerText = "Finished!";
+                document.getElementById('quiz-question-box').innerHTML = `
+                    <div style="text-align:center; padding:10px;">
+                        🎉 <strong>Great job, ${currentUser.name}!</strong><br>
+                        Your Score: <strong>${quizScore} / 20</strong>!
+                    </div>
+                `;
+                document.getElementById('quiz-options-box').innerHTML = `<button class="btn-action-sm" onclick="selectQuiz(${currentQuizIdx}, null)" style="grid-column: 1 / -1;">Try Again</button>`;
                 return;
             }
 
-            const q = quizData[currentQuestionIdx];
-            document.getElementById('quiz-progress-text').innerText = `Soal ${currentQuestionIdx + 1} dari ${quizData.length}`;
-            document.getElementById('quiz-question-box').innerText = q.q;
-            document.getElementById('quiz-question-img').src = q.img;
+            const q = quizList[currentQuestionIdx];
+            document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIdx + 1} of 20`;
+            
+            document.getElementById('quiz-question-box').innerHTML = `
+                <img src="${q.img}" alt="Quiz Image" class="quiz-img" onerror="this.src='assets/images/placeholder.png'">
+                <div>${q.q}</div>
+            `;
 
             const optsBox = document.getElementById('quiz-options-box');
             optsBox.innerHTML = '';
             q.options.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'quiz-opt-btn';
-                btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
+                btn.innerHTML = `<span style="color:var(--primary-green); font-weight:700;">${String.fromCharCode(65 + idx)}.</span> ${opt}`;
                 btn.onclick = () => handleQuizAnswer(idx, q.answer, btn);
                 optsBox.appendChild(btn);
             });
         }
 
         function handleQuizAnswer(selected, correct, btnElem) {
+            const allBtns = document.querySelectorAll('.quiz-opt-btn');
+            allBtns.forEach(b => b.disabled = true);
+
             if (selected === correct) {
-                btnElem.style.background = '#dcfce7';
-                btnElem.style.borderColor = '#22c55e';
+                btnElem.style.background = '#dcfce7'; btnElem.style.borderColor = '#22c55e';
+                quizScore++;
             } else {
-                btnElem.style.background = '#fee2e2';
-                btnElem.style.borderColor = '#ef4444';
+                btnElem.style.background = '#fee2e2'; btnElem.style.borderColor = '#ef4444';
             }
 
             setTimeout(() => {
