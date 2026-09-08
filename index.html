@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENGLISH ADVENTURE KELAS 3 - Kolaborasi Guru SD Sekaltara</title>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-blue: #0284c7;
+            --primary-blue-light: #38bdf8;
+            --accent-orange: #ff782c;
+            --accent-yellow: #facc15;
+            --accent-green: #22c55e;
+            --bg-sky: #f0f9ff;
+            --stage-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --soft-red: #ef4444;
+            --shadow-soft: 0 10px 25px rgba(2, 132, 199, 0.08);
+            --shadow-card: 0 6px 16px rgba(0, 0, 0, 0.06);
+            --font-head: 'Fredoka', cursive, sans-serif;
+            --font-body: 'Nunito', sans-serif;
+            --radius-main: 24px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-sky);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* AUTH SCREEN */
+        #auth-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 36px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            text-align: center;
+            border: 4px solid var(--accent-yellow);
+        }
+
+        .auth-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .auth-icon { font-size: 3rem; color: var(--accent-orange); }
+
+        .auth-card h2 {
+            font-family: var(--font-head);
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+
+        .auth-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .input-group { margin-bottom: 16px; text-align: left; }
+        .input-group label { display: block; font-family: var(--font-head); font-size: 0.9rem; color: var(--text-dark); margin-bottom: 6px; }
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%; padding: 12px 16px; border: 3px solid #e2e8f0; border-radius: 16px;
+            font-family: var(--font-body); font-size: 0.95rem; font-weight: 700; outline: none;
+            transition: border-color 0.2s;
+        }
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--primary-blue); }
+
+        .btn-primary {
+            background: var(--accent-orange); color: white; font-family: var(--font-head); font-size: 1.1rem;
+            padding: 14px 24px; border-radius: 18px; border: none; cursor: pointer; width: 100%;
+            box-shadow: 0 4px 0 #c7530c; transition: all 0.1s;
+        }
+        .btn-primary:active { transform: translateY(3px); box-shadow: none; }
+
+        /* HEADER */
+        header {
+            background: #ffffff; padding: 14px 28px; display: flex; justify-content: space-between;
+            align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100;
+            border-bottom: 4px solid var(--accent-yellow);
+        }
+
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .brand-avatar {
+            width: 48px; height: 48px; background: #e0f2fe; border: 3px solid var(--primary-blue-light);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--primary-blue);
+        }
+        .brand-title { font-family: var(--font-head); font-size: 1.3rem; color: var(--primary-blue); line-height: 1.1; }
+        .brand-title span { display: block; font-size: 0.75rem; color: var(--accent-orange); font-family: var(--font-body); font-weight: 800; }
+
+        .nav-pills { display: flex; background: #e0f2fe; padding: 6px; border-radius: 30px; gap: 6px; }
+        .nav-btn {
+            border: none; background: transparent; padding: 10px 18px; font-family: var(--font-head);
+            font-size: 0.9rem; color: var(--primary-blue); border-radius: 20px; cursor: pointer; transition: all 0.2s ease;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .nav-btn.active { background: var(--primary-blue); color: #ffffff; box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3); }
+
+        .header-actions { display: flex; align-items: center; gap: 12px; }
+
+        .user-profile-badge {
+            display: flex; align-items: center; gap: 10px; background: #f8fafc; padding: 6px 14px;
+            border-radius: 20px; border: 2px solid #e2e8f0; cursor: pointer;
+        }
+
+        .btn-logout {
+            background: #fee2e2; color: var(--soft-red); border: 2px solid #fca5a5; padding: 8px 14px;
+            border-radius: 20px; font-family: var(--font-head); font-size: 0.85rem; cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        /* LAYOUT */
+        .container {
+            max-width: 1280px; margin: 24px auto; padding: 0 20px; width: 100%; flex: 1;
+            display: grid; grid-template-columns: 1fr 280px; gap: 24px;
+        }
+
+        @media (max-width: 1024px) { .container { grid-template-columns: 1fr; } }
+
+        .main-stage {
+            background: var(--stage-bg); border: 3px solid #e0f2fe;
+            border-radius: var(--radius-main); padding: 28px; box-shadow: var(--shadow-soft);
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border-radius: 20px; padding: 24px; display: flex; align-items: center;
+            justify-content: space-between; margin-bottom: 24px; border: 3px dashed var(--primary-blue-light);
+        }
+        .hero-text h1 { font-family: var(--font-head); font-size: 1.8rem; color: var(--primary-blue); }
+        .hero-text p { font-size: 1rem; color: #0369a1; margin-top: 4px; font-weight: 700; }
+
+        .section-header {
+            font-family: var(--font-head); font-size: 1.3rem; color: var(--primary-blue);
+            margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+
+        .resource-card, .forum-card {
+            background: #ffffff; border: 3px solid #f1f5f9; border-radius: 20px; padding: 20px;
+            box-shadow: var(--shadow-card); transition: transform 0.2s; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .resource-card:hover, .forum-card:hover { transform: translateY(-4px); border-color: var(--primary-blue-light); }
+
+        .tag {
+            display: inline-block; padding: 6px 12px; border-radius: 14px; font-size: 0.8rem;
+            font-weight: 800; font-family: var(--font-head); margin-bottom: 10px; width: fit-content;
+        }
+        .tag-guru { background: #fef3c7; color: #d97706; }
+
+        .btn-action-sm {
+            background: var(--primary-blue); color: white; border: none; padding: 10px 16px;
+            border-radius: 12px; font-family: var(--font-head); font-size: 0.9rem; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            box-shadow: 0 3px 0 #026496;
+        }
+        .btn-action-sm:active { transform: translateY(2px); box-shadow: none; }
+
+        /* MATERI GRID */
+        .materi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; }
+        .materi-card {
+            background: #ffffff; border-radius: 20px; padding: 16px; text-align: center;
+            border: 3px solid #e2e8f0; box-shadow: var(--shadow-card); display: flex; flex-direction: column;
+            justify-content: space-between; cursor: pointer; transition: transform 0.2s;
+        }
+        .materi-card:hover { transform: translateY(-5px); border-color: var(--accent-orange); }
+        .card-img-preview { width: 100%; height: 110px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; }
+        .card-title { font-family: var(--font-head); font-size: 1.1rem; color: var(--text-dark); margin-bottom: 4px; }
+        .card-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px; font-weight: 600; }
+
+        .grid-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 20px; }
+        .selector-btn {
+            background: #ffffff; border: 3px solid #e2e8f0; border-radius: 16px; padding: 12px;
+            font-family: var(--font-head); font-size: 0.9rem; color: var(--text-dark); cursor: pointer; text-align: center;
+        }
+        .selector-btn.active { border-color: var(--primary-blue); background: #e0f2fe; color: var(--primary-blue); }
+
+        /* QUIZ STYLING */
+        .quiz-stage { background: #ffffff; border-radius: 20px; padding: 24px; border: 3px solid #e2e8f0; margin-bottom: 16px; }
+        .quiz-card-q {
+            background: #f8fafc; border: 3px solid #e2e8f0; border-radius: 16px; padding: 20px;
+            font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; text-align: center;
+        }
+        .quiz-img-container { text-align: center; margin-bottom: 16px; }
+        .quiz-img { max-width: 220px; width: 100%; height: 140px; object-fit: cover; border-radius: 16px; border: 3px solid var(--accent-yellow); }
+        .quiz-options-grid { display: flex; flex-direction: column; gap: 10px; }
+        .quiz-opt-btn {
+            width: 100%; padding: 14px 18px; border: 3px solid #cbd5e1; background: white; border-radius: 14px;
+            font-family: var(--font-head); font-size: 1rem; cursor: pointer; text-align: left; transition: all 0.2s;
+        }
+        .quiz-opt-btn:hover { border-color: var(--primary-blue); background: #f0f9ff; }
+
+        /* SONG CARDS & AUDIO */
+        .song-card { background: #ffffff; border-radius: 20px; padding: 20px; border: 3px solid #e2e8f0; margin-bottom: 18px; }
+        .song-lyrics {
+            background: #fffbebfb; border-radius: 14px; padding: 16px; font-family: var(--font-body);
+            font-size: 1rem; font-weight: 700; line-height: 1.6; color: #78350f; margin: 14px 0; border-left: 6px solid var(--accent-yellow);
+        }
+        audio { width: 100%; margin-top: 10px; border-radius: 10px; }
+
+        /* SIDEBAR */
+        .sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .widget-box { background: #ffffff; border-radius: 20px; padding: 20px; border: 3px solid #e2e8f0; box-shadow: var(--shadow-card); }
+        .widget-title { font-family: var(--font-head); font-size: 1.1rem; color: var(--text-dark); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .stat-item { display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; padding: 8px 0; border-bottom: 2px dashed #e2e8f0; }
+
+        /* MODALS */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: #ffffff; border-radius: 24px; max-width: 700px; width: 100%; max-height: 85vh; overflow-y: auto; border: 4px solid var(--primary-blue); }
+        .modal-header { padding: 18px 24px; background: var(--primary-blue); color: white; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-head); }
+        .modal-body { padding: 24px; }
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+        .vocab-item { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 16px; padding: 12px; text-align: center; }
+        .vocab-img { width: 100%; height: 80px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
+
+        footer { background: #ffffff; border-top: 3px solid #e2e8f0; padding: 20px; text-align: center; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+       1. AUTHENTICATION SCREEN
+       ========================================== -->
+    <div id="auth-screen">
+        <div class="auth-card">
+            <div class="auth-brand">
+                <i class="fa-solid fa-shapes auth-icon"></i>
+            </div>
+            <h2>ENGLISH ADVENTURE 3</h2>
+            <p>Platform Kolaborasi Guru SD Sekaltara</p>
+
+            <form id="form-login" onsubmit="handleAuthSubmit(event)">
+                <div class="input-group">
+                    <label><i class="fa-solid fa-user-pen"></i> Nama Lengkap / Guru</label>
+                    <input type="text" id="login-id" placeholder="Contoh: Ibu Rahmawati, S.Pd." required>
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-school"></i> Asal Sekolah (SD Sekaltara)</label>
+                    <input type="text" id="login-school" placeholder="Contoh: SDN 001 Tarakan" required>
+                </div>
+                <button type="submit" class="btn-primary">Masuk ke Ruang Ajar <i class="fa-solid fa-arrow-right"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================
+       2. HEADER NAVIGATION
+       ========================================== -->
+    <header>
+        <a href="#" class="brand">
+            <div class="brand-avatar"><i class="fa-solid fa-child-reaching"></i></div>
+            <div class="brand-title">
+                ENGLISH ADVENTURE
+                <span>Kolaborasi Guru SD Sekaltara</span>
+            </div>
+        </a>
+
+        <!-- NAV PIPELINE UTAMA -->
+        <nav class="nav-pills">
+            <button class="nav-btn active" onclick="switchTab('dashboard', this)"><i class="fa-solid fa-house"></i> Beranda</button>
+            <button class="nav-btn" onclick="switchTab('hub', this)"><i class="fa-solid fa-folder-open"></i> Modul Ajar</button>
+            <button class="nav-btn" onclick="switchTab('forum', this)"><i class="fa-solid fa-comments"></i> Forum Diskusi</button>
+            <button class="nav-btn" onclick="switchTab('materi-sd', this)"><i class="fa-solid fa-book-open"></i> Materi Kelas 3</button>
+            <button class="nav-btn" onclick="switchTab('games-lagu', this)"><i class="fa-solid fa-music"></i> Musik & Lagu</button>
+            <button class="nav-btn" onclick="switchTab('kuis-evaluasi', this)"><i class="fa-solid fa-gamepad"></i> Kuis Gambar</button>
+        </nav>
+
+        <div class="header-actions">
+            <div class="user-profile-badge" onclick="openModal('profile-modal')">
+                <i class="fa-solid fa-circle-user" style="font-size:1.5rem; color:var(--primary-blue);"></i>
+                <div style="text-align: left; line-height: 1.1;">
+                    <div id="user-display-name" style="font-weight: 800; font-size: 0.85rem;">Guru</div>
+                    <div id="user-display-role" style="font-size: 0.72rem; color: var(--text-muted);">Sekolah</div>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
+        </div>
+    </header>
+
+    <!-- ==========================================
+       3. MAIN CONTAINER
+       ========================================== -->
+    <div class="container">
+        <main class="main-stage">
+
+            <!-- Hero Banner Dynamic -->
+            <div class="hero-banner">
+                <div class="hero-text">
+                    <h1>Selamat Datang, <span id="hero-user-name">Guru SD</span>! 👋</h1>
+                    <p id="hero-user-desc">Ruang Berbagi Modul & Media Pembelajaran Bahasa Inggris Kelas 3 SD Sekaltara.</p>
+                </div>
+                <div style="font-size:3rem; color:var(--primary-blue);"><i class="fa-solid fa-face-smile-wink"></i></div>
+            </div>
+
+            <!-- TAB 1: BERANDA -->
+            <div id="tab-dashboard" class="tab-pane active">
+                <div class="section-header">
+                    <span><i class="fa-solid fa-star" style="color:var(--accent-yellow);"></i> Menu Utama Pembelajaran</span>
+                </div>
+                <div class="grid-3">
+                    <div class="resource-card" style="border-top:6px solid var(--primary-blue);">
+                        <div>
+                            <h3 style="font-family:var(--font-head); color:var(--primary-blue);">📘 Materi & Visual</h3>
+                            <p style="font-size:0.85rem; color:var(--text-muted); margin:8px 0; font-weight:600;">Modul bergambar nyata lengkap untuk siswa kelas 3 SD.</p>
+                        </div>
+                        <button class="btn-action-sm" onclick="switchTab('materi-sd', null)">Lihat Materi</button>
+                    </div>
+                    <div class="resource-card" style="border-top:6px solid var(--accent-yellow);">
+                        <div>
+                            <h3 style="font-family:var(--font-head); color:var(--accent-orange);">🎶 Musik & Lagu</h3>
+                            <p style="font-size:0.85rem; color:var(--text-muted); margin:8px 0; font-weight:600;">Dengarkan instrumen musik asli dan lirik lagu Bahasa Inggris.</p>
+                        </div>
+                        <button class="btn-action-sm" style="background:var(--accent-orange);" onclick="switchTab('games-lagu', null)">Dengar Lagu</button>
+                    </div>
+                    <div class="resource-card" style="border-top:6px solid var(--accent-green);">
+                        <div>
+                            <h3 style="font-family:var(--font-head); color:var(--accent-green);">🎯 Kuis Interaktif</h3>
+                            <p style="font-size:0.85rem; color:var(--text-muted); margin:8px 0; font-weight:600;">Latihan soal Bahasa Inggris sederhana menggunakan gambar nyata.</p>
+                        </div>
+                        <button class="btn-action-sm" style="background:var(--accent-green);" onclick="switchTab('kuis-evaluasi', null)">Mulai Kuis</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: MODUL AJAR (BANK MATERI) -->
+            <div id="tab-hub" class="tab-pane" style="display:none;">
+                <div class="section-header">
+                    <span><i class="fa-solid fa-folder-open"></i> Bank Modul Ajar Guru SD Sekaltara</span>
+                    <button class="btn-action-sm" onclick="openModal('upload-modal')"><i class="fa-solid fa-plus"></i> Unggah Modul</button>
+                </div>
+                <div class="grid-3" id="resource-cards-container">
+                    <div class="resource-card">
+                        <div>
+                            <span class="tag tag-guru">SDN 001 Tarakan</span>
+                            <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">Modul Visual: Food & Drinks</h4>
+                            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px; font-weight:600;">Lembar kerja bergambar makanan dan minuman nyata untuk Kelas 3 SD.</p>
+                        </div>
+                        <button class="btn-action-sm" onclick="downloadPDFResource('Modul Visual Foods Drinks', 'SDN 001 Tarakan')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF Modul</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: FORUM DISKUSI -->
+            <div id="tab-forum" class="tab-pane" style="display:none;">
+                <div class="section-header">
+                    <span><i class="fa-solid fa-comments"></i> Forum Diskusi Guru SD Sekaltara</span>
+                    <button class="btn-action-sm" onclick="openModal('forum-modal')"><i class="fa-solid fa-pen-to-square"></i> Buat Diskusi Baru</button>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:14px;" id="forum-posts-container">
+                    <div class="forum-card">
+                        <span class="tag tag-guru">Ibu Siti (SDN 005 Nunukan)</span>
+                        <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">Metode seru mengajarkan nama-nama hari?</h4>
+                        <p style="font-size:0.88rem; color:var(--text-dark); font-weight:600;">"Rekan guru, ada ide permainan lagu yang menarik untuk kelas 3 materi Days of the Week?"</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: MODUL MATERI KELAS 3 SD (GAMBAR NYATA .PNG) -->
+            <div id="tab-materi-sd" class="tab-pane" style="display:none;">
+                <div class="section-header"><span><i class="fa-solid fa-book-open"></i> Modul Belajar Visual Kelas 3 SD</span></div>
+                <div class="materi-grid">
+                    <div class="materi-card" onclick="openModule(1)">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&auto=format&fit=crop&q=80" class="card-img-preview" alt="Food.png">
+                        <div class="card-title">Unit 1: Foods & Drinks</div>
+                        <div class="card-desc">Makanan dan minuman bergambar nyata.</div>
+                        <button class="btn-action-sm" style="width:100%;">Buka Modul</button>
+                    </div>
+                    <div class="materi-card" onclick="openModule(2)">
+                        <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=400&auto=format&fit=crop&q=80" class="card-img-preview" alt="Hobbies.png">
+                        <div class="card-title">Unit 2: Hobbies</div>
+                        <div class="card-desc">Kegiatan hobi yang menyenangkan.</div>
+                        <button class="btn-action-sm" style="width:100%;">Buka Modul</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: MUSIK & LAGU PEMBELAJARAN (.MP3) -->
+            <div id="tab-games-lagu" class="tab-pane" style="display:none;">
+                <div class="section-header"><span><i class="fa-solid fa-music"></i> Musik & Lagu Ajar Kelas 3 SD</span></div>
+                
+                <!-- Lagu 1 -->
+                <div class="song-card">
+                    <h3 style="font-family:var(--font-head); color:var(--primary-blue);">1. Foods and Drinks Song 🎵</h3>
+                    <div class="song-lyrics">
+                        🎶 I like chicken, I like rice,<br>
+                        Milk and water, very nice!<br>
+                        Yummy food for you and me! 🎶
+                    </div>
+                    <audio controls>
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+                        Browser Anda tidak mendukung elemen audio.
+                    </audio>
+                </div>
+
+                <!-- Lagu 2 -->
+                <div class="song-card">
+                    <h3 style="font-family:var(--font-head); color:var(--accent-orange);">2. Days of the Week Song 🎵</h3>
+                    <div class="song-lyrics">
+                        🎶 Sunday, Monday, Tuesday, Wednesday,<br>
+                        Thursday, Friday, Saturday!<br>
+                        Seven days are in a week! 🎶
+                    </div>
+                    <audio controls>
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mp3">
+                        Browser Anda tidak mendukung elemen audio.
+                    </audio>
+                </div>
+            </div>
+
+            <!-- TAB 6: MINI KUIS GAMBAR & BAHASA INGGRIS SEDERHANA -->
+            <div id="tab-kuis-evaluasi" class="tab-pane" style="display:none;">
+                <div class="section-header"><span><i class="fa-solid fa-gamepad"></i> Kuis Bahasa Inggris Sederhana</span></div>
+
+                <div class="quiz-stage">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; font-family:var(--font-head); color:var(--primary-blue);">
+                        <span id="quiz-title-text" style="font-size:1.2rem;">Soal Bergambar</span>
+                        <span id="quiz-progress-text" style="background:#e0f2fe; padding:6px 14px; border-radius:14px;">Soal 1 dari 3</span>
+                    </div>
+
+                    <div class="quiz-img-container">
+                        <img id="quiz-question-img" src="" class="quiz-img" alt="Quiz.png">
+                    </div>
+
+                    <div class="quiz-card-q" id="quiz-question-box">Loading soal...</div>
+                    <div class="quiz-options-grid" id="quiz-options-box"></div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="widget-box">
+                <div class="widget-title"><i class="fa-solid fa-users" style="color:var(--primary-blue);"></i> Komunitas SD</div>
+                <div class="stat-item"><span>Guru Terhubung</span> <strong>48 Guru</strong></div>
+                <div class="stat-item"><span>Sekolah Terdaftar</span> <strong>22 SD</strong></div>
+                <div class="stat-item"><span>Modul Berbagi</span> <strong>35 Berkas</strong></div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- MODAL PROFIL PENGGUNA -->
+    <div class="modal-overlay" id="profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Profil Guru SD</h3>
+                <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('profile-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="handleSaveProfile(event)">
+                    <div class="input-group">
+                        <label>Nama Lengkap</label>
+                        <input type="text" id="prof-name" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Asal Sekolah SD</label>
+                        <input type="text" id="prof-school" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Simpan Profil <i class="fa-solid fa-floppy-disk"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL MODUL MATERI GAMBAR -->
+    <div class="modal-overlay" id="module-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Unit Title</h3>
+                <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('module-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="vocab-grid" id="vocab-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL UNGGAH MODUL -->
+    <div class="modal-overlay" id="upload-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Unggah Modul Ajar</h3>
+                <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('upload-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="handleUploadResource(event)">
+                    <div class="input-group">
+                        <label>Judul Modul / Berkas</label>
+                        <input type="text" id="up-title" placeholder="Contoh: Modul Bergambar Foods" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Asal Sekolah</label>
+                        <input type="text" id="up-origin" placeholder="Contoh: SDN 001 Tarakan" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Unggah Berkas <i class="fa-solid fa-cloud-arrow-up"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FORUM DISKUSI -->
+    <div class="modal-overlay" id="forum-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Buat Topik Diskusi Baru</h3>
+                <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('forum-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="handleCreateForum(event)">
+                    <div class="input-group">
+                        <label>Judul Diskusi</label>
+                        <input type="text" id="forum-title" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Isi Pertanyaan / Topik</label>
+                        <textarea id="forum-body" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Kirimkan Topik <i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        ENGLISH ADVENTURE KELAS 3 &copy; 2026 • Platform Kolaborasi Guru SD se-Kalimantan Utara
+    </footer>
+
+    <script>
+        /* USER STATE */
+        let currentUser = {
+            name: "Ibu Rahma, S.Pd.",
+            school: "SDN 001 Tarakan"
+        };
+
+        function handleAuthSubmit(event) {
+            event.preventDefault();
+            currentUser.name = document.getElementById('login-id').value.trim();
+            currentUser.school = document.getElementById('login-school').value.trim();
+
+            updateUserUI();
+            document.getElementById('auth-screen').style.display = 'none';
+        }
+
+        function handleLogout() {
+            document.getElementById('auth-screen').style.display = 'flex';
+        }
+
+        function updateUserUI() {
+            document.getElementById('user-display-name').innerText = currentUser.name;
+            document.getElementById('user-display-role').innerText = currentUser.school;
+            document.getElementById('hero-user-name').innerText = currentUser.name;
+
+            document.getElementById('prof-name').value = currentUser.name;
+            document.getElementById('prof-school').value = currentUser.school;
+        }
+
+        function handleSaveProfile(e) {
+            e.preventDefault();
+            currentUser.name = document.getElementById('prof-name').value.trim();
+            currentUser.school = document.getElementById('prof-school').value.trim();
+            updateUserUI();
+            closeModal('profile-modal');
+        }
+
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+            document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+            document.getElementById(`tab-${tabId}`).style.display = 'block';
+
+            if (tabId === 'kuis-evaluasi') {
+                renderQuizQuestion();
+            }
+        }
+
+        function downloadPDFResource(title, schoolOrigin) {
+            alert(`Mengunduh berkas modul: "${title}.pdf" dari ${schoolOrigin}!`);
+        }
+
+        function handleUploadResource(e) {
+            e.preventDefault();
+            const title = document.getElementById('up-title').value;
+            const origin = document.getElementById('up-origin').value;
+
+            const container = document.getElementById('resource-cards-container');
+            const card = document.createElement('div');
+            card.className = 'resource-card';
+            card.innerHTML = `
+                <div>
+                    <span class="tag tag-guru">${origin}</span>
+                    <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">${title}</h4>
+                </div>
+                <button class="btn-action-sm" onclick="downloadPDFResource('${title}', '${origin}')"><i class="fa-solid fa-file-pdf"></i> Unduh PDF Modul</button>
+            `;
+            container.prepend(card);
+            closeModal('upload-modal');
+        }
+
+        function handleCreateForum(e) {
+            e.preventDefault();
+            const title = document.getElementById('forum-title').value;
+            const body = document.getElementById('forum-body').value;
+
+            const container = document.getElementById('forum-posts-container');
+            const card = document.createElement('div');
+            card.className = 'forum-card';
+            card.innerHTML = `
+                <span class="tag tag-guru">${currentUser.name} (${currentUser.school})</span>
+                <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">${title}</h4>
+                <p style="font-size:0.88rem; color:var(--text-dark); font-weight:600;">"${body}"</p>
+            `;
+            container.prepend(card);
+            closeModal('forum-modal');
+        }
+
+        /* DATA MODUL MATERI GAMBAR (.PNG) */
+        const moduleData = {
+            1: {
+                title: "Unit 1: Foods & Drinks",
+                vocab: [
+                    { en: "Fried Chicken", id: "Ayam Goreng", img: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=300&auto=format&fit=crop&q=80" },
+                    { en: "Orange Juice", id: "Jus Jeruk", img: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=300&auto=format&fit=crop&q=80" },
+                    { en: "Milk", id: "Susu", img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=300&auto=format&fit=crop&q=80" }
+                ]
+            },
+            2: {
+                title: "Unit 2: Hobbies",
+                vocab: [
+                    { en: "Swimming", id: "Berenang", img: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=300&auto=format&fit=crop&q=80" },
+                    { en: "Reading", id: "Membaca", img: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&auto=format&fit=crop&q=80" }
+                ]
+            }
+        };
+
+        function openModule(id) {
+            const data = moduleData[id];
+            document.getElementById('modal-title').innerText = data.title;
+            const c = document.getElementById('vocab-container'); c.innerHTML = '';
+            data.vocab.forEach(v => {
+                const card = document.createElement('div'); card.className = 'vocab-item';
+                card.innerHTML = `<img src="${v.img}" class="vocab-img" alt="${v.en}.png"><div style="font-family:var(--font-head); color:var(--primary-blue); font-size:0.95rem;">${v.en}</div><div style="font-size:0.8rem; color:var(--text-muted); font-weight:700;">${v.id}</div>`;
+                c.appendChild(card);
+            });
+            openModal('module-modal');
+        }
+
+        /* DATA SOAL KUIS GAMBAR (.PNG) & BAHASA INGGRIS SEDERHANA */
+        const quizData = [
+            {
+                q: "What food is this?",
+                img: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400&auto=format&fit=crop&q=80",
+                options: ["Fried Chicken", "Ice Cream", "Apple"],
+                answer: 0
+            },
+            {
+                q: "What drink is this?",
+                img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&auto=format&fit=crop&q=80",
+                options: ["Tea", "Milk", "Coffee"],
+                answer: 1
+            },
+            {
+                q: "What hobby is this?",
+                img: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=400&auto=format&fit=crop&q=80",
+                options: ["Dancing", "Reading", "Swimming"],
+                answer: 2
+            }
+        ];
+
+        let currentQuestionIdx = 0;
+
+        function renderQuizQuestion() {
+            if(currentQuestionIdx >= quizData.length) {
+                document.getElementById('quiz-progress-text').innerText = "Selesai!";
+                document.getElementById('quiz-question-box').innerHTML = "🎉 Excellent! Great job!";
+                document.getElementById('quiz-options-box').innerHTML = '<button class="btn-action-sm" onclick="currentQuestionIdx=0;renderQuizQuestion();">Ulangi Kuis</button>';
+                return;
+            }
+
+            const q = quizData[currentQuestionIdx];
+            document.getElementById('quiz-progress-text').innerText = `Soal ${currentQuestionIdx + 1} dari ${quizData.length}`;
+            document.getElementById('quiz-question-box').innerText = q.q;
+            document.getElementById('quiz-question-img').src = q.img;
+
+            const optsBox = document.getElementById('quiz-options-box');
+            optsBox.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt-btn';
+                btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
+                btn.onclick = () => handleQuizAnswer(idx, q.answer, btn);
+                optsBox.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(selected, correct, btnElem) {
+            if (selected === correct) {
+                btnElem.style.background = '#dcfce7';
+                btnElem.style.borderColor = '#22c55e';
+            } else {
+                btnElem.style.background = '#fee2e2';
+                btnElem.style.borderColor = '#ef4444';
+            }
+
+            setTimeout(() => {
+                currentQuestionIdx++;
+                renderQuizQuestion();
+            }, 800);
+        }
+    </script>
+</body>
+</html>
