@@ -639,38 +639,39 @@
         </div>
     </div>
 
-    <!-- MODAL UNGGAH BERKAS -->
+    <<!-- MODAL UNGGAH BERKAS (WEB3FORMS) -->
 <div class="modal-overlay" id="upload-modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3><i class="fa-solid fa-cloud-arrow-up"></i> Unggah Modul Materi Baru</h3>
+            <h3><i class="fa-solid fa-cloud-arrow-up"></i> Unggah Modul / Berkas</h3>
             <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('upload-modal')">✕</button>
         </div>
         <div class="modal-body">
-            <form onsubmit="handleUploadResource(event)">
+            <!-- TEMPAT FORMULARIS WEB3FORMS DIMASUKKAN -->
+            <form action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data">
+                <!-- Gantilah MASUKKAN_ACCESS_KEY_WEB3FORMS_ANDA dengan Access Key milik Anda -->
+                <input type="hidden" name="access_key" value="4c3b0c2b-53c7-4110-b389-7c9f00aacdb1">
+                <input type="hidden" name="subject" value="Modul Baru Diunggah - English Adventure">
+
                 <div class="input-group">
-                    <label><i class="fa-solid fa-heading"></i> Judul Modul Pembelajaran</label>
-                    <input type="text" id="up-title" placeholder="Contoh: Unit 6: Animals & Habitats" required>
+                    <label>Judul Modul Pembelajaran</label>
+                    <input type="text" name="judul_modul" required placeholder="Contoh: Unit 6: Animals">
                 </div>
                 <div class="input-group">
-                    <label><i class="fa-solid fa-school"></i> Asal Sekolah / Pengunggah</label>
-                    <input type="text" id="up-origin" placeholder="Contoh: SDN 010 Tarakan" required>
+                    <label>Asal Sekolah / Pengunggah</label>
+                    <input type="text" name="sekolah" required placeholder="Contoh: SDN 010 Tarakan">
                 </div>
                 <div class="input-group">
-                    <label><i class="fa-solid fa-align-left"></i> Ringkasan Materi</label>
-                    <textarea id="up-desc" rows="2" placeholder="Jelaskan ringkasan isi modul yang diunggah..." required></textarea>
+                    <label>Lampirkan Berkas Modul (PDF/DOCX)</label>
+                    <input type="file" name="attachment" required accept=".pdf,.doc,.docx">
                 </div>
-                <div class="input-group">
-                    <label><i class="fa-solid fa-file-arrow-up"></i> Pilih Berkas Modul (PDF / DOCX / Gambar)</label>
-                    <input type="file" id="up-file" required accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
-                </div>
-                <button type="submit" id="btn-submit-upload" class="btn-primary">
-                    Proses & Simpan ke Modul Materi <i class="fa-solid fa-paper-plane"></i>
-                </button>
+
+                <button type="submit" class="btn-primary">Kirim Modul <i class="fa-solid fa-paper-plane"></i></button>
             </form>
         </div>
     </div>
 </div>
+
 
 
     <!-- MODAL FORUM -->
