@@ -273,7 +273,7 @@
     <div id="auth-screen">
         <div class="auth-card">
             <div class="auth-brand">
-            <img src="logoenglish.png" alt="Logo English" style="height: 150px; width: auto;">
+                <img src="logoenglish.png" alt="Logo English" style="height: 150px; width: auto;" onerror="this.style.display='none'">
             </div>
             <h2>ENGLISH ADVENTURE</h2>
             <p>Ekosistem Kolaboratif Guru SD Sekaltara</p>
@@ -327,7 +327,7 @@
     <header>
         <a href="#" class="brand">
             <div class="brand-avatar">
-            <img src="logoenglish.png" alt="Logo English" style="height: 50px; width: auto;">
+                <img src="logoenglish.png" alt="Logo English" style="height: 50px; width: auto;" onerror="this.style.display='none'">
             </div>
             <div class="brand-title">
                 ENGLISH ADVENTURE
@@ -553,7 +553,7 @@
 
                 <h3 style="font-family:var(--font-head); color:var(--primary-green); margin:24px 0 14px 0; font-size:1.15rem;">🎮 Mini Edutainment Games</h3>
                 <div class="song-card" style="text-align:center; padding:28px;">
-                    <img src="assets/images/tarap_fruit.png" alt="Tarap Fruit" style="width:140px; height:100px; object-fit:cover; border-radius:14px; margin-bottom:12px; border:2px solid #cbd5e1;">
+                    <img src="assets/images/tarap_fruit.png" alt="Tarap Fruit" style="width:140px; height:100px; object-fit:cover; border-radius:14px; margin-bottom:12px; border:2px solid #cbd5e1;" onerror="this.src='https://via.placeholder.com/140x100?text=Fruit'">
                     <h4 style="font-family:var(--font-head); font-size:1.2rem; color:var(--primary-green); margin-bottom:8px;" id="game-title-text">Guess the Fruit!</h4>
                     <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:18px;" id="game-desc-text">What fruit is this?</p>
                     <div style="display:flex; justify-content:center; gap:12px;" id="game-action-container">
@@ -639,40 +639,37 @@
         </div>
     </div>
 
-    <<!-- MODAL UNGGAH BERKAS (WEB3FORMS) -->
-<div class="modal-overlay" id="upload-modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3><i class="fa-solid fa-cloud-arrow-up"></i> Unggah Modul / Berkas</h3>
-            <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('upload-modal')">✕</button>
-        </div>
-        <div class="modal-body">
-            <!-- TEMPAT FORMULARIS WEB3FORMS DIMASUKKAN -->
-            <form action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data">
-                <!-- Gantilah MASUKKAN_ACCESS_KEY_WEB3FORMS_ANDA dengan Access Key milik Anda -->
-                <input type="hidden" name="access_key" value="4c3b0c2b-53c7-4110-b389-7c9f00aacdb1">
-                <input type="hidden" name="subject" value="Modul Baru Diunggah - English Adventure">
+    <!-- MODAL UNGGAH BERKAS (WEB3FORMS / GOOGLE DRIVE) -->
+    <div class="modal-overlay" id="upload-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-cloud-arrow-up"></i> Unggah Modul / Berkas</h3>
+                <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('upload-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="upload-form" onsubmit="handleUploadResource(event)">
+                    <div class="input-group">
+                        <label>Judul Modul Pembelajaran</label>
+                        <input type="text" id="up-title" required placeholder="Contoh: Unit 6: Animals">
+                    </div>
+                    <div class="input-group">
+                        <label>Asal Sekolah / Pengunggah</label>
+                        <input type="text" id="up-origin" required placeholder="Contoh: SDN 010 Tarakan">
+                    </div>
+                    <div class="input-group">
+                        <label>Deskripsi Singkat Modul</label>
+                        <textarea id="up-desc" rows="3" required placeholder="Keterangan singkat materi..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>Lampirkan Berkas Modul (PDF/DOCX/Gambar)</label>
+                        <input type="file" id="up-file" required accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
+                    </div>
 
-                <div class="input-group">
-                    <label>Judul Modul Pembelajaran</label>
-                    <input type="text" name="judul_modul" required placeholder="Contoh: Unit 6: Animals">
-                </div>
-                <div class="input-group">
-                    <label>Asal Sekolah / Pengunggah</label>
-                    <input type="text" name="sekolah" required placeholder="Contoh: SDN 010 Tarakan">
-                </div>
-                <div class="input-group">
-                    <label>Lampirkan Berkas Modul (PDF/DOCX)</label>
-                    <input type="file" name="attachment" required accept=".pdf,.doc,.docx">
-                </div>
-
-                <button type="submit" class="btn-primary">Kirim Modul <i class="fa-solid fa-paper-plane"></i></button>
-            </form>
+                    <button type="submit" id="btn-submit-upload" class="btn-primary">Proses & Simpan ke Modul Materi <i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-
-
 
     <!-- MODAL FORUM -->
     <div class="modal-overlay" id="forum-modal">
@@ -752,7 +749,9 @@
             document.getElementById('prof-name').value = currentUser.name;
             document.getElementById('prof-role').value = currentUser.role;
             document.getElementById('prof-school').value = currentUser.school;
-            document.getElementById('up-origin').value = currentUser.school;
+            
+            const upOriginElem = document.getElementById('up-origin');
+            if(upOriginElem) upOriginElem.value = currentUser.school;
         }
 
         function handleSaveProfile(e) {
@@ -811,105 +810,99 @@ Guru Sekolah Dasar se-Kalimantan Utara (Sekaltara).
             alert(`Mulai mengunduh berkas PDF resmi: "${title}.pdf" dari ${schoolOrigin}!`);
         }
 
-        // Gantilah URL di bawah ini dengan URL Web App dari Apps Script Anda
-const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybbolJy7DNj4fV2vB79p7PsWo-FYDKGtyC9XNyfP5p9C1ZU-17xUaLkViPo_NUO0EM/exec";
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybbolJy7DNj4fV2vB79p7PsWo-FYDKGtyC9XNyfP5p9C1ZU-17xUaLkViPo_NUO0EM/exec";
 
-async function handleUploadResource(e) {
-    e.preventDefault();
+        async function handleUploadResource(e) {
+            e.preventDefault();
 
-    const title = document.getElementById('up-title').value.trim();
-    const origin = document.getElementById('up-origin').value.trim();
-    const desc = document.getElementById('up-desc').value.trim();
-    const fileInput = document.getElementById('up-file');
-    const submitBtn = document.getElementById('btn-submit-upload');
+            const title = document.getElementById('up-title').value.trim();
+            const origin = document.getElementById('up-origin').value.trim();
+            const desc = document.getElementById('up-desc').value.trim();
+            const fileInput = document.getElementById('up-file');
+            const submitBtn = document.getElementById('btn-submit-upload');
 
-    if (!fileInput.files.length) {
-        alert("Pilih file yang akan diunggah!");
-        return;
-    }
-
-    const file = fileInput.files[0];
-    const reader = new FileReader();
-
-    // Indikator Loading saat mengunggah
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah ke Drive...`;
-
-    reader.onload = async function () {
-        const payload = {
-            fileName: file.name,
-            mimeType: file.type,
-            fileContent: reader.result,
-            unitTitle: title,
-            description: desc,
-            uploader: currentUser.name,
-            school: origin
-        };
-
-        try {
-            // 1. Kirim File ke Google Apps Script -> Google Drive
-            const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
-                method: "POST",
-                body: JSON.stringify(payload)
-            });
-
-            const resData = await response.json();
-
-            if (resData.status === "success") {
-                // 2. Tampilkan Berkas di Bank Materi Hub (Tab 2)
-                const hubContainer = document.getElementById('resource-cards-container');
-                if (hubContainer) {
-                    const hubCard = document.createElement('div');
-                    hubCard.className = 'resource-card';
-                    hubCard.innerHTML = `
-                        <div>
-                            <span class="tag tag-guru">${origin}</span>
-                            <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">${title}</h4>
-                            <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">${desc}</p>
-                        </div>
-                        <a href="${resData.fileUrl}" target="_blank" class="btn-action-sm" style="text-decoration:none; justify-content:center;">
-                            <i class="fa-brands fa-google-drive"></i> Buka File Drive
-                        </a>
-                    `;
-                    hubContainer.prepend(hubCard);
-                }
-
-                // 3. Tampilkan LANGSUNG di Fitur Modul Pembelajaran Kelas 3 SD (Tab 4)
-                const materiGrid = document.querySelector('#tab-materi-sd .materi-grid');
-                if (materiGrid) {
-                    const newMateriCard = document.createElement('div');
-                    newMateriCard.className = 'materi-card';
-                    newMateriCard.style.border = '2px solid var(--primary-green)';
-                    newMateriCard.innerHTML = `
-                        <div class="card-icon">📂</div>
-                        <div class="card-title">${title}</div>
-                        <div class="card-desc">${desc}<br><small style="color:var(--primary-green); font-weight:bold;">Oleh: ${origin}</small></div>
-                        <a href="${resData.fileUrl}" target="_blank" class="btn-action-sm" style="width:100%; text-decoration:none; justify-content:center;">
-                            <i class="fa-brands fa-google-drive"></i> Pelajari & Unduh (Drive)
-                        </a>
-                    `;
-                    materiGrid.appendChild(newMateriCard);
-                }
-
-                alert(`🎉 Berhasil! Modul "${title}" telah diunggah ke Google Drive dan langsung ditampilkan pada Fitur Modul Pembelajaran Kelas 3.`);
-                closeModal('upload-modal');
-                document.querySelector('#upload-modal form').reset();
-
-            } else {
-                alert("Gagal mengunggah file: " + resData.message);
+            if (!fileInput.files.length) {
+                alert("Pilih file yang akan diunggah!");
+                return;
             }
-        } catch (err) {
-            console.error(err);
-            alert("Terjadi kesalahan saat mengunggah file. Pastikan koneksi internet stabil.");
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = `Proses & Simpan ke Modul Materi <i class="fa-solid fa-paper-plane"></i>`;
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah ke Drive...`;
+
+            reader.onload = async function () {
+                const payload = {
+                    fileName: file.name,
+                    mimeType: file.type,
+                    fileContent: reader.result,
+                    unitTitle: title,
+                    description: desc,
+                    uploader: currentUser.name,
+                    school: origin
+                };
+
+                try {
+                    const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                        method: "POST",
+                        body: JSON.stringify(payload)
+                    });
+
+                    const resData = await response.json();
+
+                    if (resData.status === "success") {
+                        const hubContainer = document.getElementById('resource-cards-container');
+                        if (hubContainer) {
+                            const hubCard = document.createElement('div');
+                            hubCard.className = 'resource-card';
+                            hubCard.innerHTML = `
+                                <div>
+                                    <span class="tag tag-guru">${origin}</span>
+                                    <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">${title}</h4>
+                                    <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">${desc}</p>
+                                </div>
+                                <a href="${resData.fileUrl}" target="_blank" class="btn-action-sm" style="text-decoration:none; justify-content:center;">
+                                    <i class="fa-brands fa-google-drive"></i> Buka File Drive
+                                </a>
+                            `;
+                            hubContainer.prepend(hubCard);
+                        }
+
+                        const materiGrid = document.querySelector('#tab-materi-sd .materi-grid');
+                        if (materiGrid) {
+                            const newMateriCard = document.createElement('div');
+                            newMateriCard.className = 'materi-card';
+                            newMateriCard.style.border = '2px solid var(--primary-green)';
+                            newMateriCard.innerHTML = `
+                                <div class="card-icon">📂</div>
+                                <div class="card-title">${title}</div>
+                                <div class="card-desc">${desc}<br><small style="color:var(--primary-green); font-weight:bold;">Oleh: ${origin}</small></div>
+                                <a href="${resData.fileUrl}" target="_blank" class="btn-action-sm" style="width:100%; text-decoration:none; justify-content:center;">
+                                    <i class="fa-brands fa-google-drive"></i> Pelajari & Unduh (Drive)
+                                </a>
+                            `;
+                            materiGrid.appendChild(newMateriCard);
+                        }
+
+                        alert(`🎉 Berhasil! Modul "${title}" telah diunggah ke Google Drive dan langsung ditampilkan pada Fitur Modul Pembelajaran Kelas 3.`);
+                        closeModal('upload-modal');
+                        document.getElementById('upload-form').reset();
+
+                    } else {
+                        alert("Gagal mengunggah file: " + resData.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("Terjadi kesalahan saat mengunggah file. Pastikan koneksi internet stabil.");
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `Proses & Simpan ke Modul Materi <i class="fa-solid fa-paper-plane"></i>`;
+                }
+            };
+
+            reader.readAsDataURL(file);
         }
-    };
-
-    reader.readAsDataURL(file);
-}
-
 
         function handleCreateForum(e) {
             e.preventDefault();
@@ -1082,7 +1075,7 @@ async function handleUploadResource(e) {
             data.vocab.forEach(v => {
                 const card = document.createElement('div'); card.className = 'vocab-item';
                 card.onclick = () => speak(v.en);
-                card.innerHTML = `<img src="${v.img}" alt="${v.en}" class="vocab-img" onerror="this.src='assets/images/placeholder.png'"><div style="font-family:var(--font-head); color:var(--primary-green); font-size:0.9rem;">${v.en}</div><div style="font-size:0.75rem; color:var(--text-muted);">${v.id}</div>`;
+                card.innerHTML = `<img src="${v.img}" alt="${v.en}" class="vocab-img" onerror="this.src='https://via.placeholder.com/150x90?text=Vocabulary'"><div style="font-family:var(--font-head); color:var(--primary-green); font-size:0.9rem;">${v.en}</div><div style="font-size:0.75rem; color:var(--text-muted);">${v.id}</div>`;
                 c.appendChild(card);
             });
             openModal('module-modal');
@@ -1239,7 +1232,7 @@ async function handleUploadResource(e) {
             document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIdx + 1} of 20`;
             
             document.getElementById('quiz-question-box').innerHTML = `
-                <img src="${q.img}" alt="Quiz Image" class="quiz-img" onerror="this.src='assets/images/placeholder.png'">
+                <img src="${q.img}" alt="Quiz Image" class="quiz-img" onerror="this.src='https://via.placeholder.com/180x140?text=Question+Image'">
                 <div>${q.q}</div>
             `;
 
