@@ -571,7 +571,6 @@
                     <button class="selector-btn active" onclick="selectQuiz(0, this)">Kuis 1: Foods & Drinks</button>
                     <button class="selector-btn" onclick="selectQuiz(1, this)">Kuis 2: Likes & Dislikes</button>
                     <button class="selector-btn" onclick="selectQuiz(2, this)">Kuis 3: Mealtimes</button>
-                    <button class="selector-btn" onclick="selectQuiz(3, this)">Kuis 4: Hobbies</button>
                     <button class="selector-btn" onclick="selectQuiz(4, this)">Kuis 5: Days of Week</button>
                 </div>
 
@@ -639,7 +638,7 @@
         </div>
     </div>
 
-    <!-- MODAL UNGGAH BERKAS (WEB3FORMS / GOOGLE DRIVE) -->
+    <!-- MODAL UNGGAH BERKAS (WEB3FORMS) -->
     <div class="modal-overlay" id="upload-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -647,25 +646,24 @@
                 <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;" onclick="closeModal('upload-modal')">✕</button>
             </div>
             <div class="modal-body">
-                <form id="upload-form" onsubmit="handleUploadResource(event)">
+                <form action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="access_key" value="4c3b0c2b-53c7-4110-b389-7c9f00aacdb1">
+                    <input type="hidden" name="subject" value="Modul Baru Diunggah - English Adventure">
+
                     <div class="input-group">
                         <label>Judul Modul Pembelajaran</label>
-                        <input type="text" id="up-title" required placeholder="Contoh: Unit 6: Animals">
+                        <input type="text" name="judul_modul" required placeholder="Contoh: Unit 6: Animals">
                     </div>
                     <div class="input-group">
                         <label>Asal Sekolah / Pengunggah</label>
-                        <input type="text" id="up-origin" required placeholder="Contoh: SDN 010 Tarakan">
+                        <input type="text" name="sekolah" id="up-origin" required placeholder="Contoh: SDN 010 Tarakan">
                     </div>
                     <div class="input-group">
-                        <label>Deskripsi Singkat Modul</label>
-                        <textarea id="up-desc" rows="3" required placeholder="Keterangan singkat materi..."></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label>Lampirkan Berkas Modul (PDF/DOCX/Gambar)</label>
-                        <input type="file" id="up-file" required accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
+                        <label>Lampirkan Berkas Modul (PDF/DOCX)</label>
+                        <input type="file" name="attachment" required accept=".pdf,.doc,.docx">
                     </div>
 
-                    <button type="submit" id="btn-submit-upload" class="btn-primary">Proses & Simpan ke Modul Materi <i class="fa-solid fa-paper-plane"></i></button>
+                    <button type="submit" class="btn-primary">Kirim Modul <i class="fa-solid fa-paper-plane"></i></button>
                 </form>
             </div>
         </div>
@@ -751,7 +749,7 @@
             document.getElementById('prof-school').value = currentUser.school;
             
             const upOriginElem = document.getElementById('up-origin');
-            if(upOriginElem) upOriginElem.value = currentUser.school;
+            if (upOriginElem) upOriginElem.value = currentUser.school;
         }
 
         function handleSaveProfile(e) {
@@ -808,100 +806,6 @@ Guru Sekolah Dasar se-Kalimantan Utara (Sekaltara).
             document.body.removeChild(link);
 
             alert(`Mulai mengunduh berkas PDF resmi: "${title}.pdf" dari ${schoolOrigin}!`);
-        }
-
-        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybbolJy7DNj4fV2vB79p7PsWo-FYDKGtyC9XNyfP5p9C1ZU-17xUaLkViPo_NUO0EM/exec";
-
-        async function handleUploadResource(e) {
-            e.preventDefault();
-
-            const title = document.getElementById('up-title').value.trim();
-            const origin = document.getElementById('up-origin').value.trim();
-            const desc = document.getElementById('up-desc').value.trim();
-            const fileInput = document.getElementById('up-file');
-            const submitBtn = document.getElementById('btn-submit-upload');
-
-            if (!fileInput.files.length) {
-                alert("Pilih file yang akan diunggah!");
-                return;
-            }
-
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah ke Drive...`;
-
-            reader.onload = async function () {
-                const payload = {
-                    fileName: file.name,
-                    mimeType: file.type,
-                    fileContent: reader.result,
-                    unitTitle: title,
-                    description: desc,
-                    uploader: currentUser.name,
-                    school: origin
-                };
-
-                try {
-                    const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
-                        method: "POST",
-                        body: JSON.stringify(payload)
-                    });
-
-                    const resData = await response.json();
-
-                    if (resData.status === "success") {
-                        const hubContainer = document.getElementById('resource-cards-container');
-                        if (hubContainer) {
-                            const hubCard = document.createElement('div');
-                            hubCard.className = 'resource-card';
-                            hubCard.innerHTML = `
-                                <div>
-                                    <span class="tag tag-guru">${origin}</span>
-                                    <h4 style="font-family:var(--font-head); font-size:1rem; margin-bottom:6px;">${title}</h4>
-                                    <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">${desc}</p>
-                                </div>
-                                <a href="${resData.fileUrl}" target="_blank" class="btn-action-sm" style="text-decoration:none; justify-content:center;">
-                                    <i class="fa-brands fa-google-drive"></i> Buka File Drive
-                                </a>
-                            `;
-                            hubContainer.prepend(hubCard);
-                        }
-
-                        const materiGrid = document.querySelector('#tab-materi-sd .materi-grid');
-                        if (materiGrid) {
-                            const newMateriCard = document.createElement('div');
-                            newMateriCard.className = 'materi-card';
-                            newMateriCard.style.border = '2px solid var(--primary-green)';
-                            newMateriCard.innerHTML = `
-                                <div class="card-icon">📂</div>
-                                <div class="card-title">${title}</div>
-                                <div class="card-desc">${desc}<br><small style="color:var(--primary-green); font-weight:bold;">Oleh: ${origin}</small></div>
-                                <a href="${resData.fileUrl}" target="_blank" class="btn-action-sm" style="width:100%; text-decoration:none; justify-content:center;">
-                                    <i class="fa-brands fa-google-drive"></i> Pelajari & Unduh (Drive)
-                                </a>
-                            `;
-                            materiGrid.appendChild(newMateriCard);
-                        }
-
-                        alert(`🎉 Berhasil! Modul "${title}" telah diunggah ke Google Drive dan langsung ditampilkan pada Fitur Modul Pembelajaran Kelas 3.`);
-                        closeModal('upload-modal');
-                        document.getElementById('upload-form').reset();
-
-                    } else {
-                        alert("Gagal mengunggah file: " + resData.message);
-                    }
-                } catch (err) {
-                    console.error(err);
-                    alert("Terjadi kesalahan saat mengunggah file. Pastikan koneksi internet stabil.");
-                } finally {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = `Proses & Simpan ke Modul Materi <i class="fa-solid fa-paper-plane"></i>`;
-                }
-            };
-
-            reader.readAsDataURL(file);
         }
 
         function handleCreateForum(e) {
@@ -1150,28 +1054,6 @@ Guru Sekolah Dasar se-Kalimantan Utara (Sekaltara).
                 { q: "We eat every...", img: "assets/images/calendar.png", options: ["Day", "Week", "Year"], answer: 0 }
             ],
             [
-                { q: "What hobby is this?", img: "assets/images/swimming.png", options: ["Reading", "Dancing", "Swimming"], answer: 2 },
-                { q: "What hobby is this?", img: "assets/images/cycling.png", options: ["Riding a bike", "Running", "Driving"], answer: 0 },
-                { q: "What hobby is this?", img: "assets/images/singing.png", options: ["Cooking", "Singing", "Fishing"], answer: 1 },
-                { q: "What game is this?", img: "assets/images/football.png", options: ["Badminton", "Basketball", "Playing football"], answer: 2 },
-                { q: "What activity is this?", img: "assets/images/reading.png", options: ["Writing", "Drawing", "Reading a book"], answer: 2 },
-                { q: "What hobby is this?", img: "assets/images/dancing.png", options: ["Dancing", "Singing", "Drawing"], answer: 0 },
-                { q: "What activity is this?", img: "assets/images/fishing.png", options: ["Swimming", "Fishing", "Gardening"], answer: 1 },
-                { q: "What activity is this?", img: "assets/images/cook.png", options: ["Eating", "Cooking", "Washing"], answer: 1 },
-                { q: "What activity is this?", img: "assets/images/drawing.png", options: ["Painting", "Reading", "Drawing"], answer: 2 },
-                { q: "What sport is this?", img: "assets/images/badminton.png", options: ["Football", "Tennis", "Playing badminton"], answer: 2 },
-                { q: "What game is this?", img: "assets/images/kite.png", options: ["Flying a kite", "Playing doll", "Running"], answer: 0 },
-                { q: "What game is this?", img: "assets/images/doll.png", options: ["Playing ball", "Playing doll", "Drawing"], answer: 1 },
-                { q: "What activity is this?", img: "assets/images/watching_tv.png", options: ["Listening music", "Reading", "Watching TV"], answer: 2 },
-                { q: "What activity is this?", img: "assets/images/studying.png", options: ["Studying", "Playing", "Sleeping"], answer: 0 },
-                { q: "What activity is this?", img: "assets/images/gardening.png", options: ["Cooking", "Gardening", "Painting"], answer: 1 },
-                { q: "What sport is this?", img: "assets/images/running.png", options: ["Running", "Walking", "Jumping"], answer: 0 },
-                { q: "My hobby is...", img: "assets/images/swimming.png", options: ["Cycling", "Singing", "Swimming"], answer: 2 },
-                { q: "What is your...?", img: "assets/images/question.png", options: ["Name", "Age", "Hobby"], answer: 2 },
-                { q: "What activity is this?", img: "assets/images/listening_music.png", options: ["Singing", "Listening to music", "Dancing"], answer: 1 },
-                { q: "What activity is this?", img: "assets/images/painting.png", options: ["Painting", "Drawing", "Writing"], answer: 0 }
-            ],
-            [
                 { q: "First day of the week...", img: "assets/images/sunday.png", options: ["Sunday", "Monday", "Friday"], answer: 0 },
                 { q: "Day after Sunday...", img: "assets/images/monday.png", options: ["Tuesday", "Monday", "Saturday"], answer: 1 },
                 { q: "Day after Monday...", img: "assets/images/tuesday.png", options: ["Wednesday", "Thursday", "Tuesday"], answer: 2 },
@@ -1212,7 +1094,7 @@ Guru Sekolah Dasar se-Kalimantan Utara (Sekaltara).
 
         function renderQuizQuestion() {
             const quizList = allQuizzes[currentQuizIdx];
-            const quizNames = ["Kuis 1: Foods & Drinks", "Kuis 2: Likes & Dislikes", "Kuis 3: Mealtimes & Schedule", "Kuis 4: Hobbies & Activities", "Kuis 5: Days of the Week & Time"];
+            const quizNames = ["Kuis 1: Foods & Drinks", "Kuis 2: Likes & Dislikes", "Kuis 3: Mealtimes & Schedule", "Kuis 4: Days of the Week & Time"];
             
             document.getElementById('quiz-title-text').innerText = quizNames[currentQuizIdx];
 
